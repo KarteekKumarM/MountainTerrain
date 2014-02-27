@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include "MT_Window.h"
+#include <MT_Window.h>
 
 // Entry point for Windows program
 int WINAPI WinMain(HINSTANCE hInstance, 
