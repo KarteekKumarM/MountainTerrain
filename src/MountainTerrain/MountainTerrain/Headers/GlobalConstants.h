@@ -1,2 +1,0 @@
-#define GC_SCREEN_WIDTH 800
-#define GC_SCREEN_HEIGHT 600
