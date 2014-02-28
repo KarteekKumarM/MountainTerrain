@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\MT_Camera.cpp" />
     <ClCompile Include="Source\MT_ConstantBuffer.cpp" />
     <ClCompile Include="Source\MT_Main.cpp" />
     <ClCompile Include="Source\MT_Renderer.cpp" />

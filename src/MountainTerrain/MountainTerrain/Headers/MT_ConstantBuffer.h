@@ -6,6 +6,8 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+#include "MT_Camera.h"
+
 struct ConstantBufferMatrices {
 	XMMATRIX mWorld;
 	XMMATRIX mView;
@@ -17,8 +19,9 @@ private:
 	ID3D11Buffer *m_constantBuffer;
 
 	XMMATRIX m_World;
-	XMMATRIX m_View;
 	XMMATRIX m_Projection;
+
+	MT_Camera *m_camera;
 
 	void InitMatrices(UINT screenWidth, UINT screenHeight);
 	void InitConstantBuffer(ID3D11Device *d3dDevice);

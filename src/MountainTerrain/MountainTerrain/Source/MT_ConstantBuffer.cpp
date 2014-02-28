@@ -4,12 +4,6 @@ void MT_ConstantBuffer::InitMatrices(UINT screenWidth, UINT screenHeight) {
 	// world matrix
 	m_World = DirectX::XMMatrixIdentity();
 
-	// view matrix
-	XMVECTOR eye = XMVectorSet( 0.0f, 1.0f, -5.0f, 0.0f );
-	XMVECTOR at = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	XMVECTOR up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	m_View = DirectX::XMMatrixLookAtLH( eye, at, up );
-
     // projection matrix
 	m_Projection = DirectX::XMMatrixPerspectiveFovLH( XM_PIDIV2, screenWidth/(FLOAT)screenHeight, 0.01f, 100.0f );
 }
@@ -38,11 +32,13 @@ void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceConte
     t = ( timeCur - timeStart ) / 1000.0f;
 	m_World = XMMatrixRotationY( t );
 
+	m_camera->MoveBack(0.0001f*t);
+
 	// need temp variables on stack to get past bug : 
 	// http://www.gamedev.net/topic/627033-xmmatrixtranspose-crashes/
 
 	XMMATRIX world = m_World;
-	XMMATRIX view = m_View;
+	XMMATRIX view = m_camera->GetViewMatrix();
 	XMMATRIX projection = m_Projection;
 
 	ConstantBufferMatrices constantBuff;
@@ -53,6 +49,8 @@ void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceConte
 }
 
 void MT_ConstantBuffer::Init(ID3D11Device *d3dDevice, UINT screenWidth, UINT screenHeight) {
+	m_camera = new MT_Camera();
+	m_camera->Init();
 	InitMatrices(screenWidth, screenHeight);
 	InitConstantBuffer(d3dDevice);
 }
@@ -63,5 +61,6 @@ void MT_ConstantBuffer::Update(ID3D11DeviceContext *d3dDeviceContext) {
 }
 
 void MT_ConstantBuffer::Clean() {
+	m_camera->Clean();
 	if(m_constantBuffer) m_constantBuffer->Release();
 }
