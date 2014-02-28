@@ -1,83 +1,40 @@
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MAIN.OBJ
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\VC110.PDB
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\RENDER.OBJ
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_MAIN.OBJ
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_WINDOW.OBJ
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_RENDERER.OBJ
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_SHADER.OBJ
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_SCENE.OBJ
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_MAIN.OBJ
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_RENDERER.OBJ
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_SCENE.OBJ
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_SHADER.OBJ
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_WINDOW.OBJ
 C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\VC110.PDB
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\DEBUG\PIXELSHADER.CSO
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\DEBUG\VERTEXSHADER.CSO
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\DEBUG\SIMPLESHADER.CSO
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\MOUNTAINTERRAIN\DEBUG\MT_CONSTANTBUFFER.OBJ
 C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\DEBUG\SIMPLESHADER.CSO
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\DEBUG\MOUNTAINTERRAIN.ILK
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\DEBUG\MOUNTAINTERRAIN.EXE
-C:\USERS\KARTEEKKUMAR\DOCUMENTS\VISUAL STUDIO 2012\PROJECTS\MOUNTAINTERRAIN\DEBUG\MOUNTAINTERRAIN.PDB
-C:\Users\KarteekKumar\documents\visual studio 2012\Projects\MountainTerrain\Debug\PixelShader.cso
-C:\Users\KarteekKumar\documents\visual studio 2012\Projects\MountainTerrain\Debug\VertexShader.cso
-C:\Users\KarteekKumar\documents\visual studio 2012\Projects\MountainTerrain\Debug\SimpleShader.cso
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\DEBUG\MOUNTAINTERRAIN.ILK
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\DEBUG\MOUNTAINTERRAIN.EXE
+C:\USERS\KARTEEKKUMAR\DOCUMENTS\GITHUB\MOUNTAINTERRAIN\SRC\MOUNTAINTERRAIN\DEBUG\MOUNTAINTERRAIN.PDB
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\Debug\SimpleShader.cso
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\Main.obj
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\Render.obj
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\MT_Scene.obj
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\MT_Shader.obj
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\MT_Window.obj
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\cl.command.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\CL.read.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\CL.write.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\FXC.command.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\fxc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\FXC.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\fxc.write.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link-cvtres.read.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link-cvtres.write.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link-rc.read.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12024-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12024-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12024-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12024-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12024.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12024.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.2076-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.2076-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.2076-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.2076-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.2076.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.2076.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.5144-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.5144-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.5144-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.5144-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.5144.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.5144.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.7304-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.7304-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.7304-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.7304-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.7304.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.7304.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.8052-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.8052-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.8052-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.8052-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.8052.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.8052.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9248-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9248-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9248-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9248-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9248.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9248.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9376-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9376-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9376-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9376-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9376.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9376.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9392-cvtres.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9392-cvtres.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9392-rc.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9392-rc.write.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9392.read.1.tlog
-C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.9392.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.11412-cvtres.read.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.11412-cvtres.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.11412-rc.read.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.11412-rc.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.11412.read.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.11412.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12152-cvtres.read.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12152-cvtres.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12152-rc.read.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12152-rc.write.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12152.read.1.tlog
+C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.12152.write.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.command.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.read.1.tlog
 C:\Users\KarteekKumar\Documents\GitHub\MountainTerrain\src\MountainTerrain\MountainTerrain\Debug\link.write.1.tlog

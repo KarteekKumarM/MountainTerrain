@@ -1,3 +1,6 @@
+#ifndef MT_WINDOW_H
+#define MT_WINDOW_H
+
 #include <Windows.h>
 
 #include "MT_Renderer.h"
@@ -12,3 +15,5 @@ public:
 	int EnterMessageLoop();
 	void Clean();
 };
+
+#endif

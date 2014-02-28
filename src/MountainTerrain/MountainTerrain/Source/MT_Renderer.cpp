@@ -46,7 +46,13 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight) {
 	viewPort.TopLeftY = 0;
 	viewPort.Width = (FLOAT)screenWidth;
 	viewPort.Height = (FLOAT)screenHeight;
+	viewPort.MinDepth = 0.0f;
+	viewPort.MaxDepth = 1.0f;
 	m_d3dDeviceContext->RSSetViewports(1, &viewPort);
+
+	// world, view projection matrix 
+	m_constantBuffer = new MT_ConstantBuffer();
+	m_constantBuffer->Init(m_d3dDevice, screenWidth, screenHeight);
 
 	// Init Scene
 	m_scene = new MT_Scene();
@@ -58,6 +64,10 @@ void MT_Renderer::RenderFrame() {
 	const float clearColor[4] = {0.0f, 0.2f, 0.4f, 1.0f};
 	m_d3dDeviceContext->ClearRenderTargetView(m_d3dBackBuffer, clearColor);
 
+	// world, view projection matrix 
+	m_constantBuffer->Update(m_d3dDeviceContext);
+
+	// scene rendering
 	m_scene->RenderFrame(m_d3dDeviceContext);
 
 	// switch the back buffer and the front buffer
@@ -67,6 +77,10 @@ void MT_Renderer::RenderFrame() {
 void MT_Renderer::Clean() {
 	// switch to window from full screen
 	m_dxgiSwapChain->SetFullscreenState(FALSE, NULL);
+
+	m_constantBuffer->Clean();
+	delete m_constantBuffer;
+	m_constantBuffer = 0;
 
 	m_scene->Clean();
 	delete m_scene;
