@@ -29,6 +29,15 @@ void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice) {
 
 void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext) {
 
+    // Temp code : Rotate the cube by rotating the world
+    static float t = 0.0f;
+	static ULONGLONG timeStart = 0;
+    ULONGLONG timeCur = GetTickCount64();
+    if( timeStart == 0 )
+        timeStart = timeCur;
+    t = ( timeCur - timeStart ) / 1000.0f;
+	m_World = XMMatrixRotationY( t );
+
 	// need temp variables on stack to get past bug : 
 	// http://www.gamedev.net/topic/627033-xmmatrixtranspose-crashes/
 
