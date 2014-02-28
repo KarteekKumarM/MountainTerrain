@@ -25,10 +25,7 @@ void MT_Scene::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3
 	D3D11_SUBRESOURCE_DATA vertexData;
 	ZeroMemory(&vertexData, sizeof(vertexData));
 	vertexData.pSysMem = vertices;
-	HRESULT hr = d3dDevice->CreateBuffer(&vertexBuffDesc, &vertexData, &m_vertexBuffer);
-	if(FAILED(hr)) {
-		MessageBox(nullptr, L"Unable to create vertex buffer", L"Error", MB_OK);
-	}
+	d3dDevice->CreateBuffer(&vertexBuffDesc, &vertexData, &m_vertexBuffer);
 }
 
 void MT_Scene::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
@@ -92,6 +89,7 @@ void MT_Scene::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceConte
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
 	LoadVertexBuffer(d3dDevice, d3dDeviceContext);
+	LoadIndexBuffer(d3dDevice, d3dDeviceContext);
 }
 
 void MT_Scene::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) {
