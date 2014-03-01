@@ -49,9 +49,17 @@ void MT_Window::Init(HINSTANCE hInstance, int nCmdShow) {
 					   // show window
 					   ShowWindow(hWnd, nCmdShow);
 
+					   // initialize camera
+					   m_camera = new MT_Camera();
+					   m_camera->Init();
+
 					   // initialize Renderer
 					   m_renderer = new MT_Renderer();
 					   m_renderer->Init(hWnd, m_windowWidth, m_windowHeight);
+
+					   // initialize Input handler
+					   m_inputHandler = new MT_InputHandler();
+					   m_inputHandler->Init();
 }
 
 // message handler for the window
@@ -59,7 +67,6 @@ LRESULT CALLBACK MT_Window::WindowProc(HWND hWnd,
 							UINT message, 
 							WPARAM wParam, 
 							LPARAM lParam) {
-
 								switch (message)
 								{
 								case WM_DESTROY:
@@ -72,13 +79,30 @@ LRESULT CALLBACK MT_Window::WindowProc(HWND hWnd,
 }
 
 int MT_Window::EnterMessageLoop() {
+
 	// enter the run loop
 	MSG msg;
 	while(TRUE) {
+
+		// track delta time
+		static float dTime = 0.0f;
+		static ULONGLONG timeStart = 0;
+		ULONGLONG timeCur = GetTickCount64();
+		if( timeStart == 0 )
+			timeStart = timeCur;
+		dTime = ( timeCur - timeStart ) / 1000.0f;
+
 		// handle messages
 		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 			// translate keystroke message to right format
 			TranslateMessage(&msg);
+
+			// send message to our input handler
+			bool inputStateChanged = m_inputHandler->ProcessMessage(msg.message, msg.wParam, msg.lParam);
+			if(inputStateChanged) {
+				m_camera->ProcessInput(m_inputHandler, dTime);
+			}
+
 			// send message to WindowsProc callback
 			DispatchMessage(&msg);
 			// check if its time to quit
@@ -86,13 +110,23 @@ int MT_Window::EnterMessageLoop() {
 				break;
 			}
 		} 
+
 		// render
+		m_renderer->ProcessCameraState(m_camera);
 		m_renderer->RenderFrame();
 	}
 	return msg.wParam;
 }
 
 void MT_Window::Clean() {
+	m_camera->Clean();
+	delete m_camera;
+	m_camera = 0;
+
+	m_inputHandler->Clean();
+	delete m_inputHandler;
+	m_inputHandler = 0;
+
 	m_renderer->Clean();
 	delete m_renderer;
 	m_renderer = 0;

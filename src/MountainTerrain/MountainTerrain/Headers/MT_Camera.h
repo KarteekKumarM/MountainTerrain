@@ -6,6 +6,8 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+#include "MT_InputHandler.h"
+
 class MT_Camera {
 private:
 	XMVECTOR eye, lookat, up;
@@ -14,6 +16,11 @@ public:
 	XMMATRIX GetViewMatrix();
 	void MoveForward(FLOAT distance);
 	void MoveBack(FLOAT distance);
+	void TurnUp(FLOAT angle);
+	void TurnDown(FLOAT angle);
+	void TurnLeft(FLOAT angle);
+	void TurnRight(FLOAT angle);
+	void ProcessInput(MT_InputHandler *inputHandler, float dTime);
 	void Clean();
 };
 

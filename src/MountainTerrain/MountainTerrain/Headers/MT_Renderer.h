@@ -5,7 +5,7 @@
 #pragma comment(lib, "d3d11.lib")
 
 #include "MT_ConstantBuffer.h"
-#include "MT_Scene.h"
+#include "MT_Terrain.h"
 
 class MT_Renderer {
 private:
@@ -15,11 +15,10 @@ private:
 	ID3D11RenderTargetView *m_d3dBackBuffer;
 
 	MT_ConstantBuffer *m_constantBuffer;
-	MT_Scene *m_scene;
+	MT_Terrain *m_scene;
 public:
 	void Init(HWND hWnd, UINT screenWidth, UINT screenHeight);
-	void InitConstantBuffer();
-	void UpdateConstantBuffer();
+	void ProcessCameraState(MT_Camera *camera);
 	void RenderFrame();
 	void Clean();
 };

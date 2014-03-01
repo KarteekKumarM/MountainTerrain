@@ -21,7 +21,7 @@ void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice) {
 	}
 }
 
-void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext) {
+void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera) {
 
     // Temp code : Rotate the cube by rotating the world
     static float t = 0.0f;
@@ -30,15 +30,13 @@ void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceConte
     if( timeStart == 0 )
         timeStart = timeCur;
     t = ( timeCur - timeStart ) / 1000.0f;
-	m_World = XMMatrixRotationY( t );
-
-	m_camera->MoveBack(0.0001f*t);
+	//m_World = XMMatrixRotationY( t );
 
 	// need temp variables on stack to get past bug : 
 	// http://www.gamedev.net/topic/627033-xmmatrixtranspose-crashes/
 
 	XMMATRIX world = m_World;
-	XMMATRIX view = m_camera->GetViewMatrix();
+	XMMATRIX view = camera->GetViewMatrix();
 	XMMATRIX projection = m_Projection;
 
 	ConstantBufferMatrices constantBuff;
@@ -49,18 +47,15 @@ void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceConte
 }
 
 void MT_ConstantBuffer::Init(ID3D11Device *d3dDevice, UINT screenWidth, UINT screenHeight) {
-	m_camera = new MT_Camera();
-	m_camera->Init();
 	InitMatrices(screenWidth, screenHeight);
 	InitConstantBuffer(d3dDevice);
 }
 
-void MT_ConstantBuffer::Update(ID3D11DeviceContext *d3dDeviceContext) {
+void MT_ConstantBuffer::Update(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera) {
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_constantBuffer);
-	UpdateConstantBuffer(d3dDeviceContext);
+	UpdateConstantBuffer(d3dDeviceContext, camera);
 }
 
 void MT_ConstantBuffer::Clean() {
-	m_camera->Clean();
 	if(m_constantBuffer) m_constantBuffer->Release();
 }

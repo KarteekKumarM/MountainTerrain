@@ -21,14 +21,12 @@ private:
 	XMMATRIX m_World;
 	XMMATRIX m_Projection;
 
-	MT_Camera *m_camera;
-
 	void InitMatrices(UINT screenWidth, UINT screenHeight);
 	void InitConstantBuffer(ID3D11Device *d3dDevice);
-	void UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext);
+	void UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera);
 public:
 	void Init(ID3D11Device *d3dDevice, UINT screenWidth, UINT screenHeight);
-	void Update(ID3D11DeviceContext *d3dDeviceContext);
+	void Update(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera);
 	void Clean();
 };
 

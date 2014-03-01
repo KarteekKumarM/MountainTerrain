@@ -55,17 +55,19 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight) {
 	m_constantBuffer->Init(m_d3dDevice, screenWidth, screenHeight);
 
 	// Init Scene
-	m_scene = new MT_Scene();
+	m_scene = new MT_Terrain();
 	m_scene->Init(m_d3dDevice, m_d3dDeviceContext);
+}
+
+void MT_Renderer::ProcessCameraState(MT_Camera *camera) {
+	// world, view projection matrix 
+	m_constantBuffer->Update(m_d3dDeviceContext, camera);
 }
 
 void MT_Renderer::RenderFrame() {
 	// clear the back buffer
 	const float clearColor[4] = {0.0f, 0.2f, 0.4f, 1.0f};
 	m_d3dDeviceContext->ClearRenderTargetView(m_d3dBackBuffer, clearColor);
-
-	// world, view projection matrix 
-	m_constantBuffer->Update(m_d3dDeviceContext);
 
 	// scene rendering
 	m_scene->RenderFrame(m_d3dDeviceContext);

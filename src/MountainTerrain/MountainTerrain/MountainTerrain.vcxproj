@@ -85,18 +85,22 @@
   <ItemGroup>
     <ClCompile Include="Source\MT_Camera.cpp" />
     <ClCompile Include="Source\MT_ConstantBuffer.cpp" />
+    <ClCompile Include="Source\MT_InputHandler.cpp" />
     <ClCompile Include="Source\MT_Main.cpp" />
     <ClCompile Include="Source\MT_Renderer.cpp" />
     <ClCompile Include="Source\MT_Scene.cpp" />
     <ClCompile Include="Source\MT_Shader.cpp" />
+    <ClCompile Include="Source\MT_Terrain.cpp" />
     <ClCompile Include="Source\MT_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\MT_Camera.h" />
     <ClInclude Include="Headers\MT_ConstantBuffer.h" />
+    <ClInclude Include="Headers\MT_InputHandler.h" />
     <ClInclude Include="Headers\MT_Renderer.h" />
     <ClInclude Include="Headers\MT_Scene.h" />
     <ClInclude Include="Headers\MT_Shader.h" />
+    <ClInclude Include="Headers\MT_Terrain.h" />
     <ClInclude Include="Headers\MT_Window.h" />
   </ItemGroup>
   <ItemGroup>
