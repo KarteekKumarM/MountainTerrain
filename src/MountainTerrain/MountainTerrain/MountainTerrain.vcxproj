@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="Source\MT_Camera.cpp" />
     <ClCompile Include="Source\MT_ConstantBuffer.cpp" />
+    <ClCompile Include="Source\MT_HeightMap.cpp" />
     <ClCompile Include="Source\MT_InputHandler.cpp" />
     <ClCompile Include="Source\MT_Main.cpp" />
     <ClCompile Include="Source\MT_Renderer.cpp" />
@@ -96,6 +97,7 @@
   <ItemGroup>
     <ClInclude Include="Headers\MT_Camera.h" />
     <ClInclude Include="Headers\MT_ConstantBuffer.h" />
+    <ClInclude Include="Headers\MT_HeightMap.h" />
     <ClInclude Include="Headers\MT_InputHandler.h" />
     <ClInclude Include="Headers\MT_Renderer.h" />
     <ClInclude Include="Headers\MT_Scene.h" />
@@ -109,6 +111,11 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">VS</EntryPointName>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\..\Desktop\HeightMapImage.gif" />
+    <Image Include="Resources\HeightMapImage.bmp" />
+    <Image Include="Resources\HeightMapImage.gif" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

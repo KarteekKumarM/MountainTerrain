@@ -3,14 +3,17 @@
 
 void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
 	// ZERO UP
-	for(int i = 0; i < k_HeightMapDepth; i++) {
+	/*for(int i = 0; i < k_HeightMapDepth; i++) {
 		for(int j = 0; j < k_HeightMapWidth; j++) {
 			m_heightMap[i][j] = 0;
 		}
-	}
+	}*/
 
 	m_shader = new MT_Shader();
 	m_shader->Init(d3dDevice, d3dDeviceContext);
+
+	m_heightMap = new MT_HeightMap();
+	m_heightMap->Init("Resources/HeightMapImage.bmp");
 
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
@@ -31,11 +34,12 @@ void MT_Terrain::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice,
 }
 
 void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
-	TerrainVertex vertices[k_HeightMapWidth * k_HeightMapDepth];
-	for(int i = 0; i < k_HeightMapDepth; i++) {
-		for(int j = 0; j < k_HeightMapWidth; j++) {
-			int index = (i * k_HeightMapWidth) + j;
-			vertices[index].Position = XMFLOAT3(k_SingleCellWidth * j, m_heightMap[i][j], k_SingleCellDepth * i);
+	UINT numOfVertices = m_heightMap->width() * m_heightMap->height();
+	TerrainVertex *vertices = new TerrainVertex[numOfVertices];
+	for(UINT i = 0; i < m_heightMap->height(); i++) {
+		for(UINT j = 0; j < m_heightMap->width(); j++) {
+			int index = (i * m_heightMap->width()) + j;
+			vertices[index].Position = XMFLOAT3(k_SingleCellWidth * j, m_heightMap->heightAt(i, j), k_SingleCellDepth * i);
 			vertices[index].Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
@@ -44,7 +48,7 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	D3D11_BUFFER_DESC vertexBuffDesc;
 	ZeroMemory(&vertexBuffDesc, sizeof(vertexBuffDesc));
     vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;					// write access access by CPU and GPU
-	vertexBuffDesc.ByteWidth = sizeof(TerrainVertex)*k_HeightMapDepth*k_HeightMapWidth;			// size is the VERTEX struct * 3
+	vertexBuffDesc.ByteWidth = sizeof(TerrainVertex) * numOfVertices;			// size is the VERTEX struct * 3
     vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// use as a vertex buffer
     vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// allow CPU to write in buffer
 
@@ -53,19 +57,23 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	ZeroMemory(&vertexData, sizeof(vertexData));
 	vertexData.pSysMem = vertices;
 	d3dDevice->CreateBuffer(&vertexBuffDesc, &vertexData, &m_vertexBuffer);
+
+	delete[] vertices;
+	vertices = 0;
 }
 
 void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
 	// Create index buffer
 	int indexCount = 0;
-	WORD indices[k_HeightMapWidth * k_HeightMapDepth * 6];
-	for(int i = 1; i < k_HeightMapDepth; i++) {
-		for(int j = 1; j < k_HeightMapWidth; j++) {
+	UINT numberOfIndices = m_heightMap->width() * m_heightMap->height() * 6;
+	WORD *indices = new WORD[numberOfIndices];
+	for(UINT i = 1; i < m_heightMap->height(); i++) {
+		for(UINT j = 1; j < m_heightMap->width(); j++) {
 
-			WORD indexOf_UR = (i * k_HeightMapWidth) + j;
-			WORD indexOf_UL = (i * k_HeightMapWidth) + (j-1);
-			WORD indexOf_LL = ((i-1) * k_HeightMapWidth) + (j-1);
-			WORD indexOf_LR = ((i-1) * k_HeightMapWidth) + j;
+			WORD indexOf_UR = (i * m_heightMap->width()) + j;
+			WORD indexOf_UL = (i * m_heightMap->width()) + (j-1);
+			WORD indexOf_LL = ((i-1) * m_heightMap->width()) + (j-1);
+			WORD indexOf_LR = ((i-1) * m_heightMap->width()) + j;
 
 			// first triangle
 			indices[indexCount++] = indexOf_UR;
@@ -90,7 +98,7 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 	D3D11_BUFFER_DESC indexBufferDesc;
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(WORD) * 6 * k_HeightMapDepth * k_HeightMapWidth;
+	indexBufferDesc.ByteWidth = sizeof(WORD) * numberOfIndices;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -103,6 +111,9 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 	if(FAILED(hr)) {
 		MessageBox(nullptr, L"Unable to create index buffer", L"Error", MB_OK);
 	}
+
+	delete [] indices;
+	indices = 0;
 }
 
 void MT_Terrain::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) {
@@ -118,10 +129,14 @@ void MT_Terrain::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) {
 	d3dDeviceContext->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// draw the vertex buffer to the back buffer using the index buffer
-	d3dDeviceContext->DrawIndexed(6*k_HeightMapDepth*k_HeightMapWidth, 0, 0);
+	d3dDeviceContext->DrawIndexed(6 * m_heightMap->height() * m_heightMap->width(), 0, 0);
 }
 
 void MT_Terrain::Clean() {
+	m_heightMap->Clean();
+	delete m_heightMap;
+	m_heightMap = 0;
+
 	if(m_vertexBuffer) m_vertexBuffer->Release();
 	if(m_indexBuffer) m_indexBuffer->Release();
 

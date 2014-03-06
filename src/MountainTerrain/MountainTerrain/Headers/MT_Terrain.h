@@ -7,9 +7,10 @@
 using namespace DirectX;
 
 #include "MT_Shader.h"
+#include "MT_HeightMap.h"
 
-static const UINT k_HeightMapWidth = 100;
-static const UINT k_HeightMapDepth = 100;
+//static const UINT k_HeightMapWidth = 100;
+//static const UINT k_HeightMapDepth = 100;
 
 static const FLOAT k_SingleCellWidth = 1.0f;
 static const FLOAT k_SingleCellDepth = 1.0f;
@@ -22,7 +23,8 @@ struct TerrainVertex {
 class MT_Terrain {
 private:
 	MT_Shader *m_shader;
-	FLOAT m_heightMap[k_HeightMapDepth][k_HeightMapWidth];
+	MT_HeightMap *m_heightMap;
+	//FLOAT m_heightMap[k_HeightMapDepth][k_HeightMapWidth];
 	ID3D11Buffer *m_vertexBuffer;
 	ID3D11Buffer *m_indexBuffer;
 	ID3D11InputLayout *m_layout; 

@@ -42,6 +42,9 @@
     <ClCompile Include="Source\MT_Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MT_HeightMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\SimpleShader.hlsl" />
@@ -71,5 +74,19 @@
     <ClInclude Include="Headers\MT_Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\MT_HeightMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\..\..\Desktop\HeightMapImage.gif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\HeightMapImage.gif">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\HeightMapImage.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
