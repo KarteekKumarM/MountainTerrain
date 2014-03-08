@@ -2,18 +2,13 @@
 #include "stdio.h"
 
 void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
-	// ZERO UP
-	/*for(int i = 0; i < k_HeightMapDepth; i++) {
-		for(int j = 0; j < k_HeightMapWidth; j++) {
-			m_heightMap[i][j] = 0;
-		}
-	}*/
-
 	m_shader = new MT_Shader();
 	m_shader->Init(d3dDevice, d3dDeviceContext);
 
 	m_heightMap = new MT_HeightMap();
 	m_heightMap->Init("Resources/HeightMapImage.bmp");
+
+	//m_heightMap->Log();
 
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
@@ -35,14 +30,35 @@ void MT_Terrain::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice,
 
 void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
 	UINT numOfVertices = m_heightMap->width() * m_heightMap->height();
+
 	TerrainVertex *vertices = new TerrainVertex[numOfVertices];
+
+	// center at 0,0
+	FLOAT minX = -1.0f * (m_heightMap->width() / 2);
+	FLOAT minY = -1.0f * (m_heightMap->height() / 2);
+
+	/*char str[256];
+	sprintf_s(str, sizeof(str), "Height at 1, 1 : %f\n", m_heightMap->heightAt(1, 1));
+	OutputDebugStringA(str);*/
+
 	for(UINT i = 0; i < m_heightMap->height(); i++) {
 		for(UINT j = 0; j < m_heightMap->width(); j++) {
 			int index = (i * m_heightMap->width()) + j;
-			vertices[index].Position = XMFLOAT3(k_SingleCellWidth * j, m_heightMap->heightAt(i, j), k_SingleCellDepth * i);
+			FLOAT x = ( minX + j ) * k_SingleCellWidth;
+			FLOAT z = ( minY + i ) * k_SingleCellDepth;
+			FLOAT y = m_heightMap->heightAt(i, j) / 20.0f;
+			vertices[index].Position = XMFLOAT3(x, y, z);
 			vertices[index].Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 		}
 	}
+
+	// log vertices
+	/*for(UINT i = 0; i < numOfVertices;i++) {
+		char str[256];
+		XMFLOAT3 position = vertices[i].Position;
+		sprintf_s(str, sizeof(str), "(%f,%f,%f)\n", position.x, position.y, position.z);
+		OutputDebugStringA(str);
+	}*/
 
 	// desc
 	D3D11_BUFFER_DESC vertexBuffDesc;
@@ -86,13 +102,6 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 			indices[indexCount++] = indexOf_UR;
 		}
 	}
-
-	// TEMP CODE -- Logging .. fix me
-	/*for(int k = 0; k < (k_HeightMapWidth-1) * (k_HeightMapDepth-1) * 6; k++) {
-		char str[256];
-		sprintf_s(str, sizeof(str), "%d--%d \n", k, indices[k]);
-		OutputDebugStringA(str);
-	}*/
 
 	// description
 	D3D11_BUFFER_DESC indexBufferDesc;

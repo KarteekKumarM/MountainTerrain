@@ -4,9 +4,9 @@ const float k_MovementSpeed = 0.005f;
 
 void MT_Camera::Init() {
 	// TO DO, script eye and view direction - then calculate look at and up
-	eye = XMVectorSet(0.0f, 1.0f, -5.0f, 0.0f);
-	lookat = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	eye = XMVectorSet(0.0f, 20.0f, 0.0f, 0.0f);
+	lookat = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 }
 
 void MT_Camera::MoveForward(FLOAT distance) {

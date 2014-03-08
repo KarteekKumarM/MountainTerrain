@@ -22,7 +22,7 @@ public:
 	bool LoadImageData(const char *fileName);
 	bool LoadHeightMap();
 	void CleanImageData();
-	//void Log();
+	void Log();
 	bool Init(const char *fileName);
 	UINT width();
 	UINT height();
