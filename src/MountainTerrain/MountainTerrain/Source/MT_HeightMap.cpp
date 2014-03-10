@@ -44,21 +44,24 @@ bool MT_HeightMap::LoadImageData(const char *fileName) {
 }
 
 bool MT_HeightMap::LoadHeightMap() {
+
+	const FLOAT DIVE_ALL_HEIGHTS_BY = 15.0f;
+
 	bool successFlag;
 	m_heightMap = new HeightMapType[m_imageWidth * m_imageHeight];
 	if(m_heightMap) {
 		successFlag = true;
 
 		int indexIntoImageData = 0;
-		for(int z = 0; z < m_imageHeight; z++) {
-			for(int x = 0; x < m_imageWidth; x++ ){
+		for(UINT z = 0; z < m_imageHeight; z++) {
+			for(UINT x = 0; x < m_imageWidth; x++ ){
 				// read height from image data
 				UCHAR height = m_imageData[indexIntoImageData]; 
-				indexIntoImageData += 1;
+				indexIntoImageData += 3;
 
 				// store into height map
 				int indexIntoHeightMap = (m_imageWidth * z)  + x;
-				m_heightMap[indexIntoHeightMap].height = (FLOAT)height;
+				m_heightMap[indexIntoHeightMap].height = height / DIVE_ALL_HEIGHTS_BY;
 				m_heightMap[indexIntoHeightMap].x = x;
 				m_heightMap[indexIntoHeightMap].z = z;
 			}
@@ -67,6 +70,20 @@ bool MT_HeightMap::LoadHeightMap() {
 		successFlag = false;
 	}
 	return successFlag;
+}
+
+IndicesOfTwoTrianglesThatFormACell MT_HeightMap::getIndiciesOfTheTwoTrianglesThatFormACellAtPoint( UINT i, UINT j ) {
+	IndicesOfTwoTrianglesThatFormACell result;
+
+	UINT i_x_width = i * width();
+	UINT i_minus_1_x_width = i_x_width - width(); // same as (i-1) * width()
+
+	result.indexOf_UR = i_x_width + j;
+	result.indexOf_UL = i_x_width +  j - 1;
+	result.indexOf_LL = i_minus_1_x_width + j - 1;
+	result.indexOf_LR = i_minus_1_x_width + j;
+
+	return result;
 }
 
 void MT_HeightMap::CleanImageData() {
@@ -82,13 +99,17 @@ UINT MT_HeightMap::height() {
 	return m_imageHeight;
 }
 
+HeightMapType MT_HeightMap::heightMapStructAt(UINT index) {
+	return m_heightMap[index];
+}
+
 FLOAT MT_HeightMap::heightAt(UINT x, UINT z) {
 	int index = (m_imageWidth * z)  + x;
 	return m_heightMap[index].height;
 }
 
 void MT_HeightMap::Log() {
-	for(int i = 0; i < (m_imageWidth * m_imageHeight); i++) {
+	for(UINT i = 0; i < (m_imageWidth * m_imageHeight); i++) {
 		char str[256];
 		sprintf_s(str, sizeof(str), "%u,%u -- %f\n", m_heightMap[i].x, m_heightMap[i].z, m_heightMap[i].height);
 		OutputDebugStringA(str);

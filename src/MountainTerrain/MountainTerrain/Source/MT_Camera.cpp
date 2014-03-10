@@ -1,6 +1,6 @@
 #include "MT_Camera.h"
 
-const float k_MovementSpeed = 0.005f;
+const float k_MovementSpeed = 0.02f;
 
 void MT_Camera::Init() {
 	// TO DO, script eye and view direction - then calculate look at and up
