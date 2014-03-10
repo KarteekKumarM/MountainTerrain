@@ -4,7 +4,8 @@
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
 
-class MT_Shader {
+class MT_Shader 
+{
 private:
 	ID3D11VertexShader *m_d3dVertexShader;
 	ID3D11PixelShader *m_d3dPixelShader;

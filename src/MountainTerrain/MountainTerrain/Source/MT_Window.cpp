@@ -8,7 +8,8 @@ static const UINT k_MountainTerrainWindow_Width = 800;
 static const UINT k_MountainTerrainWindow_Height = 600;
 static const DWORD k_MountainTerrainWindow_Style = WS_OVERLAPPEDWINDOW;
 
-void MT_Window::Init(HINSTANCE hInstance, int nCmdShow) {
+void MT_Window::Init(HINSTANCE hInstance, int nCmdShow) 
+{
 					   // handle to the window
 					   HWND hWnd;
 
@@ -66,7 +67,8 @@ void MT_Window::Init(HINSTANCE hInstance, int nCmdShow) {
 LRESULT CALLBACK MT_Window::WindowProc(HWND hWnd,
 							UINT message, 
 							WPARAM wParam, 
-							LPARAM lParam) {
+							LPARAM lParam)
+{
 								switch (message)
 								{
 								case WM_DESTROY:
@@ -78,11 +80,13 @@ LRESULT CALLBACK MT_Window::WindowProc(HWND hWnd,
 								return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-int MT_Window::EnterMessageLoop() {
+int MT_Window::EnterMessageLoop()
+{
 
 	// enter the run loop
 	MSG msg;
-	while(TRUE) {
+	while(TRUE) 
+	{
 
 		// track delta time
 		static float dTime = 0.0f;
@@ -93,20 +97,23 @@ int MT_Window::EnterMessageLoop() {
 		dTime = ( timeCur - timeStart ) / 1000.0f;
 
 		// handle messages
-		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
 			// translate keystroke message to right format
 			TranslateMessage(&msg);
 
 			// send message to our input handler
 			bool inputStateChanged = m_inputHandler->ProcessMessage(msg.message, msg.wParam, msg.lParam);
-			if(inputStateChanged) {
+			if(inputStateChanged) 
+			{
 				m_camera->ProcessInput(m_inputHandler, dTime);
 			}
 
 			// send message to WindowsProc callback
 			DispatchMessage(&msg);
 			// check if its time to quit
-			if(msg.message == WM_QUIT) {
+			if(msg.message == WM_QUIT)
+			{
 				break;
 			}
 		} 
@@ -118,7 +125,8 @@ int MT_Window::EnterMessageLoop() {
 	return msg.wParam;
 }
 
-void MT_Window::Clean() {
+void MT_Window::Clean()
+{
 	m_camera->Clean();
 	delete m_camera;
 	m_camera = 0;

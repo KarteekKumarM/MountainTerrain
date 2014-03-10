@@ -6,7 +6,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				   HINSTANCE hPrevInstance, 
 				   LPSTR lpCmdLine, 
 				   int nCmdShow
-				   ) {
+				   ) 
+{
 					   // create window
 					   MT_Window *window = new MT_Window();
 					   window->Init(hInstance, nCmdShow);

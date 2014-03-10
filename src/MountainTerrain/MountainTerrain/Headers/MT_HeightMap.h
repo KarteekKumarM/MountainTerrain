@@ -4,19 +4,22 @@
 #include <stdio.h>
 #include <Windows.h>
 
-struct HeightMapType {
+struct HeightMapType 
+{
 	UINT x, z;
 	FLOAT height;
 };
 
-struct IndicesOfTwoTrianglesThatFormACell {
+struct IndicesOfTwoTrianglesThatFormACell 
+{
 	WORD indexOf_UR;
 	WORD indexOf_UL;
 	WORD indexOf_LL;
 	WORD indexOf_LR;
 };
 
-class MT_HeightMap {
+class MT_HeightMap 
+{
 private:
 	FILE *m_fileHandle;
 	BITMAPFILEHEADER m_fileHeader;

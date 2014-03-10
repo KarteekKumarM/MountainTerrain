@@ -7,40 +7,49 @@ static const char k_RightKey = 'd';
 static const char k_UpKey = 'e';
 static const char k_DownKey = 'c';
 
-void MT_InputHandler::Init() {
+void MT_InputHandler::Init() 
+{
 	forwardKeyDownFlag = false;
 	backKeyDownFlag = false;
 }
 
-void MT_InputHandler::Clean() {
+void MT_InputHandler::Clean()
+{
 
 }
 
-bool MT_InputHandler::isForwardKeyPressed() {
+bool MT_InputHandler::isForwardKeyPressed() 
+{
 	return forwardKeyDownFlag;
 }
 
-bool MT_InputHandler::isBackKeyPressed() {
+bool MT_InputHandler::isBackKeyPressed()
+{
 	return backKeyDownFlag;
 }
 
-bool MT_InputHandler::isLeftKeyPressed(){
+bool MT_InputHandler::isLeftKeyPressed()
+{
 	return leftKeyDownFlag;
 }
 
-bool MT_InputHandler::isRightKeyPressed() {
+bool MT_InputHandler::isRightKeyPressed()
+{
 	return rightKeyDownFlag;
 }
 
-bool MT_InputHandler::isUpKeyPressed() {
+bool MT_InputHandler::isUpKeyPressed()
+{
 	return upKeyDownFlag;
 }
 
-bool MT_InputHandler::isDownKeyPressed() {
+bool MT_InputHandler::isDownKeyPressed() 
+{
 	return downKeyDownFlag;
 }
 
-bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam) {
+bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
+{
 	// char
 	bool stateChanged = false;
 	char keyChar = MapVirtualKey(wParam, MAPVK_VK_TO_CHAR);

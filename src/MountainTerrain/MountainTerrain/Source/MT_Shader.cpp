@@ -3,7 +3,8 @@
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
-HRESULT MT_Shader::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
+HRESULT MT_Shader::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
+{
 
 	const LPCWSTR VERTEX_SHADER_FILENAME = L"Shaders/SimpleShader.hlsl";
 	const LPCSTR VERTEX_SHADER_ENTRYPOINT = "VS";
@@ -18,10 +19,13 @@ HRESULT MT_Shader::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceC
 	// -------- VERTEX SHADER
 	// compile vertex shader
 	hr = CompileShaderFromFile(VERTEX_SHADER_FILENAME, VERTEX_SHADER_ENTRYPOINT, VERTEX_SHADER_MODEL, &m_vertexShaderBlob);
-	if(FAILED(hr)) {
+	if(FAILED(hr))
+	{
 		MessageBox(nullptr, L"Unable to compile vertex shader", L"Error", MB_OK);
 		return hr;
-	} else {
+	} 
+	else 
+	{
 		// load the shader and setup the shader obj
 		d3dDevice->CreateVertexShader(m_vertexShaderBlob->GetBufferPointer(), m_vertexShaderBlob->GetBufferSize(), NULL, &m_d3dVertexShader);
 
@@ -32,10 +36,13 @@ HRESULT MT_Shader::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceC
 	// -------- PIXEL SHADER
 	// compile pixel shader
 	hr = CompileShaderFromFile(PIXEL_SHADER_FILENAME, PIXEL_SHADER_ENTRYPOINT, PIXEL_SHADER_MODEL, &m_pixelShaderBlob);
-	if(FAILED(hr)) {
+	if(FAILED(hr))
+	{
 		MessageBox(nullptr, L"Unable to compile pixel shader", L"Error", MB_OK);
 		return hr;
-	} else {
+	} 
+	else
+	{
 		// load the shader and setup the shader obj
 		d3dDevice->CreatePixelShader(m_pixelShaderBlob->GetBufferPointer(), m_pixelShaderBlob->GetBufferSize(), NULL, &m_d3dPixelShader);
 
@@ -67,13 +74,16 @@ HRESULT MT_Shader::CompileShaderFromFile(LPCWSTR fileName, LPCSTR entryPoint, LP
 
 	ID3DBlob *errorBlob = nullptr;
 	hr = D3DCompileFromFile(fileName, nullptr, nullptr, entryPoint, shaderModel, dwShaderFlags, 0, blobOut, &errorBlob);
-	if(FAILED(hr)) {
-		if(errorBlob) {
+	if(FAILED(hr))
+	{
+		if(errorBlob)
+		{
 			OutputDebugStringA(reinterpret_cast<const char*>(errorBlob->GetBufferPointer()));
 		}
 	}
 
-	if(errorBlob) {
+	if(errorBlob)
+	{
 		errorBlob->Release();
 	}
 

@@ -6,7 +6,8 @@
 #include "MT_Renderer.h"
 #include "MT_InputHandler.h"
 
-class MT_Window {
+class MT_Window 
+{
 private:	
 	UINT m_windowWidth, m_windowHeight;
 	MT_Renderer *m_renderer;

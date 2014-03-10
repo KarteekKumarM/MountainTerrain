@@ -99,11 +99,6 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	vertices = 0;
 }
 
-void MT_Terrain::LoadNormals() 
-{
-
-}
-
 void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
 {
 	// Create index buffer
@@ -112,9 +107,10 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 
 	WORD *indices = new WORD[numberOfIndices];
 
-	for(UINT i = 1; i < m_heightMap->height(); i++) {
-		for(UINT j = 1; j < m_heightMap->width(); j++) {
-
+	for(UINT i = 1; i < m_heightMap->height(); i++)
+	{
+		for(UINT j = 1; j < m_heightMap->width(); j++)
+		{
 			IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
 
 			// first triangle
@@ -143,11 +139,12 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 	ZeroMemory(&indexData, sizeof(indexData));
 	indexData.pSysMem = indices;
 	HRESULT hr = d3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
-	if(FAILED(hr)) {
+	if(FAILED(hr))
+	{
 		MessageBox(nullptr, L"Unable to create index buffer", L"Error", MB_OK);
 	}
 
-	delete [] indices;
+	delete[] indices;
 	indices = 0;
 }
 

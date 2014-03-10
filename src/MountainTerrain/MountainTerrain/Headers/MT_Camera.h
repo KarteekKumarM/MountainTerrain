@@ -8,7 +8,8 @@ using namespace DirectX;
 
 #include "MT_InputHandler.h"
 
-class MT_Camera {
+class MT_Camera 
+{
 private:
 	XMVECTOR eye, lookat, up;
 public:

@@ -3,7 +3,8 @@
 const bool k_AntiAliasingEnabled = false;
 const bool k_WireFrameEnabled = false;
 
-void MT_Renderer::SetupRasterizer() {
+void MT_Renderer::SetupRasterizer() 
+{
 	// setup how the polygons will be drawn
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));

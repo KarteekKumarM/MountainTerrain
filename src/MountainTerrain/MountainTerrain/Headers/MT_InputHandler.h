@@ -3,7 +3,8 @@
 
 #include <d3d11.h>
 
-class MT_InputHandler {
+class MT_InputHandler 
+{
 private:
 	bool forwardKeyDownFlag, backKeyDownFlag, leftKeyDownFlag, rightKeyDownFlag, upKeyDownFlag, downKeyDownFlag;
 public:

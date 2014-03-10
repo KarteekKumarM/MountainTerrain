@@ -1,6 +1,7 @@
 #include "MT_ConstantBuffer.h"
 
-void MT_ConstantBuffer::InitMatrices(UINT screenWidth, UINT screenHeight) {
+void MT_ConstantBuffer::InitMatrices(UINT screenWidth, UINT screenHeight)
+{
 	// world matrix
 	m_World = DirectX::XMMatrixIdentity();
 
@@ -8,7 +9,8 @@ void MT_ConstantBuffer::InitMatrices(UINT screenWidth, UINT screenHeight) {
 	m_Projection = DirectX::XMMatrixPerspectiveFovLH( XM_PIDIV2, screenWidth/(FLOAT)screenHeight, 0.01f, 100.0f );
 }
 
-void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice) {
+void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice) 
+{
 	D3D11_BUFFER_DESC constantBufferDesc;
     ZeroMemory( &constantBufferDesc, sizeof(constantBufferDesc) );
     constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -21,7 +23,8 @@ void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice) {
 	}
 }
 
-void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera) {
+void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera) 
+{
 
     // Temp code : Rotate the cube by rotating the world
     static float t = 0.0f;
@@ -46,16 +49,19 @@ void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceConte
 	d3dDeviceContext->UpdateSubresource(m_constantBuffer, 0, NULL, &constantBuff, 0, 0);
 }
 
-void MT_ConstantBuffer::Init(ID3D11Device *d3dDevice, UINT screenWidth, UINT screenHeight) {
+void MT_ConstantBuffer::Init(ID3D11Device *d3dDevice, UINT screenWidth, UINT screenHeight)
+{
 	InitMatrices(screenWidth, screenHeight);
 	InitConstantBuffer(d3dDevice);
 }
 
-void MT_ConstantBuffer::Update(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera) {
+void MT_ConstantBuffer::Update(ID3D11DeviceContext *d3dDeviceContext, MT_Camera *camera) 
+{
 	d3dDeviceContext->VSSetConstantBuffers(0, 1, &m_constantBuffer);
 	UpdateConstantBuffer(d3dDeviceContext, camera);
 }
 
-void MT_ConstantBuffer::Clean() {
+void MT_ConstantBuffer::Clean() 
+{
 	if(m_constantBuffer) m_constantBuffer->Release();
 }

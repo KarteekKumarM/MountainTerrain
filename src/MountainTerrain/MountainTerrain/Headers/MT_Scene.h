@@ -6,12 +6,14 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
-struct Vertex {
+struct Vertex 
+{
 	XMFLOAT3 Position;
 	XMFLOAT4 Color;
 };
 
-class MT_Scene {
+class MT_Scene 
+{
 private:
 	MT_Shader *m_shader;
 	ID3D11Buffer *m_vertexBuffer;

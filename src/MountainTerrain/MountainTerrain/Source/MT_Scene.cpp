@@ -1,6 +1,7 @@
 #include "MT_Scene.h"
 
-void MT_Scene::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
+void MT_Scene::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
+{
 	Vertex vertices[] =
 	{
         { XMFLOAT3( -1.0f,  1.0f, -1.0f ), XMFLOAT4( 0.0f, 0.0f, 1.0f, 1.0f ) },
@@ -28,7 +29,8 @@ void MT_Scene::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3
 	d3dDevice->CreateBuffer(&vertexBuffDesc, &vertexData, &m_vertexBuffer);
 }
 
-void MT_Scene::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
+void MT_Scene::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
+{
 	// Create index buffer
     WORD indices[] =
     {
@@ -65,12 +67,14 @@ void MT_Scene::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3d
 	ZeroMemory(&indexData, sizeof(indexData));
 	indexData.pSysMem = indices;
 	HRESULT hr = d3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
-	if(FAILED(hr)) {
+	if(FAILED(hr)) 
+	{
 		MessageBox(nullptr, L"Unable to create index buffer", L"Error", MB_OK);
 	}
 }
 
-void MT_Scene::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, ID3DBlob *vertexShaderBlob) {
+void MT_Scene::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, ID3DBlob *vertexShaderBlob)
+{
 	// create the input layout object
     D3D11_INPUT_ELEMENT_DESC ied[] =
     {
@@ -82,7 +86,8 @@ void MT_Scene::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice, I
     d3dDeviceContext->IASetInputLayout(m_layout);
 }
 
-void MT_Scene::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) {
+void MT_Scene::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
+{
 	m_shader = new MT_Shader();
 	m_shader->Init(d3dDevice, d3dDeviceContext);
 
@@ -92,7 +97,8 @@ void MT_Scene::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceConte
 	LoadIndexBuffer(d3dDevice, d3dDeviceContext);
 }
 
-void MT_Scene::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) {
+void MT_Scene::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) 
+{
 
 	// select which vertex buffer to display
 	UINT stride = sizeof(Vertex);
@@ -109,7 +115,8 @@ void MT_Scene::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) {
 	d3dDeviceContext->DrawIndexed(36, 0, 0);
 }
 
-void MT_Scene::Clean() {
+void MT_Scene::Clean() 
+{
 
 	if(m_vertexBuffer) m_vertexBuffer->Release();
 	if(m_indexBuffer) m_indexBuffer->Release();

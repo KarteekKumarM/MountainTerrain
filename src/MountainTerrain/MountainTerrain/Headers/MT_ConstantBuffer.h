@@ -8,7 +8,8 @@ using namespace DirectX;
 
 #include "MT_Camera.h"
 
-struct ConstantBufferMatrices {
+struct ConstantBufferMatrices 
+{
 	XMMATRIX mWorld;
 	XMMATRIX mView;
 	XMMATRIX mProjection;

@@ -7,7 +7,8 @@
 #include "MT_ConstantBuffer.h"
 #include "MT_Terrain.h"
 
-class MT_Renderer {
+class MT_Renderer 
+{
 private:
 	IDXGISwapChain *m_dxgiSwapChain;
 	ID3D11Device *m_d3dDevice;
