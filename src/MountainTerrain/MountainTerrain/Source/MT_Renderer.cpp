@@ -1,10 +1,12 @@
 #include "MT_Renderer.h"
+#include "MT_Logger.h"
 
 const bool k_AntiAliasingEnabled = false;
 const bool k_WireFrameEnabled = false;
 
-void MT_Renderer::SetupRasterizer() 
-{
+bool MT_Renderer::SetupRasterizer() {
+	HRESULT result = S_OK;
+
 	// setup how the polygons will be drawn
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -19,9 +21,16 @@ void MT_Renderer::SetupRasterizer()
 	rasterizerDesc.ScissorEnable = false;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
-	m_d3dDevice->CreateRasterizerState(&rasterizerDesc, &m_d3dRasterizerState);
+	result = m_d3dDevice->CreateRasterizerState(&rasterizerDesc, &m_d3dRasterizerState);
+
+	if( FAILED(result))
+	{
+		MT_Logger::Log("Unable to create rasterizer state");
+	}
 
 	m_d3dDeviceContext->RSSetState(m_d3dRasterizerState);
+
+	return SUCCEEDED(result);
 }
 
 void MT_Renderer::SetupViewPort(UINT screenWidth, UINT screenHeight) 
@@ -37,20 +46,63 @@ void MT_Renderer::SetupViewPort(UINT screenWidth, UINT screenHeight)
 	m_d3dDeviceContext->RSSetViewports(1, &viewPort);
 }
 
-void MT_Renderer::SetupBackBuffer() 
+bool MT_Renderer::SetupBackBuffer() 
 {
+	HRESULT result = S_OK;
+
 	// get address of the back buffer
 	ID3D11Texture2D *pBackBuffer;
-	m_dxgiSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	result = m_dxgiSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+
+	if( FAILED(result) )
+	{
+		MT_Logger::LogError( "Unable to get back buffer from swap chain" );
+		return false;
+	}
+
 	// use the back buffer address as the render target
 	m_d3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_d3dBackBuffer);
-	pBackBuffer->Release();
+	pBackBuffer->Release(); pBackBuffer = 0;
+
 	// set the render target as the back buffer
-	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, NULL);
+	//m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, NULL);
+
+	return SUCCEEDED(result);
 }
 
-void MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
+bool MT_Renderer::SetupBlending()
 {
+	HRESULT result = S_OK;
+
+	D3D11_BLEND_DESC blendStateDescription;
+	// Clear the blend state description.
+	ZeroMemory(&blendStateDescription, sizeof(D3D11_BLEND_DESC));
+
+	// Create an alpha enabled blend state description.
+	blendStateDescription.RenderTarget[0].BlendEnable = TRUE;
+	blendStateDescription.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendStateDescription.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendStateDescription.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendStateDescription.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendStateDescription.RenderTarget[0].RenderTargetWriteMask = 0x0f;
+
+	// Create the blend state using the description.
+	result = m_d3dDevice->CreateBlendState(&blendStateDescription, &m_alphaEnableBlendingState);
+
+	if( FAILED(result) ) {
+		MT_Logger::LogError("Unable to create blend state");
+		return false;
+	}
+
+	return SUCCEEDED(result);
+}
+
+bool MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
+{
+	HRESULT hresult = S_OK;
+
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	ZeroMemory(&depthBufferDesc, sizeof(D3D11_TEXTURE2D_DESC));
 	depthBufferDesc.Width = screenWidth;
@@ -65,9 +117,12 @@ void MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
 
-	HRESULT hresult = S_OK;
-
 	hresult = m_d3dDevice->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
+
+	if(FAILED(hresult)) {
+		MT_Logger::LogError("Unable to create depth stencil buffer");
+		return false;
+	}
 
 	// Initialize the description of the stencil state.
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
@@ -96,21 +151,34 @@ void MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
 
 	hresult = m_d3dDevice->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
 
+	if(FAILED(hresult)) {
+		MT_Logger::LogError("Unable to create depth stencil state");
+		return false;
+	}
+
 	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
 
 	// Initailze the depth stencil view.
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	ZeroMemory(&depthStencilViewDesc, sizeof(D3D10_DEPTH_STENCIL_VIEW_DESC));
+	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
 	// Set up the depth stencil view description.
-	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilViewDesc.Format = depthBufferDesc.Format;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 	// Create the depth stencil view.
 	hresult = m_d3dDevice->CreateDepthStencilView(m_depthStencilBuffer, &depthStencilViewDesc, &m_depthStencilView);
 
-	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, m_depthStencilView);
+	if(FAILED(hresult)) {
+		MT_Logger::LogError("Unable to create depth stencil view");
+		return false;
+	}
+
+	// FIX ME , 3rd param must be m_depthStencilView
+	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, NULL);
+
+	return SUCCEEDED(hresult);
 }
 
 void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight) 
@@ -142,13 +210,15 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 									NULL,
 									&m_d3dDeviceContext);
 
-	SetupRasterizer();
-
 	SetupBackBuffer();
+
+	SetupDepthStencilBuffer(screenWidth, screenHeight);
+
+	SetupRasterizer();
 
 	SetupViewPort(screenWidth, screenHeight);
 
-	SetupDepthStencilBuffer(screenWidth, screenHeight);
+	SetupBlending();
 
 	// world, view projection matrix 
 	m_constantBuffer = new MT_ConstantBuffer();
@@ -170,6 +240,9 @@ void MT_Renderer::RenderFrame()
 	// clear the back buffer
 	const float clearColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
 	m_d3dDeviceContext->ClearRenderTargetView(m_d3dBackBuffer, clearColor);
+
+	// clear the depth and stencil buffer
+	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// scene rendering
 	m_scene->RenderFrame(m_d3dDeviceContext);

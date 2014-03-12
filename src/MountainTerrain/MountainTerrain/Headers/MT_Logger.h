@@ -31,7 +31,7 @@ public:
 		va_end(args);
 	}
 
-	static void LogException( char *format, ... )
+	static void LogError( char *format, ... )
 	{
 		va_list args;
 		va_start(args, format);
@@ -39,6 +39,7 @@ public:
 		char buffer[512];
 		vsprintf_s (buffer, sizeof(buffer), format, args);
 		OutputDebugStringA(buffer);
+		MessageBoxA(nullptr, buffer, "Error", MB_OK);
 
 		va_end(args);
 	}

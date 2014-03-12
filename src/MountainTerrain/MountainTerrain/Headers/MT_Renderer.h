@@ -7,8 +7,7 @@
 #include "MT_ConstantBuffer.h"
 #include "MT_Terrain.h"
 
-class MT_Renderer 
-{
+class MT_Renderer {
 private:
 	IDXGISwapChain *m_dxgiSwapChain;
 	ID3D11Device *m_d3dDevice;
@@ -18,15 +17,16 @@ private:
 	ID3D11Texture2D *m_depthStencilBuffer;
 	ID3D11DepthStencilState* m_depthStencilState;
 	ID3D11DepthStencilView* m_depthStencilView;
+	ID3D11BlendState* m_alphaEnableBlendingState;
 
 	MT_ConstantBuffer *m_constantBuffer;
 	MT_Terrain *m_scene;
 
-	void SetupRasterizer();
+	bool SetupRasterizer();
 	void SetupViewPort(UINT screenWidth, UINT screenHeight);
-	void SetupBackBuffer();
-	void SetupDepthStencilBuffer();
-	void SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight);
+	bool SetupBackBuffer();
+	bool SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight);
+	bool SetupBlending();
 public:
 	void Init(HWND hWnd, UINT screenWidth, UINT screenHeight);
 	void ProcessCameraState(MT_Camera *camera);

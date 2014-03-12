@@ -32,7 +32,6 @@ private:
 	void CleanImageData();
 public:
 	MT_HeightMap();
-	void Log();
 	bool Init(const char *fileName);
 	UINT width();
 	UINT height();

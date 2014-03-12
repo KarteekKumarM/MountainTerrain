@@ -39,10 +39,6 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	FLOAT minX = -1.0f * (m_heightMap->width() / 2);
 	FLOAT minY = -1.0f * (m_heightMap->height() / 2);
 
-	/*char str[256];
-	sprintf_s(str, sizeof(str), "Height at 1, 1 : %f\n", m_height[Map->heightAt(1, 1));
-	OutputDebugStringA(str);*/
-
 	for(UINT i = 0; i < m_heightMap->height(); i++) {
 		for(UINT j = 0; j < m_heightMap->width(); j++) {
 			int index = (i * m_heightMap->width()) + j;
@@ -57,29 +53,21 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 			IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
 
 			HeightMapType heightStruct_UR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UR );
-			XMFLOAT3 vertex_UR = XMFLOAT3(heightStruct_UR.x, heightStruct_UR.height, heightStruct_UR.z);
+			XMFLOAT3 vertex_UR = XMFLOAT3((FLOAT)heightStruct_UR.x, heightStruct_UR.height, (FLOAT)heightStruct_UR.z);
 			XMVECTOR vector_vertex_UR = XMLoadFloat3(&vertex_UR);
 
 			HeightMapType heightStruct_LL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LL );
-			XMFLOAT3 vertex_LL = XMFLOAT3(heightStruct_LL.x, heightStruct_LL.height, heightStruct_LL.z);
+			XMFLOAT3 vertex_LL = XMFLOAT3((FLOAT)heightStruct_LL.x, heightStruct_LL.height, (FLOAT)heightStruct_LL.z);
 			XMVECTOR vector_vertex_LL = XMLoadFloat3(&vertex_LL);
 
 			HeightMapType heightStruct_LR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LR );
-			XMFLOAT3 vertex_LR = XMFLOAT3(heightStruct_LR.x, heightStruct_LR.height, heightStruct_LR.z);
+			XMFLOAT3 vertex_LR = XMFLOAT3((FLOAT)heightStruct_LR.x, heightStruct_LR.height, (FLOAT)heightStruct_LR.z);
 			XMVECTOR vector_vertex_LR = XMLoadFloat3(&vertex_LR);
 
 			XMVECTOR normal = XMVector3Normalize(XMVector3Cross( vector_vertex_UR - vector_vertex_LL, vector_vertex_UR - vector_vertex_LR ));
 			XMStoreFloat3(&vertices[index].Normal, normal);
 		}
 	}
-
-	// log vertices
-	/*for(UINT i = 0; i < numOfVertices;i++) {
-		char str[256];
-		XMFLOAT3 position = vertices[i].Position;
-		sprintf_s(str, sizeof(str), "(%f,%f,%f)\n", position.x, position.y, position.z);
-		OutputDebugStringA(str);
-	}*/
 
 	// desc
 	D3D11_BUFFER_DESC vertexBuffDesc;

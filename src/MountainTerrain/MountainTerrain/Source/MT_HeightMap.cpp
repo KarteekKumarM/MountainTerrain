@@ -130,16 +130,6 @@ FLOAT MT_HeightMap::heightAt(UINT x, UINT z)
 	return m_heightMap[index].height;
 }
 
-void MT_HeightMap::Log()
-{
-	for(UINT i = 0; i < (m_imageWidth * m_imageHeight); i++)
-	{
-		char str[256];
-		sprintf_s(str, sizeof(str), "%u,%u -- %f\n", m_heightMap[i].x, m_heightMap[i].z, m_heightMap[i].height);
-		OutputDebugStringA(str);
-	}
-}
-
 bool MT_HeightMap::Init(const char *fileName) 
 {
 	bool sucessFlag= LoadImageData(fileName);
