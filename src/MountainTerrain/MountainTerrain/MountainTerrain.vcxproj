@@ -114,7 +114,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\..\Desktop\HeightMapImage.gif" />
     <Image Include="Resources\HeightMapImage.bmp" />
     <Image Include="Resources\HeightMapImage.gif" />
   </ItemGroup>

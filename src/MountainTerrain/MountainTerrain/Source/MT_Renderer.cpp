@@ -133,7 +133,7 @@ bool MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
 	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
-	depthStencilDesc.StencilEnable = true;
+	depthStencilDesc.StencilEnable = false;
 	depthStencilDesc.StencilReadMask = 0xFF;
 	depthStencilDesc.StencilWriteMask = 0xFF;
 
@@ -175,8 +175,7 @@ bool MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
 		return false;
 	}
 
-	// FIX ME , 3rd param must be m_depthStencilView
-	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, NULL);
+	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, m_depthStencilView);
 
 	return SUCCEEDED(hresult);
 }
@@ -192,7 +191,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 	swapChainDesc.BufferDesc.Height = screenHeight;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	// how swap chain is to be used
 	swapChainDesc.OutputWindow = hWnd;	// output window
-	swapChainDesc.SampleDesc.Count = 4;	// multi samples
+	swapChainDesc.SampleDesc.Count = 1;	// multi samples
 	swapChainDesc.Windowed = TRUE;	// Windowed or full screen
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;	// allow switching to and from full screen
 

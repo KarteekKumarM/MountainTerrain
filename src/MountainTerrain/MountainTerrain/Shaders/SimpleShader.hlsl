@@ -33,20 +33,21 @@ VS_OUTPUT VS( float4 Position : POSITION, float4 Color : COLOR, float3 Normal : 
 //--------------------------------------------------------------------------------------
 float4 PS( VS_OUTPUT input ) : SV_Target
 {
-	// hard-coding here from now
-	float4 ambientColor = {0.01f, 0.01f, 0.01f, 1.0f};
-	//float4 diffuseColor = {1.0f, 1.0f, 1.0f, 1.0f};
-	float3 lightDir = {1.0f, 1.0f, 1.0f};
-	float lightIntensity = 1.0f;
+	// hard-coding here for now
+	float4 ambientColor = {0.05f, 0.05f, 0.05f, 1.0f};
+	float4 diffuseColor = {1.0f, 1.0f, 1.0f, 1.0f};
+	float3 lightDir = {0.0f, 1.0f, 0.0f};
+	float lightIntensity = 0.5f;
 	
 	float4 color  = ambientColor;
 
 	// reverse the vector
 	lightDir = -lightDir;
 
-	lightIntensity = saturate( dot(input.Normal, lightDir) );
+	lightIntensity = saturate( dot(input.Normal, lightDir) * lightIntensity );
+
 	if(lightIntensity > 0 ) {
-		color += input.Color * lightIntensity;
+		color += diffuseColor * lightIntensity;
 	}
 
 	color = saturate(color);
