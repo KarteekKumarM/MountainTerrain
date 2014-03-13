@@ -9,13 +9,12 @@ using namespace DirectX;
 #include "MT_Shader.h"
 #include "MT_HeightMap.h"
 
-static const FLOAT k_SingleCellWidth = 0.4f;
-static const FLOAT k_SingleCellDepth = 0.4f;
+static const FLOAT k_SingleCellWidth = 0.2f;
+static const FLOAT k_SingleCellDepth = 0.2f;
 
 struct TerrainVertex 
 {
 	XMFLOAT3 Position;
-	XMFLOAT4 Color;
 	XMFLOAT3 Normal;
 };
 
@@ -28,6 +27,7 @@ private:
 	ID3D11Buffer *m_indexBuffer;
 	ID3D11InputLayout *m_layout; 
 	void CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, ID3DBlob *vertexShaderBlob);
+	XMVECTOR GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft( UINT i, UINT j );
 public:
 	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
 	void LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);

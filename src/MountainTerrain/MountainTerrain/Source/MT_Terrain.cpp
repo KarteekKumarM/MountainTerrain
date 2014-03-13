@@ -21,12 +21,41 @@ void MT_Terrain::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice,
     D3D11_INPUT_ELEMENT_DESC ied[] =
     {
         {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12 + 16, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
-    d3dDevice->CreateInputLayout(ied, 3, vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), &m_layout);
+    d3dDevice->CreateInputLayout(ied, sizeof(ied) / sizeof(D3D11_INPUT_ELEMENT_DESC), vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), &m_layout);
     d3dDeviceContext->IASetInputLayout(m_layout);
+}
+
+XMVECTOR MT_Terrain::GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft( UINT i, UINT j )
+{
+	IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
+
+	// triangle 1
+	HeightMapType heightStruct_UR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UR );
+	XMFLOAT3 vertex_UR = XMFLOAT3((FLOAT)heightStruct_UR.x, heightStruct_UR.height, (FLOAT)heightStruct_UR.z);
+	XMVECTOR vector_vertex_UR = XMLoadFloat3(&vertex_UR);
+
+	HeightMapType heightStruct_LL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LL );
+	XMFLOAT3 vertex_LL = XMFLOAT3((FLOAT)heightStruct_LL.x, heightStruct_LL.height, (FLOAT)heightStruct_LL.z);
+	XMVECTOR vector_vertex_LL = XMLoadFloat3(&vertex_LL);
+
+	HeightMapType heightStruct_LR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LR );
+	XMFLOAT3 vertex_LR = XMFLOAT3((FLOAT)heightStruct_LR.x, heightStruct_LR.height, (FLOAT)heightStruct_LR.z);
+	XMVECTOR vector_vertex_LR = XMLoadFloat3(&vertex_LR);
+
+	XMVECTOR normal1 = XMVector3Normalize(XMVector3Cross( vector_vertex_LL - vector_vertex_UR , vector_vertex_LR - vector_vertex_UR ));
+
+	// triangle 2
+	HeightMapType heightStruct_UL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UL );
+	XMFLOAT3 vertex_UL = XMFLOAT3((FLOAT)heightStruct_UL.x, heightStruct_UL.height, (FLOAT)heightStruct_UL.z);
+	XMVECTOR vector_vertex_UL = XMLoadFloat3(&vertex_UL);
+
+	XMVECTOR normal2 = XMVector3Normalize(XMVector3Cross( vector_vertex_UL - vector_vertex_UR , vector_vertex_LL - vector_vertex_UR ));
+
+	// average of the normal calculated from the two triangles
+	return (normal1 + normal2) / 2;
 }
 
 void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
@@ -41,34 +70,66 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	FLOAT minX = -1.0f * (m_heightMap->width() / 2);
 	FLOAT minY = -1.0f * (m_heightMap->height() / 2);
 
-	for(UINT i = 0; i < m_heightMap->height(); i++) {
-		for(UINT j = 0; j < m_heightMap->width(); j++) {
+	// Set position
+	for(UINT i = 0; i < m_heightMap->height(); i++) 
+	{
+		for(UINT j = 0; j < m_heightMap->width(); j++) 
+		{
 			int index = (i * m_heightMap->width()) + j;
 			FLOAT x = ( minX + j ) * k_SingleCellWidth;
 			FLOAT z = ( minY + i ) * k_SingleCellDepth;
 			FLOAT y = m_heightMap->heightAt(i, j);
 			vertices[index].Position = XMFLOAT3(x, y, z);
-			vertices[index].Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+	}
 
+	// Set normal
+	for(UINT i = 0; i < m_heightMap->height(); i++) 
+	{
+		for(UINT j = 0; j < m_heightMap->width(); j++) 
+		{
+
+			int index = (i * m_heightMap->width()) + j;
+
+			UINT count = 0;
+			XMVECTOR normal_sum = XMVectorZero();
+
+			// bottom left triangles
 			if( i != 0 && j != 0 ) 
 			{
-				// Calculate normal
-				IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
+				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i, j);
+				normal_sum += vector_normal;
+				count++;
+			}
 
-				HeightMapType heightStruct_UR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UR );
-				XMFLOAT3 vertex_UR = XMFLOAT3((FLOAT)heightStruct_UR.x, heightStruct_UR.height, (FLOAT)heightStruct_UR.z);
-				XMVECTOR vector_vertex_UR = XMLoadFloat3(&vertex_UR);
+			// bottom right triangles
+			if( i != 0 && j != m_heightMap->width() - 1 ) 
+			{
+				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i, j + 1);
+				normal_sum += vector_normal;
+				count++;
+			}
 
-				HeightMapType heightStruct_LL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LL );
-				XMFLOAT3 vertex_LL = XMFLOAT3((FLOAT)heightStruct_LL.x, heightStruct_LL.height, (FLOAT)heightStruct_LL.z);
-				XMVECTOR vector_vertex_LL = XMLoadFloat3(&vertex_LL);
+			// top left triangles
+			if( i != m_heightMap->height() - 1 && j != 0 ) 
+			{
+				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i + 1, j);
+				normal_sum += vector_normal;
+				count++;
+			}
 
-				HeightMapType heightStruct_LR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LR );
-				XMFLOAT3 vertex_LR = XMFLOAT3((FLOAT)heightStruct_LR.x, heightStruct_LR.height, (FLOAT)heightStruct_LR.z);
-				XMVECTOR vector_vertex_LR = XMLoadFloat3(&vertex_LR);
+			// top right triangles
+			if( i != m_heightMap->height() - 1 && j != m_heightMap->width() - 1 ) 
+			{
+				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i + 1, j + 1);
+				normal_sum += vector_normal;
+				count++;
+			}
 
-				XMVECTOR normal = XMVector3Normalize(XMVector3Cross( vector_vertex_LL - vector_vertex_UR, vector_vertex_LR - vector_vertex_UR ));
-				XMStoreFloat3(&vertices[index].Normal, normal);
+			// average of all the normals
+			if( count > 0 )
+			{
+				XMStoreFloat3(&vertices[index].Normal, XMVector3Normalize( normal_sum / (FLOAT)count ));
 			}
 			else
 			{
@@ -81,7 +142,7 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	D3D11_BUFFER_DESC vertexBuffDesc;
 	ZeroMemory(&vertexBuffDesc, sizeof(vertexBuffDesc));
     vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;					// write access access by CPU and GPU
-	vertexBuffDesc.ByteWidth = sizeof(TerrainVertex) * numOfVertices;			// size is the VERTEX struct * 3
+	vertexBuffDesc.ByteWidth = sizeof(TerrainVertex) * numOfVertices;			// size is the VERTEX struct
     vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// use as a vertex buffer
     vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// allow CPU to write in buffer
 

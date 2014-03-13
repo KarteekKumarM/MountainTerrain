@@ -8,14 +8,12 @@ cbuffer ConstantBuffer : register( b0 )
 struct VS_INPUT
 {
 	float4 Position: POSITION; 
-	float4 Color : COLOR;
 	float3 Normal : NORMAL;
 };
 
 struct PS_INPUT
 {
     float4 Position : SV_POSITION;
-    float4 Color : COLOR;
 	float3 Normal : NORMAL;
 };
 
@@ -28,8 +26,6 @@ PS_INPUT VS( VS_INPUT input )
 	output.Position = mul(input.Position, World);
 	output.Position = mul(output.Position, View);
 	output.Position = mul(output.Position, Projection);
-
-	output.Color = input.Color;
 
 	output.Normal = mul(input.Normal, (float3x3)World);
 	output.Normal = normalize(output.Normal);
@@ -51,7 +47,7 @@ float4 PS( PS_INPUT input ) : SV_Target
 	float4 color  = ambientColor;
 
 	// reverse the vector
-	lightDir = -lightDir;
+	lightDir = normalize(-lightDir);
 
 	lightIntensity = saturate( dot(input.Normal, lightDir) );
 

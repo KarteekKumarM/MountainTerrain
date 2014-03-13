@@ -91,25 +91,13 @@ bool MT_HeightMap::LoadHeightMap()
 IndicesOfTwoTrianglesThatFormACell MT_HeightMap::getIndiciesOfTheTwoTrianglesThatFormACellAtPoint( UINT i, UINT j ) 
 {
 	IndicesOfTwoTrianglesThatFormACell result;
-
-	if( i != 0 && j != 0 )
-	{
-		UINT i_x_width = i * width();
-		UINT i_minus_1_x_width = i_x_width - width(); // same as (i-1) * width()
+	UINT i_x_width = i * width();
+	UINT i_minus_1_x_width = i_x_width - width(); // same as (i-1) * width()
 	
-		result.indexOf_UR = i_x_width + j;
-		result.indexOf_UL = i_x_width +  j - 1;
-		result.indexOf_LL = i_minus_1_x_width + j - 1;
-		result.indexOf_LR = i_minus_1_x_width + j;
-	}
-	else
-	{
-		result.indexOf_UR = 0;
-		result.indexOf_UL = 0;
-		result.indexOf_LL = 0;
-		result.indexOf_LR = 0;
-	}
-
+	result.indexOf_UR = i_x_width + j;
+	result.indexOf_UL = i_x_width +  j - 1;
+	result.indexOf_LL = i_minus_1_x_width + j - 1;
+	result.indexOf_LR = i_minus_1_x_width + j;
 	return result;
 }
 
