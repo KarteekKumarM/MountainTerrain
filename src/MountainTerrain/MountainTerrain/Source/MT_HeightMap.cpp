@@ -92,13 +92,23 @@ IndicesOfTwoTrianglesThatFormACell MT_HeightMap::getIndiciesOfTheTwoTrianglesTha
 {
 	IndicesOfTwoTrianglesThatFormACell result;
 
-	UINT i_x_width = i * width();
-	UINT i_minus_1_x_width = i_x_width - width(); // same as (i-1) * width()
-
-	result.indexOf_UR = i_x_width + j;
-	result.indexOf_UL = i_x_width +  j - 1;
-	result.indexOf_LL = i_minus_1_x_width + j - 1;
-	result.indexOf_LR = i_minus_1_x_width + j;
+	if( i != 0 && j != 0 )
+	{
+		UINT i_x_width = i * width();
+		UINT i_minus_1_x_width = i_x_width - width(); // same as (i-1) * width()
+	
+		result.indexOf_UR = i_x_width + j;
+		result.indexOf_UL = i_x_width +  j - 1;
+		result.indexOf_LL = i_minus_1_x_width + j - 1;
+		result.indexOf_LR = i_minus_1_x_width + j;
+	}
+	else
+	{
+		result.indexOf_UR = 0;
+		result.indexOf_UL = 0;
+		result.indexOf_LL = 0;
+		result.indexOf_LR = 0;
+	}
 
 	return result;
 }

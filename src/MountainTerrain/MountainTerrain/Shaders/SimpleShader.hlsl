@@ -5,48 +5,57 @@ cbuffer ConstantBuffer : register( b0 )
     matrix Projection;
 }
 
-struct VS_OUTPUT
+struct VS_INPUT
+{
+	float4 Position: POSITION; 
+	float4 Color : COLOR;
+	float3 Normal : NORMAL;
+};
+
+struct PS_INPUT
 {
     float4 Position : SV_POSITION;
-    float4 Color : COLOR0;
-	float3 Normal : NORMAL0;
+    float4 Color : COLOR;
+	float3 Normal : NORMAL;
 };
 
 //--------------------------------------------------------------------------------------
 // Vertex Shader
 //--------------------------------------------------------------------------------------               
-VS_OUTPUT VS( float4 Position : POSITION, float4 Color : COLOR, float3 Normal : NORMAL )
+PS_INPUT VS( VS_INPUT input )
 {
-    VS_OUTPUT output = (VS_OUTPUT)0;
-	output.Position = mul(Position, World);
+    PS_INPUT output = (PS_INPUT)0;
+	output.Position = mul(input.Position, World);
 	output.Position = mul(output.Position, View);
 	output.Position = mul(output.Position, Projection);
 
-	output.Color = Color;
+	output.Color = input.Color;
 
-	output.Normal = normalize(Normal);
+	output.Normal = mul(input.Normal, (float3x3)World);
+	output.Normal = normalize(output.Normal);
     return output;
 }
 
 //--------------------------------------------------------------------------------------
 // Pixel Shader
 //--------------------------------------------------------------------------------------
-float4 PS( VS_OUTPUT input ) : SV_Target
+float4 PS( PS_INPUT input ) : SV_Target
 {
 	// hard-coding here for now
 	float4 ambientColor = {0.05f, 0.05f, 0.05f, 1.0f};
 	float4 diffuseColor = {1.0f, 1.0f, 1.0f, 1.0f};
-	float3 lightDir = {0.0f, 1.0f, 0.0f};
-	float lightIntensity = 0.5f;
-	
+
+	float3 lightDir = {0.0f, 0.0f, 0.75f};
+	float lightIntensity = 0.0f;
+
 	float4 color  = ambientColor;
 
 	// reverse the vector
 	lightDir = -lightDir;
 
-	lightIntensity = saturate( dot(input.Normal, lightDir) * lightIntensity );
+	lightIntensity = saturate( dot(input.Normal, lightDir) );
 
-	if(lightIntensity > 0 ) {
+	if(lightIntensity > 0.0f ) {
 		color += diffuseColor * lightIntensity;
 	}
 

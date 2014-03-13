@@ -35,6 +35,8 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 
 	TerrainVertex *vertices = new TerrainVertex[numOfVertices];
 
+	XMFLOAT3 default_normal = XMFLOAT3(0, 1, 0);
+
 	// center at 0,0
 	FLOAT minX = -1.0f * (m_heightMap->width() / 2);
 	FLOAT minY = -1.0f * (m_heightMap->height() / 2);
@@ -48,24 +50,30 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 			vertices[index].Position = XMFLOAT3(x, y, z);
 			vertices[index].Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
+			if( i != 0 && j != 0 ) 
+			{
+				// Calculate normal
+				IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
 
-			// Calculate normal
-			IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
+				HeightMapType heightStruct_UR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UR );
+				XMFLOAT3 vertex_UR = XMFLOAT3((FLOAT)heightStruct_UR.x, heightStruct_UR.height, (FLOAT)heightStruct_UR.z);
+				XMVECTOR vector_vertex_UR = XMLoadFloat3(&vertex_UR);
 
-			HeightMapType heightStruct_UR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UR );
-			XMFLOAT3 vertex_UR = XMFLOAT3((FLOAT)heightStruct_UR.x, heightStruct_UR.height, (FLOAT)heightStruct_UR.z);
-			XMVECTOR vector_vertex_UR = XMLoadFloat3(&vertex_UR);
+				HeightMapType heightStruct_LL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LL );
+				XMFLOAT3 vertex_LL = XMFLOAT3((FLOAT)heightStruct_LL.x, heightStruct_LL.height, (FLOAT)heightStruct_LL.z);
+				XMVECTOR vector_vertex_LL = XMLoadFloat3(&vertex_LL);
 
-			HeightMapType heightStruct_LL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LL );
-			XMFLOAT3 vertex_LL = XMFLOAT3((FLOAT)heightStruct_LL.x, heightStruct_LL.height, (FLOAT)heightStruct_LL.z);
-			XMVECTOR vector_vertex_LL = XMLoadFloat3(&vertex_LL);
+				HeightMapType heightStruct_LR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LR );
+				XMFLOAT3 vertex_LR = XMFLOAT3((FLOAT)heightStruct_LR.x, heightStruct_LR.height, (FLOAT)heightStruct_LR.z);
+				XMVECTOR vector_vertex_LR = XMLoadFloat3(&vertex_LR);
 
-			HeightMapType heightStruct_LR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LR );
-			XMFLOAT3 vertex_LR = XMFLOAT3((FLOAT)heightStruct_LR.x, heightStruct_LR.height, (FLOAT)heightStruct_LR.z);
-			XMVECTOR vector_vertex_LR = XMLoadFloat3(&vertex_LR);
-
-			XMVECTOR normal = XMVector3Normalize(XMVector3Cross( vector_vertex_UR - vector_vertex_LL, vector_vertex_UR - vector_vertex_LR ));
-			XMStoreFloat3(&vertices[index].Normal, normal);
+				XMVECTOR normal = XMVector3Normalize(XMVector3Cross( vector_vertex_LL - vector_vertex_UR, vector_vertex_LR - vector_vertex_UR ));
+				XMStoreFloat3(&vertices[index].Normal, normal);
+			}
+			else
+			{
+				vertices[index].Normal = default_normal;
+			}
 		}
 	}
 

@@ -9,8 +9,8 @@ using namespace DirectX;
 #include "MT_Shader.h"
 #include "MT_HeightMap.h"
 
-static const FLOAT k_SingleCellWidth = 0.5f;
-static const FLOAT k_SingleCellDepth = 0.5f;
+static const FLOAT k_SingleCellWidth = 0.4f;
+static const FLOAT k_SingleCellDepth = 0.4f;
 
 struct TerrainVertex 
 {
