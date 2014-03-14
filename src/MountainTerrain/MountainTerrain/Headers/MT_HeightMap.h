@@ -4,11 +4,8 @@
 #include <stdio.h>
 #include <Windows.h>
 
-struct HeightMapType 
-{
-	UINT x, z;
-	FLOAT height;
-};
+#include <DirectXMath.h>
+using namespace DirectX;
 
 struct IndicesOfTwoTrianglesThatFormACell 
 {
@@ -25,7 +22,7 @@ private:
 	BITMAPFILEHEADER m_fileHeader;
 	BITMAPINFOHEADER m_bitmapHeader;
 	UCHAR *m_imageData;
-	HeightMapType *m_heightMap;
+	XMFLOAT3 *m_heightMap;
 	UINT m_imageWidth, m_imageHeight;
 	bool LoadImageData(const char *fileName);
 	bool LoadHeightMap();
@@ -33,11 +30,12 @@ private:
 public:
 	MT_HeightMap();
 	bool Init(const char *fileName);
+	UINT indexOf( UINT i, UINT j );
 	UINT width();
 	UINT height();
 	IndicesOfTwoTrianglesThatFormACell getIndiciesOfTheTwoTrianglesThatFormACellAtPoint( UINT i, UINT j );
-	FLOAT heightAt(UINT x, UINT z);
-	HeightMapType heightMapStructAt(UINT index);
+	XMFLOAT3 heightAt(UINT x, UINT z);
+	XMFLOAT3 heightAt(UINT index);
 	void Clean();
 };
 

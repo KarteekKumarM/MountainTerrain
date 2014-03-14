@@ -59,7 +59,7 @@ bool MT_HeightMap::LoadHeightMap()
 	const FLOAT DIVE_ALL_HEIGHTS_BY = 15.0f;
 
 	bool successFlag;
-	m_heightMap = new HeightMapType[m_imageWidth * m_imageHeight];
+	m_heightMap = new XMFLOAT3[m_imageWidth * m_imageHeight];
 	if(m_heightMap) 
 	{
 		successFlag = true;
@@ -75,9 +75,9 @@ bool MT_HeightMap::LoadHeightMap()
 
 				// store into height map
 				int indexIntoHeightMap = (m_imageWidth * z)  + x;
-				m_heightMap[indexIntoHeightMap].height = height / DIVE_ALL_HEIGHTS_BY;
-				m_heightMap[indexIntoHeightMap].x = x;
-				m_heightMap[indexIntoHeightMap].z = z;
+				m_heightMap[indexIntoHeightMap].y = height / DIVE_ALL_HEIGHTS_BY;
+				m_heightMap[indexIntoHeightMap].x = (FLOAT)x;
+				m_heightMap[indexIntoHeightMap].z = (FLOAT)z;
 			}
 		}
 	}
@@ -117,15 +117,20 @@ UINT MT_HeightMap::height()
 	return m_imageHeight;
 }
 
-HeightMapType MT_HeightMap::heightMapStructAt(UINT index)
+UINT MT_HeightMap::indexOf( UINT i, UINT j )
+{
+	return (i * width()) + j;
+}
+
+XMFLOAT3 MT_HeightMap::heightAt(UINT index)
 {
 	return m_heightMap[index];
 }
 
-FLOAT MT_HeightMap::heightAt(UINT x, UINT z) 
+XMFLOAT3 MT_HeightMap::heightAt(UINT x, UINT z) 
 {
 	int index = (m_imageWidth * z)  + x;
-	return m_heightMap[index].height;
+	return m_heightMap[index];
 }
 
 bool MT_HeightMap::Init(const char *fileName) 

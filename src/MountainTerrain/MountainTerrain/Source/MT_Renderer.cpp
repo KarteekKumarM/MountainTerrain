@@ -1,7 +1,7 @@
 #include "MT_Renderer.h"
 #include "MT_Logger.h"
 
-const bool k_AntiAliasingEnabled = false;
+const bool k_AntiAliasingEnabled = true;
 const bool k_WireFrameEnabled = false;
 
 bool MT_Renderer::SetupRasterizer() {
@@ -11,7 +11,7 @@ bool MT_Renderer::SetupRasterizer() {
 	D3D11_RASTERIZER_DESC rasterizerDesc;
 	ZeroMemory(&rasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
 	rasterizerDesc.AntialiasedLineEnable = k_AntiAliasingEnabled;
-	rasterizerDesc.CullMode = D3D11_CULL_BACK;
+	rasterizerDesc.CullMode = D3D11_CULL_FRONT;
 	rasterizerDesc.DepthBias = 0;
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.DepthClipEnable = true;

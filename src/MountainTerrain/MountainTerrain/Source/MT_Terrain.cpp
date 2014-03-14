@@ -28,34 +28,38 @@ void MT_Terrain::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice,
     d3dDeviceContext->IASetInputLayout(m_layout);
 }
 
-XMVECTOR MT_Terrain::GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft( UINT i, UINT j )
+XMFLOAT3 XMFloat3Subtract( XMFLOAT3 a, XMFLOAT3 b )
 {
-	IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
+	return XMFLOAT3( a.x - b.x, a.y - b.y, a.z - b.z);
+}
 
-	// triangle 1
-	HeightMapType heightStruct_UR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UR );
-	XMFLOAT3 vertex_UR = XMFLOAT3((FLOAT)heightStruct_UR.x, heightStruct_UR.height, (FLOAT)heightStruct_UR.z);
-	XMVECTOR vector_vertex_UR = XMLoadFloat3(&vertex_UR);
+XMFLOAT3 XMFloat3Cross( XMFLOAT3 a, XMFLOAT3 b )
+{
+	XMFLOAT3 result;
+	result.x = (a.y * b.z) - (b.y*a.z);
+	result.y = -1 * ((a.x * b.z) - (b.x*a.z));
+	result.z = (a.x * b.y) - (b.x*a.z);
+	return result;
+}
 
-	HeightMapType heightStruct_LL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LL );
-	XMFLOAT3 vertex_LL = XMFLOAT3((FLOAT)heightStruct_LL.x, heightStruct_LL.height, (FLOAT)heightStruct_LL.z);
-	XMVECTOR vector_vertex_LL = XMLoadFloat3(&vertex_LL);
+XMFLOAT3 XMFloat3Multiply( FLOAT scalar, XMFLOAT3 vector )
+{
+	return XMFLOAT3( vector.x * scalar, vector.y * scalar, vector.z * scalar );
+}
 
-	HeightMapType heightStruct_LR = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_LR );
-	XMFLOAT3 vertex_LR = XMFLOAT3((FLOAT)heightStruct_LR.x, heightStruct_LR.height, (FLOAT)heightStruct_LR.z);
-	XMVECTOR vector_vertex_LR = XMLoadFloat3(&vertex_LR);
+XMFLOAT3 XMFloat3Divide( FLOAT scalar, XMFLOAT3 vector )
+{
+	return XMFLOAT3( vector.x / scalar, vector.y / scalar, vector.z / scalar );
+}
 
-	XMVECTOR normal1 = XMVector3Normalize(XMVector3Cross( vector_vertex_LL - vector_vertex_UR , vector_vertex_LR - vector_vertex_UR ));
+XMFLOAT3 XMFloat3Add( XMFLOAT3 a, XMFLOAT3 b )
+{
+	return XMFLOAT3( a.x + b.x, a.y + b.y, a.z + b.z );
+}
 
-	// triangle 2
-	HeightMapType heightStruct_UL = m_heightMap->heightMapStructAt( indiciesForThisPoint.indexOf_UL );
-	XMFLOAT3 vertex_UL = XMFLOAT3((FLOAT)heightStruct_UL.x, heightStruct_UL.height, (FLOAT)heightStruct_UL.z);
-	XMVECTOR vector_vertex_UL = XMLoadFloat3(&vertex_UL);
-
-	XMVECTOR normal2 = XMVector3Normalize(XMVector3Cross( vector_vertex_UL - vector_vertex_UR , vector_vertex_LL - vector_vertex_UR ));
-
-	// average of the normal calculated from the two triangles
-	return (normal1 + normal2) / 2;
+XMFLOAT3 XMFloat3Average( XMFLOAT3 a, XMFLOAT3 b )
+{
+	return XMFloat3Multiply( 0.5f, XMFloat3Add( a, b ) );
 }
 
 void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
@@ -71,15 +75,48 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	FLOAT minY = -1.0f * (m_heightMap->height() / 2);
 
 	// Set position
+	for(UINT j = 0; j < m_heightMap->height(); j++) 
+	{
+		for(UINT i = 0; i < m_heightMap->width(); i++) 
+		{
+			XMFLOAT3 heightVertex = m_heightMap->heightAt(i, j);
+			FLOAT x = ( minX + heightVertex.x ) * k_SingleCellWidth;
+			FLOAT z = ( minY + heightVertex.z ) * k_SingleCellDepth;
+			FLOAT y = heightVertex.y;
+
+			int index = m_heightMap->indexOf(i, j);
+			vertices[index].Position = XMFLOAT3(x, y, z);
+		}
+	}
+
+	// Calc normals
+	XMFLOAT3 *normals = new XMFLOAT3[numOfVertices];
 	for(UINT i = 0; i < m_heightMap->height(); i++) 
 	{
 		for(UINT j = 0; j < m_heightMap->width(); j++) 
 		{
-			int index = (i * m_heightMap->width()) + j;
-			FLOAT x = ( minX + j ) * k_SingleCellWidth;
-			FLOAT z = ( minY + i ) * k_SingleCellDepth;
-			FLOAT y = m_heightMap->heightAt(i, j);
-			vertices[index].Position = XMFLOAT3(x, y, z);
+			int index = m_heightMap->indexOf(i, j);
+
+			if ( i != 0 && j != 0  )
+			{
+				IndicesOfTwoTrianglesThatFormACell indiciesForThisPoint = m_heightMap->getIndiciesOfTheTwoTrianglesThatFormACellAtPoint(i, j);
+
+				// triangle 1
+				XMFLOAT3 a = XMFloat3Subtract(vertices[indiciesForThisPoint.indexOf_LL].Position, vertices[indiciesForThisPoint.indexOf_UL].Position);
+				XMFLOAT3 b = XMFloat3Subtract(vertices[indiciesForThisPoint.indexOf_UR].Position, vertices[indiciesForThisPoint.indexOf_UL].Position);
+				XMFLOAT3 ab = XMFloat3Cross(a, b);
+
+				// triangle 2
+				XMFLOAT3 c = XMFloat3Subtract(vertices[indiciesForThisPoint.indexOf_LL].Position, vertices[indiciesForThisPoint.indexOf_UR].Position);
+				XMFLOAT3 d = XMFloat3Subtract(vertices[indiciesForThisPoint.indexOf_LR].Position, vertices[indiciesForThisPoint.indexOf_UR].Position);
+				XMFLOAT3 cd = XMFloat3Cross(c, d);
+
+				normals[index] = XMFloat3Average( ab, cd );
+			}
+			else
+			{
+				normals[index] = default_normal;
+			}
 		}
 	}
 
@@ -89,52 +126,37 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 		for(UINT j = 0; j < m_heightMap->width(); j++) 
 		{
 
-			int index = (i * m_heightMap->width()) + j;
+			// this box, LL
+			int count = 1;
+			int index = m_heightMap->indexOf(i, j);
+			XMFLOAT3 normalSum = normals[index];
 
-			UINT count = 0;
-			XMVECTOR normal_sum = XMVectorZero();
-
-			// bottom left triangles
-			if( i != 0 && j != 0 ) 
+			// LR
+			if( j < m_heightMap->width() - 1 ) 
 			{
-				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i, j);
-				normal_sum += vector_normal;
 				count++;
+				int index_LR = m_heightMap->indexOf(i, j + 1);
+				normalSum = XMFloat3Add( normals[index_LR], normalSum );
 			}
 
-			// bottom right triangles
-			if( i != 0 && j != m_heightMap->width() - 1 ) 
+			// UL
+			if( i < m_heightMap->height() - 1 ) 
 			{
-				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i, j + 1);
-				normal_sum += vector_normal;
 				count++;
+				int index_UL = m_heightMap->indexOf(i + 1, j);
+				normalSum = XMFloat3Add( normals[index_UL], normalSum );
 			}
 
-			// top left triangles
-			if( i != m_heightMap->height() - 1 && j != 0 ) 
+			// UR
+			if( i < m_heightMap->height() - 1 && j < m_heightMap->width() - 1 ) 
 			{
-				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i + 1, j);
-				normal_sum += vector_normal;
 				count++;
+				int index_UR = m_heightMap->indexOf(i + 1, j + 1);
+				normalSum = XMFloat3Add( normals[index_UR], normalSum );
 			}
 
-			// top right triangles
-			if( i != m_heightMap->height() - 1 && j != m_heightMap->width() - 1 ) 
-			{
-				XMVECTOR vector_normal = GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft(i + 1, j + 1);
-				normal_sum += vector_normal;
-				count++;
-			}
-
-			// average of all the normals
-			if( count > 0 )
-			{
-				XMStoreFloat3(&vertices[index].Normal, XMVector3Normalize( normal_sum / (FLOAT)count ));
-			}
-			else
-			{
-				vertices[index].Normal = default_normal;
-			}
+			// calc average
+			vertices[index].Normal = XMFloat3Divide( (FLOAT)count, normalSum );
 		}
 	}
 

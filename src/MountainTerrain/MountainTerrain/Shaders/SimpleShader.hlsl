@@ -40,22 +40,17 @@ float4 PS( PS_INPUT input ) : SV_Target
 	// hard-coding here for now
 	float4 ambientColor = {0.05f, 0.05f, 0.05f, 1.0f};
 	float4 diffuseColor = {1.0f, 1.0f, 1.0f, 1.0f};
+	float3 lightDir = {-0.03f, -0.03f, 0.75f};
 
-	float3 lightDir = {0.0f, 0.0f, 0.75f};
-	float lightIntensity = 0.0f;
-
+	// ambient
 	float4 color  = ambientColor;
 
-	// reverse the vector
+	// diffuse
 	lightDir = normalize(-lightDir);
-
-	lightIntensity = saturate( dot(input.Normal, lightDir) );
-
+	float lightIntensity = saturate( dot(input.Normal, lightDir) );
 	if(lightIntensity > 0.0f ) {
 		color += diffuseColor * lightIntensity;
 	}
 
-	color = saturate(color);
-
-    return color;
+    return saturate(color);
 }
