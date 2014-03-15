@@ -1,80 +1,27 @@
 #include "MT_HeightMap.h"
-
-MT_HeightMap::MT_HeightMap() 
-{
-	m_imageWidth = 0;
-	m_imageHeight = 0;
-}
-
-bool MT_HeightMap::LoadImageData(const char *fileName)
-{
-	int error;
-	// open as binary
-	error = fopen_s(&m_fileHandle, fileName, "rb");
-
-	if(error == 0) {
-		// read file header
-		int count = 0;
-		count = fread(&m_fileHeader, sizeof(BITMAPFILEHEADER), 1, m_fileHandle);
-		if(count == 1)
-		{
-			// read bitmap info header
-			count = fread(&m_bitmapHeader, sizeof(BITMAPINFOHEADER), 1, m_fileHandle);
-			m_imageWidth = m_bitmapHeader.biWidth;
-			m_imageHeight = m_bitmapHeader.biHeight;
-			if(count == 1) 
-			{
-				LONG imageDataSize = m_imageHeight * m_imageWidth * 3;
-				// allocate memory for the image data
-				m_imageData = new UCHAR[imageDataSize];
-				if(m_imageData)
-				{
-					// seek to start of bitmap data
-					fseek(m_fileHandle, m_fileHeader.bfOffBits, SEEK_SET);
-					// read image data
-					count = fread(m_imageData, 1, imageDataSize, m_fileHandle);
-					if(count == imageDataSize) 
-					{
-						// close the file
-						error = fclose(m_fileHandle);
-					} 
-					else
-					{
-						error = 1;
-					}
-				} 
-				else
-				{
-					error = 1;
-				}
-			}
-		}
-	}
-	return error == 0;
-}
+#include "MT_Logger.h"
 
 bool MT_HeightMap::LoadHeightMap() 
 {
-
 	const FLOAT DIVE_ALL_HEIGHTS_BY = 15.0f;
 
 	bool successFlag;
-	m_heightMap = new XMFLOAT3[m_imageWidth * m_imageHeight];
+	m_heightMap = new XMFLOAT3[width() * height()];
 	if(m_heightMap) 
 	{
 		successFlag = true;
 
 		int indexIntoImageData = 0;
-		for(UINT z = 0; z < m_imageHeight; z++) 
+		for(UINT z = 0; z < height(); z++) 
 		{
-			for(UINT x = 0; x < m_imageWidth; x++ )
+			for(UINT x = 0; x < width(); x++ )
 			{
 				// read height from image data
-				UCHAR height = m_imageData[indexIntoImageData]; 
+				UCHAR height = imageReader->dataAtIndex(indexIntoImageData);
 				indexIntoImageData += 3;
 
 				// store into height map
-				int indexIntoHeightMap = (m_imageWidth * z)  + x;
+				int indexIntoHeightMap = (width() * z)  + x;
 				m_heightMap[indexIntoHeightMap].y = height / DIVE_ALL_HEIGHTS_BY;
 				m_heightMap[indexIntoHeightMap].x = (FLOAT)x;
 				m_heightMap[indexIntoHeightMap].z = (FLOAT)z;
@@ -101,20 +48,14 @@ IndicesOfTwoTrianglesThatFormACell MT_HeightMap::getIndiciesOfTheTwoTrianglesTha
 	return result;
 }
 
-void MT_HeightMap::CleanImageData()
-{
-	delete[] m_imageData;
-	m_imageData = 0;
-}
-
 UINT MT_HeightMap::width()
 {
-	return m_imageWidth;
+	return imageReader->width();
 }
 
 UINT MT_HeightMap::height()
 {
-	return m_imageHeight;
+	return imageReader->height();
 }
 
 UINT MT_HeightMap::indexOf( UINT i, UINT j )
@@ -129,23 +70,36 @@ XMFLOAT3 MT_HeightMap::heightAt(UINT index)
 
 XMFLOAT3 MT_HeightMap::heightAt(UINT x, UINT z) 
 {
-	int index = (m_imageWidth * z)  + x;
+	int index = (width() * z)  + x;
 	return m_heightMap[index];
 }
 
-bool MT_HeightMap::Init(const char *fileName) 
+void MT_HeightMap::Init(const char *fileName) 
 {
-	bool sucessFlag= LoadImageData(fileName);
-	if(sucessFlag) 
+	bool sucessFlag;
+
+	imageReader = new MT_BitmapReader();
+	sucessFlag = imageReader->Init(fileName);
+	if(!sucessFlag)
 	{
-		sucessFlag = LoadHeightMap();
-		CleanImageData();
+		MT_Logger::LogError("Unable to read image file : %s", fileName);
 	}
-	return sucessFlag;
+
+	sucessFlag = LoadHeightMap();
+	if(!sucessFlag)
+	{
+		MT_Logger::LogError("Unable to load heightmap");
+	}
+
+	// clean up image reader
+	imageReader->Clean();
 }
 
 void MT_HeightMap::Clean() 
 {
+	delete imageReader;
+	imageReader = 0;
+
 	delete[] m_heightMap;
 	m_heightMap = 0;
 }

@@ -7,6 +7,8 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
+#include "MT_BitmapReader.h"
+
 struct IndicesOfTwoTrianglesThatFormACell 
 {
 	WORD indexOf_UR;
@@ -18,18 +20,11 @@ struct IndicesOfTwoTrianglesThatFormACell
 class MT_HeightMap 
 {
 private:
-	FILE *m_fileHandle;
-	BITMAPFILEHEADER m_fileHeader;
-	BITMAPINFOHEADER m_bitmapHeader;
-	UCHAR *m_imageData;
 	XMFLOAT3 *m_heightMap;
-	UINT m_imageWidth, m_imageHeight;
-	bool LoadImageData(const char *fileName);
 	bool LoadHeightMap();
-	void CleanImageData();
+	MT_BitmapReader *imageReader;
 public:
-	MT_HeightMap();
-	bool Init(const char *fileName);
+	void Init(const char *fileName);
 	UINT indexOf( UINT i, UINT j );
 	UINT width();
 	UINT height();

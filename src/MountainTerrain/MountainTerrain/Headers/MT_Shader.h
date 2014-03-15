@@ -2,7 +2,6 @@
 #define MT_SHADER_H
 
 #include <d3d11.h>
-#pragma comment(lib, "d3d11.lib")
 
 class MT_Shader 
 {

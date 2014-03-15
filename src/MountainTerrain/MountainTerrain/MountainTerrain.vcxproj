@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\MT_BitmapReader.cpp" />
     <ClCompile Include="Source\MT_Camera.cpp" />
     <ClCompile Include="Source\MT_ConstantBuffer.cpp" />
     <ClCompile Include="Source\MT_HeightMap.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="Source\MT_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\MT_BitmapReader.h" />
     <ClInclude Include="Headers\MT_Camera.h" />
     <ClInclude Include="Headers\MT_ConstantBuffer.h" />
     <ClInclude Include="Headers\MT_HeightMap.h" />
@@ -102,6 +104,8 @@
     <ClInclude Include="Headers\MT_Renderer.h" />
     <ClInclude Include="Headers\MT_Shader.h" />
     <ClInclude Include="Headers\MT_Terrain.h" />
+    <ClInclude Include="Headers\MT_Texture.h" />
+    <ClInclude Include="Headers\MT_Utility.h" />
     <ClInclude Include="Headers\MT_Window.h" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +123,7 @@
   <ItemGroup>
     <Image Include="Resources\HeightMapImage.bmp" />
     <Image Include="Resources\HeightMapImage.gif" />
+    <Image Include="Resources\texture_grass.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Header.hlsli" />

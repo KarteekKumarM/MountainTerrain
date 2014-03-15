@@ -1,3 +1,6 @@
+#ifndef MT_LOGGER_H
+#define MT_LOGGER_H
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <Windows.h>
@@ -44,3 +47,5 @@ public:
 		va_end(args);
 	}
 };
+
+#endif
