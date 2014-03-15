@@ -21,6 +21,9 @@ struct TerrainVertex
 class MT_Terrain 
 {
 private:
+	static const LPCWSTR k_VertexShaderFileName;
+	static const LPCWSTR k_PixelShaderFileName;
+
 	MT_Shader *m_shader;
 	MT_HeightMap *m_heightMap;
 	ID3D11Buffer *m_vertexBuffer;

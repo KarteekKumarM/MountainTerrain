@@ -27,9 +27,6 @@
     <ClCompile Include="Source\MT_Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MT_Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\MT_ConstantBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,16 +44,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\SimpleShader.hlsl" />
+    <FxCompile Include="Shaders\VertexShader.hlsl" />
+    <FxCompile Include="Shaders\PixelShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\MT_Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\MT_Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\MT_Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\MT_Window.h">
@@ -88,5 +83,8 @@
     <Image Include="Resources\HeightMapImage.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Header.hlsli" />
   </ItemGroup>
 </Project>

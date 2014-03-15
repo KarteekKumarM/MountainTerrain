@@ -89,7 +89,6 @@
     <ClCompile Include="Source\MT_InputHandler.cpp" />
     <ClCompile Include="Source\MT_Main.cpp" />
     <ClCompile Include="Source\MT_Renderer.cpp" />
-    <ClCompile Include="Source\MT_Scene.cpp" />
     <ClCompile Include="Source\MT_Shader.cpp" />
     <ClCompile Include="Source\MT_Terrain.cpp" />
     <ClCompile Include="Source\MT_Window.cpp" />
@@ -101,21 +100,28 @@
     <ClInclude Include="Headers\MT_InputHandler.h" />
     <ClInclude Include="Headers\MT_Logger.h" />
     <ClInclude Include="Headers\MT_Renderer.h" />
-    <ClInclude Include="Headers\MT_Scene.h" />
     <ClInclude Include="Headers\MT_Shader.h" />
     <ClInclude Include="Headers\MT_Terrain.h" />
     <ClInclude Include="Headers\MT_Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\SimpleShader.hlsl">
+    <FxCompile Include="Shaders\PixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Directory)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\VertexShader.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">VS</EntryPointName>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Directory)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\HeightMapImage.bmp" />
     <Image Include="Resources\HeightMapImage.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\Header.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

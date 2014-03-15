@@ -1,10 +1,13 @@
 #include "MT_Terrain.h"
 #include "stdio.h"
 
+const LPCWSTR MT_Terrain::k_VertexShaderFileName = L"VertexShader.cso";
+const LPCWSTR MT_Terrain::k_PixelShaderFileName = L"PixelShader.cso";
+
 void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
 {
 	m_shader = new MT_Shader();
-	m_shader->Init(d3dDevice, d3dDeviceContext);
+	m_shader->Init(d3dDevice, d3dDeviceContext, k_VertexShaderFileName, k_PixelShaderFileName);
 
 	m_heightMap = new MT_HeightMap();
 	m_heightMap->Init("Resources/HeightMapImage.bmp");
@@ -120,7 +123,7 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 		}
 	}
 
-	// Set normal
+	// Set normal by taking averages - smooth light transitions
 	for(UINT i = 0; i < m_heightMap->height(); i++) 
 	{
 		for(UINT j = 0; j < m_heightMap->width(); j++) 
