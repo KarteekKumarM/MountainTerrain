@@ -18,3 +18,4 @@ src/MountainTerrain/MountainTerrain.opensdf
 src/MountainTerrain/MountainTerrain.sdf
 src/MountainTerrain/Debug/*
 src/MountainTerrain/MountainTerrain/Debug/*
+*.cso
