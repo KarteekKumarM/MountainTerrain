@@ -1,4 +1,5 @@
 #include "MT_BitmapReader.h"
+#include "MT_Logger.h"
 
 void MT_BitmapReader::Clean()
 {
@@ -19,6 +20,11 @@ LONG MT_BitmapReader::height()
 UCHAR MT_BitmapReader::dataAtIndex(UINT index)
 {
 	return m_imageData[index];
+}
+
+UCHAR* MT_BitmapReader::data()
+{
+	return m_imageData;
 }
 
 bool MT_BitmapReader::Init(const char *fileName)
@@ -62,6 +68,10 @@ bool MT_BitmapReader::Init(const char *fileName)
 				}
 			}
 		}
+	}
+	else
+	{
+		MT_Logger::LogError("Unable to open image file : %s", fileName);
 	}
 	return error == 0;
 }

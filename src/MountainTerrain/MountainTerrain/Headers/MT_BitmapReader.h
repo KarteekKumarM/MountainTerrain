@@ -15,7 +15,8 @@ public:
 	bool Init(const char *fileName);
 	LONG width();
 	LONG height();
-	UCHAR MT_BitmapReader::dataAtIndex(UINT index);
+	UCHAR* data();
+	UCHAR dataAtIndex(UINT index);
 	void Clean();
 };
 

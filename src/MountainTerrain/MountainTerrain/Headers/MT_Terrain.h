@@ -8,6 +8,7 @@ using namespace DirectX;
 
 #include "MT_Shader.h"
 #include "MT_HeightMap.h"
+#include "MT_Texture.h"
 
 static const FLOAT k_SingleCellWidth = 0.2f;
 static const FLOAT k_SingleCellDepth = 0.2f;
@@ -26,6 +27,8 @@ private:
 
 	MT_Shader *m_shader;
 	MT_HeightMap *m_heightMap;
+	MT_Texture *m_texture;
+
 	ID3D11Buffer *m_vertexBuffer;
 	ID3D11Buffer *m_indexBuffer;
 	ID3D11InputLayout *m_layout; 

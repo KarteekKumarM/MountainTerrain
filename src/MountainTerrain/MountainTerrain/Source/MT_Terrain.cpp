@@ -12,6 +12,9 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	m_heightMap = new MT_HeightMap();
 	m_heightMap->Init("Resources/HeightMapImage.bmp");
 
+	m_texture = new MT_Texture();
+	m_texture->Init(d3dDevice, d3dDeviceContext, "Resources/texture_grass.bmp");
+
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
 	LoadVertexBuffer(d3dDevice, d3dDeviceContext);
@@ -218,6 +221,10 @@ void MT_Terrain::Clean()
 	m_heightMap->Clean();
 	delete m_heightMap;
 	m_heightMap = 0;
+
+	m_texture->Clean();
+	delete m_texture;
+	m_texture = 0;
 
 	if(m_vertexBuffer) m_vertexBuffer->Release();
 	if(m_indexBuffer) m_indexBuffer->Release();

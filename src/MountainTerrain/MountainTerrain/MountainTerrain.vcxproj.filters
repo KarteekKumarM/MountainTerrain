@@ -45,6 +45,9 @@
     <ClCompile Include="Source\MT_BitmapReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MT_Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShader.hlsl" />
@@ -96,6 +99,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\texture_grass.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\texture_grass.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

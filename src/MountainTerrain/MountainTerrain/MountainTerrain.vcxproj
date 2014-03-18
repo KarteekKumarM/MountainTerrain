@@ -92,6 +92,7 @@
     <ClCompile Include="Source\MT_Renderer.cpp" />
     <ClCompile Include="Source\MT_Shader.cpp" />
     <ClCompile Include="Source\MT_Terrain.cpp" />
+    <ClCompile Include="Source\MT_Texture.cpp" />
     <ClCompile Include="Source\MT_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +124,7 @@
   <ItemGroup>
     <Image Include="Resources\HeightMapImage.bmp" />
     <Image Include="Resources\HeightMapImage.gif" />
+    <Image Include="Resources\texture_grass.bmp" />
     <Image Include="Resources\texture_grass.jpg" />
   </ItemGroup>
   <ItemGroup>
