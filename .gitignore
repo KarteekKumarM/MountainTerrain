@@ -17,5 +17,8 @@ src/MountainTerrain/*.sbr
 src/MountainTerrain/MountainTerrain.opensdf
 src/MountainTerrain/MountainTerrain.sdf
 src/MountainTerrain/Debug/*
+src/MountainTerrain/Release/*
 src/MountainTerrain/MountainTerrain/Debug/*
 *.cso
+*.log
+*.tlog
