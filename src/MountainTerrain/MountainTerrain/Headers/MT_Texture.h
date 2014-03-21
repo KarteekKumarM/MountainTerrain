@@ -6,11 +6,13 @@
 class MT_Texture
 {
 private:
-	ID3D11Texture2D *m_texture;
-	ID3D11ShaderResourceView *m_shaderResourceView;
+	ID3D11Texture2D *m_grassTexture;
+	ID3D11Texture2D *m_rockTexture;
+	ID3D11ShaderResourceView *m_grassTexShaderResourceView;
+	ID3D11ShaderResourceView *m_rockTexShaderResourceView;
 	ID3D11SamplerState *m_samplerState;
 public:
-	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* textureFileName);
+	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName);
 	void Clean();
 };
 

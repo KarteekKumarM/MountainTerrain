@@ -13,7 +13,7 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	m_heightMap->Init("Resources/HeightMapImage.bmp");
 
 	m_texture = new MT_Texture();
-	m_texture->Init(d3dDevice, d3dDeviceContext, "Resources/texture_rock.bmp");
+	m_texture->Init(d3dDevice, d3dDeviceContext, "Resources/texture_grass.bmp", "Resources/texture_rock.bmp");
 
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
