@@ -1,7 +1,6 @@
 #include "Header.hlsli"
 
-Texture2D g_grassTexture : register(t0);
-Texture2D g_rockTexture : register(t1);
+Texture2D g_textures[3];
 SamplerState g_Sampler;
 
 
@@ -25,15 +24,15 @@ float4 main( PS_INPUT input ) : SV_Target
 	// calculate texture color
 	float4 textureColor = { 1.0f, 0.0f, 0.0f, 1.0f };
 	float slopeFactor = abs(dot(input.Normal, upDir));
-	/*if (slopeFactor < 0.6)
+	textureColor = (slopeFactor*g_textures[0].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
+	if (input.TextureCoordinates.y <= 1.3)
 	{
-		textureColor = g_rockTexture.Sample(g_Sampler, texCoOrd);
+		textureColor = g_textures[2].Sample(g_Sampler, texCoOrd);
 	}
-	else
+	else if (input.TextureCoordinates.y <= 1.5)
 	{
-		textureColor = g_grassTexture.Sample(g_Sampler, texCoOrd);
-	}*/
-	textureColor = (slopeFactor*g_grassTexture.Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_rockTexture.Sample(g_Sampler, texCoOrd));
+		textureColor = (slopeFactor*g_textures[2].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
+	}
 
 	// ambient
 	float4 color  = ambientColor;

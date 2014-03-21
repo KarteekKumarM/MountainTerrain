@@ -10,9 +10,6 @@ using namespace DirectX;
 #include "MT_HeightMap.h"
 #include "MT_Texture.h"
 
-static const FLOAT k_SingleCellWidth = 0.2f;
-static const FLOAT k_SingleCellDepth = 0.2f;
-
 struct TerrainVertex 
 {
 	XMFLOAT3 Position;
@@ -24,6 +21,9 @@ class MT_Terrain
 private:
 	static const LPCWSTR k_VertexShaderFileName;
 	static const LPCWSTR k_PixelShaderFileName;
+	static const FLOAT k_SeaLevel;
+	static const FLOAT k_SingleCellWidth;
+	static const FLOAT k_SingleCellDepth;
 
 	MT_Shader *m_shader;
 	MT_HeightMap *m_heightMap;

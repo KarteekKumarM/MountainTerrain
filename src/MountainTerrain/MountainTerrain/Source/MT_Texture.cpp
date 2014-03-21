@@ -7,7 +7,7 @@ using namespace DirectX;
 
 #include <string>
 
-void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName)
+void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName)
 {
 
 	std::string strGrassTexFilename(grasstextureFileName);
@@ -30,8 +30,21 @@ void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 		return;
 	}
 
-	d3dDeviceContext->PSSetShaderResources(0, 1, &m_grassTexShaderResourceView);
-	d3dDeviceContext->PSSetShaderResources(1, 2, &m_rockTexShaderResourceView);
+	std::string strWaterTexFilename(waterTextureFileName);
+	std::wstring strWaterTexFilenameW(strWaterTexFilename.begin(), strWaterTexFilename.end());
+
+	hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strWaterTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&m_waterTexture), &m_waterTexShaderResourceView);
+	if (FAILED(hr))
+	{
+		MT_Logger::LogError("MT_Texture : Unable to water create texture - file : %s ", waterTextureFileName);
+		return;
+	}
+
+	ID3D11ShaderResourceView *shaderResourceViewArray[3] = { m_grassTexShaderResourceView, m_rockTexShaderResourceView, m_waterTexShaderResourceView };
+
+	d3dDeviceContext->PSSetShaderResources(0, 3, shaderResourceViewArray);
+	//d3dDeviceContext->PSSetShaderResources(1, 2, &m_rockTexShaderResourceView);
+	//d3dDeviceContext->PSSetShaderResources(2, 3, &m_waterTexShaderResourceView);
 
 	// Create a texture sampler state description.
 	D3D11_SAMPLER_DESC samplerDesc;
@@ -68,11 +81,17 @@ void MT_Texture::Clean()
 	if (m_rockTexture) m_rockTexture->Release();
 	m_rockTexture = 0;
 
+	if (m_waterTexture) m_waterTexture->Release();
+	m_waterTexture = 0;
+
 	if (m_grassTexShaderResourceView) m_grassTexShaderResourceView->Release();
 	m_grassTexShaderResourceView = 0;
 
 	if (m_rockTexShaderResourceView) m_rockTexShaderResourceView->Release();
 	m_rockTexShaderResourceView = 0;
+
+	if (m_waterTexShaderResourceView) m_waterTexShaderResourceView->Release();
+	m_waterTexShaderResourceView = 0;
 
 	if (m_samplerState) m_samplerState->Release();
 	m_samplerState = 0;

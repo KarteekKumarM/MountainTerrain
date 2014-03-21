@@ -3,6 +3,9 @@
 
 const LPCWSTR MT_Terrain::k_VertexShaderFileName = L"VertexShader.cso";
 const LPCWSTR MT_Terrain::k_PixelShaderFileName = L"PixelShader.cso";
+const FLOAT MT_Terrain::k_SeaLevel = 1.0f;
+const FLOAT MT_Terrain::k_SingleCellWidth = 0.4f;
+const FLOAT MT_Terrain::k_SingleCellDepth = 0.4f;
 
 void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
 {
@@ -13,7 +16,7 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	m_heightMap->Init("Resources/HeightMapImage.bmp");
 
 	m_texture = new MT_Texture();
-	m_texture->Init(d3dDevice, d3dDeviceContext, "Resources/texture_grass.bmp", "Resources/texture_rock.bmp");
+	m_texture->Init(d3dDevice, d3dDeviceContext, "Resources/texture_grass.bmp", "Resources/texture_rock.bmp", "Resources/texture_water.bmp");
 
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
@@ -54,7 +57,7 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 			XMFLOAT3 heightVertex = m_heightMap->heightAt(i, j);
 			FLOAT x = ( minX + heightVertex.x ) * k_SingleCellWidth;
 			FLOAT z = ( minY + heightVertex.z ) * k_SingleCellDepth;
-			FLOAT y = heightVertex.y;
+			FLOAT y = heightVertex.y >= k_SeaLevel ? heightVertex.y : k_SeaLevel;
 
 			int index = m_heightMap->indexOf(i, j);
 			vertices[index].Position = XMFLOAT3(x, y, z);

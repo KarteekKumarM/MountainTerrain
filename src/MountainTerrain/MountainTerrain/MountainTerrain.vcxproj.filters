@@ -104,8 +104,16 @@
     <Image Include="Resources\texture_grass.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\texture_water.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\texture_rock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\Header.hlsli" />
+    <None Include="PixelShader.cso" />
+    <None Include="VertexShader.cso" />
   </ItemGroup>
 </Project>
