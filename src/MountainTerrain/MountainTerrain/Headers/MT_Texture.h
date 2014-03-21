@@ -3,12 +3,9 @@
 
 #include <d3d11.h>
 
-#include "MT_BitmapReader.h"
-
 class MT_Texture
 {
 private:
-	MT_BitmapReader *m_imageReader;
 	ID3D11Texture2D *m_texture;
 	ID3D11ShaderResourceView *m_shaderResourceView;
 	ID3D11SamplerState *m_samplerState;

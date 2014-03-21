@@ -1,47 +1,22 @@
 #include "MT_Texture.h"
 #include "MT_Logger.h"
 
+#include "WICTextureLoader.h"
+#pragma comment(lib, "DirectXTK.lib")
+using namespace DirectX;
+
+#include <string>
+
 void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* textureFileName)
 {
-	m_imageReader = new MT_BitmapReader();
-	m_imageReader->Init(textureFileName);
 
-	D3D11_TEXTURE2D_DESC texDesc;
-	texDesc.Width = m_imageReader->width();
-	texDesc.Height = m_imageReader->height();
-	texDesc.MipLevels = 1;
-	texDesc.ArraySize = 1;
-	texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	texDesc.SampleDesc.Count = 1;
-	texDesc.SampleDesc.Quality = 0;
-	texDesc.Usage = D3D11_USAGE_DEFAULT;
-	texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-	texDesc.CPUAccessFlags = 0;
-	texDesc.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA texData;
-	texData.pSysMem = m_imageReader->data();
-	texData.SysMemPitch = static_cast<UINT>(m_imageReader->width() * 3);
-	texData.SysMemSlicePitch = static_cast<UINT>(m_imageReader->width() * m_imageReader->height() * 9); // not needed since this is 2d
-
-
-	HRESULT hr = d3dDevice->CreateTexture2D(&texDesc, &texData, &m_texture);
+	std::string strFilename(textureFileName);
+	std::wstring strFilenameW(strFilename.begin(), strFilename.end());
+	HRESULT hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&m_texture), &m_shaderResourceView);
 	if (FAILED(hr))
 	{
-		MT_Logger::LogError("Unable to load texture");
-	}
-
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC SRVDesc;
-	memset(&SRVDesc, 0, sizeof(SRVDesc));
-	SRVDesc.Format = texDesc.Format;
-	SRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	SRVDesc.Texture2D.MipLevels = 1;
-
-	hr = d3dDevice->CreateShaderResourceView(m_texture, &SRVDesc, &m_shaderResourceView);
-	if (FAILED(hr))
-	{
-		MT_Logger::LogError("Unable to create texture shader resource view");
+		MT_Logger::LogError("MT_Texture : Unable to create texture file : %s ", textureFileName);
+		return;
 	}
 
 	d3dDeviceContext->PSSetShaderResources(0, 1, &m_shaderResourceView);
@@ -67,6 +42,7 @@ void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	if (FAILED(hr))
 	{
 		MT_Logger::LogError("Unable to create texture sampler state");
+		return;
 	}
 
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
@@ -74,10 +50,12 @@ void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 
 void MT_Texture::Clean()
 {
-	m_imageReader->Clean();
-	delete m_imageReader;
-	m_imageReader = 0;
-
-	m_texture->Release();
+	if (m_texture) m_texture->Release();
 	m_texture = 0;
+
+	if (m_shaderResourceView) m_shaderResourceView->Release();
+	m_shaderResourceView = 0;
+
+	if (m_samplerState) m_samplerState->Release();
+	m_samplerState = 0;
 }
