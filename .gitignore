@@ -20,7 +20,5 @@ src/MountainTerrain/Debug/*
 src/MountainTerrain/Release/*
 src/MountainTerrain/MountainTerrain/Debug/*
 src/MountainTerrain/MountainTerrain/Release/*
-*.cso
 *.log
 *.tlog
-
