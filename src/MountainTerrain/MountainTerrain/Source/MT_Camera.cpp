@@ -2,15 +2,19 @@
 
 /**
 
+Move:
+- Move along the look at vector
+- (Keys: w/s)
+
 Pitch:
 - Rotate the camera around the right vector
-- use to look up and down
+- use to look up and down (Mouse: move up/down, Keys: Up/Down)
 Yaw
 - Rotate the canera arount the up vector
-- Use to look left and right
+- Use to look left and right (Mouse: move left/right. Keys: Left/Right)
 Roll
 - Rotate around the look_At vector
-- Of no use really 
+- Of no use really - 
 
 **/
 
