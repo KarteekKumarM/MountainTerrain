@@ -1,25 +1,22 @@
 #include "Header.hlsli"
 
+cbuffer LightBuffer
+{
+	float4 g_light_ambientColor;
+	float4 g_light_diffuseColor;
+	float3 g_light_direction;
+	float g_light_padding;
+};
+
 Texture2D g_textures[3];
 SamplerState g_Sampler;
 
-
 float4 main( PS_INPUT input ) : SV_Target
 {
-	// hard-coding here for now
-	float4 ambientColor = { 0.05f, 0.05f, 0.05f, 1.0f };
-	float3 lightDir = { -0.03f, -0.03f, 0.75f };
-	float3 upDir = { 0.0f, 1.0f, 0.0f };
-
-	float2 texCoOrd = { 0.0f, 0.0f };
+	const float3 upDir = { 0.0f, 1.0f, 0.0f };
 
 	// TO DO : Fix, so texture does not stretch with height
-	texCoOrd[0] = (input.TextureCoordinates.x);
-	texCoOrd[1] = (input.TextureCoordinates.z);
-
-	// invert light direction 
-	lightDir = normalize(-lightDir);
-
+	float2 texCoOrd = { input.TextureCoordinates.x, input.TextureCoordinates.z };
 
 	// calculate texture color
 	float4 textureColor = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -35,12 +32,12 @@ float4 main( PS_INPUT input ) : SV_Target
 	}
 
 	// ambient
-	float4 color  = ambientColor;
+	float4 color = g_light_ambientColor;
 
 	// diffuse
-	float lightIntensity = dot(input.Normal, lightDir);
+	float lightIntensity = dot(input.Normal, g_light_direction);
 	if(lightIntensity > 0.0f ) {
-		color += textureColor * lightIntensity;
+		color += g_light_diffuseColor * textureColor * lightIntensity;
 	}
 
     return saturate(color);

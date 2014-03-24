@@ -93,6 +93,7 @@
     <ClCompile Include="Source\MT_ConstantBuffer.cpp" />
     <ClCompile Include="Source\MT_HeightMap.cpp" />
     <ClCompile Include="Source\MT_InputHandler.cpp" />
+    <ClCompile Include="Source\MT_Light.cpp" />
     <ClCompile Include="Source\MT_Main.cpp" />
     <ClCompile Include="Source\MT_Renderer.cpp" />
     <ClCompile Include="Source\MT_Shader.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Source\MT_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\MT_Light.h" />
     <ClInclude Include="Headers\MT_BitmapReader.h" />
     <ClInclude Include="Headers\MT_Camera.h" />
     <ClInclude Include="Headers\MT_ConstantBuffer.h" />

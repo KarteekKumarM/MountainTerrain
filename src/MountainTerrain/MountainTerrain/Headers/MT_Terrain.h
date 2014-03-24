@@ -9,6 +9,7 @@ using namespace DirectX;
 #include "MT_Shader.h"
 #include "MT_HeightMap.h"
 #include "MT_Texture.h"
+#include "MT_Light.h"
 
 struct TerrainVertex 
 {
@@ -24,10 +25,16 @@ private:
 	static const FLOAT k_SeaLevel;
 	static const FLOAT k_SingleCellWidth;
 	static const FLOAT k_SingleCellDepth;
+	static const XMFLOAT4 k_Light_Ambient;
+	static const XMFLOAT4 k_Light_Diffuse_Warm_Fluroscent;
+	static const XMFLOAT4 k_Light_Diffuse_High_Pressure_Sodium;
+	static const XMFLOAT4 k_Light_Diffuse_White;
+	static const XMFLOAT3 k_Light_Direction;
 
 	MT_Shader *m_shader;
 	MT_HeightMap *m_heightMap;
 	MT_Texture *m_texture;
+	MT_Light *m_light;
 
 	ID3D11Buffer *m_vertexBuffer;
 	ID3D11Buffer *m_indexBuffer;

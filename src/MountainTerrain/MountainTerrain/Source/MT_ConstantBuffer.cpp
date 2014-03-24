@@ -9,12 +9,12 @@ void MT_ConstantBuffer::InitMatrices(UINT screenWidth, UINT screenHeight)
 	m_Projection = DirectX::XMMatrixPerspectiveFovLH( XM_PIDIV2, (FLOAT)screenWidth/(FLOAT)screenHeight, 0.01f, 100.0f );
 }
 
-void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice) 
+void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice)
 {
 	D3D11_BUFFER_DESC constantBufferDesc;
     ZeroMemory( &constantBufferDesc, sizeof(constantBufferDesc) );
     constantBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    constantBufferDesc.ByteWidth = sizeof(ConstantBufferMatrices);
+	constantBufferDesc.ByteWidth = sizeof(ConstantBufferValues);
     constantBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     constantBufferDesc.CPUAccessFlags = 0;
     HRESULT hr = d3dDevice->CreateBuffer(&constantBufferDesc, NULL, &m_constantBuffer);
@@ -42,7 +42,7 @@ void MT_ConstantBuffer::UpdateConstantBuffer(ID3D11DeviceContext *d3dDeviceConte
 	XMMATRIX view = camera->GetViewMatrix();
 	XMMATRIX projection = m_Projection;
 
-	ConstantBufferMatrices constantBuff;
+	ConstantBufferValues constantBuff;
 	constantBuff.mWorld = DirectX::XMMatrixTranspose(world);
 	constantBuff.mView = DirectX::XMMatrixTranspose(view);
 	constantBuff.mProjection = DirectX::XMMatrixTranspose(projection);
