@@ -94,6 +94,7 @@
     <ClCompile Include="Source\MT_HeightMap.cpp" />
     <ClCompile Include="Source\MT_InputHandler.cpp" />
     <ClCompile Include="Source\MT_Light.cpp" />
+    <ClCompile Include="Source\MT_Logger.cpp" />
     <ClCompile Include="Source\MT_Main.cpp" />
     <ClCompile Include="Source\MT_Renderer.cpp" />
     <ClCompile Include="Source\MT_Shader.cpp" />
