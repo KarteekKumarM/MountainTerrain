@@ -6,16 +6,19 @@
 class MT_InputHandler 
 {
 private:
-	bool forwardKeyDownFlag, backKeyDownFlag, leftKeyDownFlag, rightKeyDownFlag, upKeyDownFlag, downKeyDownFlag;
+	bool m_forwardKeyDownFlag, m_backKeyDownFlag, m_leftKeyDownFlag, m_rightKeyDownFlag, m_upKeyDownFlag, m_downKeyDownFlag;
+	bool m_screenGrabKeyDownFlag;
 public:
 	void Init();
 
-	bool isForwardKeyPressed();
-	bool isBackKeyPressed();
-	bool isLeftKeyPressed();
-	bool isRightKeyPressed();
-	bool isUpKeyPressed();
-	bool isDownKeyPressed();
+	bool IsForwardKeyPressed();
+	bool IsBackKeyPressed();
+	bool IsLeftKeyPressed();
+	bool IsRightKeyPressed();
+	bool IsUpKeyPressed();
+	bool IsDownKeyPressed();
+	bool IsScreenGrabKeyPressed();
+	void ResetScreenGrabKey();
 
 	bool ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
 	void Clean();

@@ -119,6 +119,11 @@ int MT_Window::EnterMessageLoop()
 		} 
 
 		// render
+		if (m_inputHandler->IsScreenGrabKeyPressed())
+		{
+			m_renderer->CaptureFrame();
+			m_inputHandler->ResetScreenGrabKey();
+		}
 		m_renderer->ProcessCameraState(m_camera);
 		m_renderer->RenderFrame();
 	}

@@ -6,11 +6,12 @@ static const char k_LeftKey = 'a';
 static const char k_RightKey = 'd';
 static const char k_UpKey = 'e';
 static const char k_DownKey = 'c';
+static const char k_ScreenGrabKey = 'k';
 
 void MT_InputHandler::Init() 
 {
-	forwardKeyDownFlag = false;
-	backKeyDownFlag = false;
+	m_forwardKeyDownFlag = false;
+	m_backKeyDownFlag = false;
 }
 
 void MT_InputHandler::Clean()
@@ -18,34 +19,44 @@ void MT_InputHandler::Clean()
 
 }
 
-bool MT_InputHandler::isForwardKeyPressed() 
+bool MT_InputHandler::IsForwardKeyPressed() 
 {
-	return forwardKeyDownFlag;
+	return m_forwardKeyDownFlag;
 }
 
-bool MT_InputHandler::isBackKeyPressed()
+bool MT_InputHandler::IsBackKeyPressed()
 {
-	return backKeyDownFlag;
+	return m_backKeyDownFlag;
 }
 
-bool MT_InputHandler::isLeftKeyPressed()
+bool MT_InputHandler::IsLeftKeyPressed()
 {
-	return leftKeyDownFlag;
+	return m_leftKeyDownFlag;
 }
 
-bool MT_InputHandler::isRightKeyPressed()
+bool MT_InputHandler::IsRightKeyPressed()
 {
-	return rightKeyDownFlag;
+	return m_rightKeyDownFlag;
 }
 
-bool MT_InputHandler::isUpKeyPressed()
+bool MT_InputHandler::IsUpKeyPressed()
 {
-	return upKeyDownFlag;
+	return m_upKeyDownFlag;
 }
 
-bool MT_InputHandler::isDownKeyPressed() 
+bool MT_InputHandler::IsDownKeyPressed() 
 {
-	return downKeyDownFlag;
+	return m_downKeyDownFlag;
+}
+
+bool MT_InputHandler::IsScreenGrabKeyPressed()
+{
+	return m_screenGrabKeyDownFlag;
+}
+
+void MT_InputHandler::ResetScreenGrabKey()
+{
+	m_screenGrabKeyDownFlag = false;
 }
 
 bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
@@ -68,22 +79,25 @@ bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 		stateChanged = true;
 		switch(keyChar) {
 		case k_ForwardKey:
-			forwardKeyDownFlag = isKeyDown;
+			m_forwardKeyDownFlag = isKeyDown;
 			break;
 		case k_BackKey:
-			backKeyDownFlag = isKeyDown;
+			m_backKeyDownFlag = isKeyDown;
 			break;
 		case k_LeftKey:
-			leftKeyDownFlag = isKeyDown;
+			m_leftKeyDownFlag = isKeyDown;
 			break;
 		case k_RightKey:
-			rightKeyDownFlag = isKeyDown;
+			m_rightKeyDownFlag = isKeyDown;
 			break;
 		case k_UpKey:
-			upKeyDownFlag = isKeyDown;
+			m_upKeyDownFlag = isKeyDown;
 			break;
 		case k_DownKey:
-			downKeyDownFlag = isKeyDown;
+			m_downKeyDownFlag = isKeyDown;
+			break;
+		case k_ScreenGrabKey:
+			m_screenGrabKeyDownFlag = isKeyDown;
 			break;
 		default:
 			// none of the cases matched

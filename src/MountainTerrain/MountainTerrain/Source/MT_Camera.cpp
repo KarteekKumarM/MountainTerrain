@@ -91,23 +91,23 @@ XMMATRIX MT_Camera::GetViewMatrix()
 void MT_Camera::ProcessInput(MT_InputHandler *inputHandler, float dTime) 
 {
 	// move forward or back
-	if(inputHandler->isForwardKeyPressed()) {
+	if(inputHandler->IsForwardKeyPressed()) {
 		MoveForward(dTime * k_MovementSpeed);
-	} else if(inputHandler->isBackKeyPressed()) {
+	} else if(inputHandler->IsBackKeyPressed()) {
 		MoveBack(dTime * k_MovementSpeed);
 	}
 
 	// turn left or right
-	if(inputHandler->isLeftKeyPressed()) {
+	if(inputHandler->IsLeftKeyPressed()) {
 		TurnLeft(dTime * k_MovementSpeed);
-	} else if(inputHandler->isRightKeyPressed()) {
+	} else if(inputHandler->IsRightKeyPressed()) {
 		TurnRight(dTime * k_MovementSpeed);
 	}
 
 	// turn up or down
-	if(inputHandler->isUpKeyPressed()) {
+	if(inputHandler->IsUpKeyPressed()) {
 		TurnUp(dTime * k_MovementSpeed);
-	} else if(inputHandler->isDownKeyPressed()) {
+	} else if(inputHandler->IsDownKeyPressed()) {
 		TurnDown(dTime * k_MovementSpeed);
 	}
 }

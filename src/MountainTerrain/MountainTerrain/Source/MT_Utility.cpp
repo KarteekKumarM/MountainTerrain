@@ -1,5 +1,20 @@
 #include "MT_Utility.h"
 
+#include "MT_Logger.h"
+
+#include <ctime>
+#include <stdio.h>
+
+void GetTimeString(char **timeResult)
+{
+	const int TIME_STRING_SIZE = 20;
+	char *timeStringBuffer = new char[TIME_STRING_SIZE];
+	time_t t = time(0);   // get time now
+	struct tm * now = localtime(&t);
+	sprintf_s(timeStringBuffer, TIME_STRING_SIZE, "%d-%d-%d %d.%d.%d", (now->tm_year + 1900), (now->tm_mon + 1), now->tm_mday, now->tm_hour, now->tm_min, now->tm_sec);
+	*timeResult = timeStringBuffer;
+}
+
 XMFLOAT3 XMFloat3Subtract(XMFLOAT3 a, XMFLOAT3 b)
 {
 	return XMFLOAT3(a.x - b.x, a.y - b.y, a.z - b.z);

@@ -1,5 +1,14 @@
 #include "MT_Renderer.h"
 #include "MT_Logger.h"
+#include "MT_Utility.h"
+
+#include <wincodec.h>
+#include <string>
+
+#include "ScreenGrab.h"
+#pragma comment(lib, "DirectXTK.lib")
+using namespace DirectX;
+
 
 const bool k_AntiAliasingEnabled = true;
 const bool k_WireFrameEnabled = false;
@@ -51,8 +60,7 @@ bool MT_Renderer::SetupBackBuffer()
 	HRESULT result = S_OK;
 
 	// get address of the back buffer
-	ID3D11Texture2D *pBackBuffer;
-	result = m_dxgiSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	result = m_dxgiSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&m_BackBuffer);
 
 	if( FAILED(result) )
 	{
@@ -61,11 +69,8 @@ bool MT_Renderer::SetupBackBuffer()
 	}
 
 	// use the back buffer address as the render target
-	m_d3dDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_d3dBackBuffer);
-	pBackBuffer->Release(); pBackBuffer = 0;
-
-	// set the render target as the back buffer
-	//m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, NULL);
+	m_d3dDevice->CreateRenderTargetView(m_BackBuffer, NULL, &m_d3dBackBufferRenderTargetView);
+	//m_BackBuffer->Release(); pBackBuffer = 0;
 
 	return SUCCEEDED(result);
 }
@@ -175,7 +180,7 @@ bool MT_Renderer::SetupDepthStencilBuffer(UINT screenWidth, UINT screenHeight)
 		return false;
 	}
 
-	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBuffer, m_depthStencilView);
+	m_d3dDeviceContext->OMSetRenderTargets(1, &m_d3dBackBufferRenderTargetView, m_depthStencilView);
 
 	return SUCCEEDED(hresult);
 }
@@ -234,11 +239,35 @@ void MT_Renderer::ProcessCameraState(MT_Camera *camera)
 	m_constantBuffer->Update(m_d3dDeviceContext, camera);
 }
 
+void MT_Renderer::CaptureFrame()
+{
+	static char* lastTimeString = 0;
+
+	char *timeChars;
+	GetTimeString(&timeChars);
+
+	// screen shot allowed only every second
+	if (lastTimeString == 0 || strcmp(timeChars, lastTimeString) != 0)
+	{
+		lastTimeString = timeChars;
+
+		std::string screenshotpath = "../../../screenshots/Screenshot " + std::string(timeChars) + ".jpg";
+		std::wstring screenshotpathW(screenshotpath.begin(), screenshotpath.end());
+
+		HRESULT hr = SaveWICTextureToFile(m_d3dDeviceContext, m_BackBuffer, GUID_ContainerFormatJpeg, screenshotpathW.c_str());
+		if (FAILED(hr))
+		{
+			MT_Logger::LogError("Unable to perform screen grab");
+			return;
+		}
+	}
+}
+
 void MT_Renderer::RenderFrame()
 {
 	// clear the back buffer
 	const float clearColor[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-	m_d3dDeviceContext->ClearRenderTargetView(m_d3dBackBuffer, clearColor);
+	m_d3dDeviceContext->ClearRenderTargetView(m_d3dBackBufferRenderTargetView, clearColor);
 
 	// clear the depth and stencil buffer
 	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -270,7 +299,7 @@ void MT_Renderer::Clean()
 	// release COM objects
 	if(m_d3dRasterizerState) m_d3dRasterizerState->Release();
 	if(m_dxgiSwapChain) m_dxgiSwapChain->Release();
-	if(m_d3dBackBuffer) m_d3dBackBuffer->Release();
+	if(m_d3dBackBufferRenderTargetView) m_d3dBackBufferRenderTargetView->Release();
 	if(m_d3dDevice) m_d3dDevice->Release();
 	if(m_d3dDeviceContext) m_d3dDeviceContext->Release();
 }
