@@ -1,22 +1,20 @@
 #include "MT_Texture.h"
 #include "MT_Logger.h"
 
+#include <string>
+
 #include "WICTextureLoader.h"
 #pragma comment(lib, "DirectXTK.lib")
 using namespace DirectX;
 
-#include <string>
-
-void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName)
+void MT_Texture::LoadTextures(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName)
 {
-
 	std::string strGrassTexFilename(grasstextureFileName);
 	std::wstring strGrassTexFilenameW(strGrassTexFilename.begin(), strGrassTexFilename.end());
-
 	HRESULT hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strGrassTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&m_grassTexture), &m_grassTexShaderResourceView);
 	if (FAILED(hr))
 	{
-		MT_Logger::LogError("MT_Texture : Unable to grass create texture - file : %s ", strGrassTexFilename);
+		MT_Logger::LogError("MT_Texture : Unable to grass create texture - file : %s ", grasstextureFileName);
 		return;
 	}
 
@@ -43,9 +41,10 @@ void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	ID3D11ShaderResourceView *shaderResourceViewArray[3] = { m_grassTexShaderResourceView, m_rockTexShaderResourceView, m_waterTexShaderResourceView };
 
 	d3dDeviceContext->PSSetShaderResources(0, 3, shaderResourceViewArray);
-	//d3dDeviceContext->PSSetShaderResources(1, 2, &m_rockTexShaderResourceView);
-	//d3dDeviceContext->PSSetShaderResources(2, 3, &m_waterTexShaderResourceView);
+}
 
+void MT_Texture::LoadSampler(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
+{
 	// Create a texture sampler state description.
 	D3D11_SAMPLER_DESC samplerDesc;
 	samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -63,7 +62,7 @@ void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	// Create the texture sampler state.
-	hr = d3dDevice->CreateSamplerState(&samplerDesc, &m_samplerState);
+	HRESULT hr = d3dDevice->CreateSamplerState(&samplerDesc, &m_samplerState);
 	if (FAILED(hr))
 	{
 		MT_Logger::LogError("Unable to create texture sampler state");
@@ -71,6 +70,12 @@ void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	}
 
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
+}
+
+void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName)
+{
+	LoadTextures(d3dDevice, d3dDeviceContext, grasstextureFileName, rockTextureFileName, waterTextureFileName);
+	LoadSampler(d3dDevice, d3dDeviceContext);
 }
 
 void MT_Texture::Clean()

@@ -13,6 +13,9 @@ private:
 	ID3D11ShaderResourceView *m_rockTexShaderResourceView;
 	ID3D11ShaderResourceView *m_waterTexShaderResourceView;
 	ID3D11SamplerState *m_samplerState;
+
+	void LoadSampler(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
+	void LoadTextures(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName);
 public:
 	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName);
 	void Clean();

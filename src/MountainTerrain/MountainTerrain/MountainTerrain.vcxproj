@@ -98,6 +98,7 @@
     <ClCompile Include="Source\MT_Shader.cpp" />
     <ClCompile Include="Source\MT_Terrain.cpp" />
     <ClCompile Include="Source\MT_Texture.cpp" />
+    <ClCompile Include="Source\MT_Utility.cpp" />
     <ClCompile Include="Source\MT_Window.cpp" />
   </ItemGroup>
   <ItemGroup>
