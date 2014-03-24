@@ -1,5 +1,19 @@
 #include "MT_Camera.h"
 
+/**
+
+Pitch:
+- Rotate the camera around the right vector
+- use to look up and down
+Yaw
+- Rotate the canera arount the up vector
+- Use to look left and right
+Roll
+- Rotate around the look_At vector
+- Of no use really 
+
+**/
+
 const float k_MovementSpeed = 0.02f;
 
 void MT_Camera::Init() 
