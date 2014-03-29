@@ -89,12 +89,9 @@ int MT_Window::EnterMessageLoop()
 	{
 
 		// track delta time
-		static float dTime = 0.0f;
-		static ULONGLONG timeStart = 0;
 		ULONGLONG timeCur = GetTickCount64();
-		if( timeStart == 0 )
-			timeStart = timeCur;
-		dTime = ( timeCur - timeStart ) / 1000.0f;
+		static ULONGLONG timeStart = timeCur;
+		float dTime = timeCur - timeStart;
 
 		// handle messages
 		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -106,7 +103,7 @@ int MT_Window::EnterMessageLoop()
 			bool inputStateChanged = m_inputHandler->ProcessMessage(msg.message, msg.wParam, msg.lParam);
 			if(inputStateChanged) 
 			{
-				m_camera->ProcessInput(m_inputHandler, dTime);
+				m_camera->ProcessInput(m_inputHandler);
 			}
 
 			// send message to WindowsProc callback

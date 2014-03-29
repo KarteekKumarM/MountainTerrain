@@ -1,4 +1,5 @@
 #include "MT_Camera.h"
+#include "MT_Logger.h"
 
 /**
 
@@ -17,8 +18,6 @@ Roll
 - Of no use really - 
 
 **/
-
-const float k_MovementSpeed = 0.02f;
 
 void MT_Camera::Init() 
 {
@@ -58,7 +57,6 @@ XMVECTOR RotateVectorByAngleAroundAxis(XMVECTOR inputVector, XMVECTOR rotationAx
 
 void MT_Camera::TurnUp(FLOAT angle)
 {
-
 	XMVECTOR viewDirection = lookat - eye;
 	XMVECTOR length = XMVector3Length(viewDirection);
 	viewDirection = XMVector3Normalize(viewDirection);
@@ -106,31 +104,36 @@ XMMATRIX MT_Camera::GetViewMatrix()
 	return DirectX::XMMatrixLookAtLH(eye, lookat, up);
 }
 
-void MT_Camera::ProcessInput(MT_InputHandler *inputHandler, float dTime) 
+void MT_Camera::ProcessInput(MT_InputHandler *inputHandler) 
 {
+
+	float k_angleTurnPerUnitTime = 10 * 0.0174532925; // speed of turn - converted to radian
+	float k_distMovePerUnitTime = 1.0f; // speed of move
+	float dTime = 0.5;
+
 	// move forward or back
 	if(inputHandler->IsForwardKeyPressed()) {
-		MoveForward(dTime * k_MovementSpeed);
+		MoveForward(dTime * k_distMovePerUnitTime);
 	} else if(inputHandler->IsBackKeyPressed()) {
-		MoveBack(dTime * k_MovementSpeed);
+		MoveBack(dTime * k_distMovePerUnitTime);
 	}
 
 	// turn left or right
 	if(inputHandler->IsLeftKeyPressed()) {
-		TurnLeft(dTime * k_MovementSpeed);
+		TurnLeft(dTime * k_angleTurnPerUnitTime);
 	} else if(inputHandler->IsRightKeyPressed()) {
-		TurnRight(dTime * k_MovementSpeed);
+		TurnRight(dTime * k_angleTurnPerUnitTime);
 	}
 
 	// turn up or down
 	if(inputHandler->IsUpKeyPressed()) {
-		TurnUp(dTime * k_MovementSpeed);
+		TurnUp(dTime * k_angleTurnPerUnitTime);
 	} else if(inputHandler->IsDownKeyPressed()) {
-		TurnDown(dTime * k_MovementSpeed);
+		TurnDown(dTime * k_angleTurnPerUnitTime);
 	}
 }
 
 void MT_Camera::Clean() 
 {
-
+	
 }

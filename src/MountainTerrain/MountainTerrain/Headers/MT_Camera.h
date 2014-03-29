@@ -21,7 +21,7 @@ public:
 	void TurnDown(FLOAT angle);
 	void TurnLeft(FLOAT angle);
 	void TurnRight(FLOAT angle);
-	void ProcessInput(MT_InputHandler *inputHandler, float dTime);
+	void ProcessInput(MT_InputHandler *inputHandler);
 	void Clean();
 };
 

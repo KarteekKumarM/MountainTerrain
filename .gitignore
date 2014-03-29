@@ -22,3 +22,4 @@ src/MountainTerrain/MountainTerrain/Debug/*
 src/MountainTerrain/MountainTerrain/Release/*
 *.log
 *.tlog
+*.cso
