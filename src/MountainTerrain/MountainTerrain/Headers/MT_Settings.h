@@ -39,6 +39,7 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 #define KEY_UP 'e'
 #define KEY_DOWN 'c'
 #define KEY_SCREEN_SHOT 'k'
+#define KET_TOGGLE_LIGHT 'l'
 
 // Camera
 #define MATH_DEGREE_TO_RADIAN 0.0174532925f

@@ -8,7 +8,7 @@ static const char k_RightKey = KEY_RIGHT;
 static const char k_UpKey = KEY_UP;
 static const char k_DownKey = KEY_DOWN;
 static const char k_ScreenGrabKey = KEY_SCREEN_SHOT;
-static const char k_LightToggleKey = 'l';
+static const char k_LightToggleKey = KET_TOGGLE_LIGHT;
 
 void MT_InputHandler::Init() 
 {
