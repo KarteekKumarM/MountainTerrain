@@ -8,6 +8,7 @@ static const char k_RightKey = KEY_RIGHT;
 static const char k_UpKey = KEY_UP;
 static const char k_DownKey = KEY_DOWN;
 static const char k_ScreenGrabKey = KEY_SCREEN_SHOT;
+static const char k_LightToggleKey = 'l';
 
 void MT_InputHandler::Init() 
 {
@@ -55,6 +56,11 @@ bool MT_InputHandler::IsScreenGrabKeyPressed()
 	return m_screenGrabKeyDownFlag;
 }
 
+bool MT_InputHandler::IsLightToggleKeyPressed()
+{
+	return m_lightToggleKeyDownFlag;
+}
+
 void MT_InputHandler::ResetScreenGrabKey()
 {
 	m_screenGrabKeyDownFlag = false;
@@ -99,6 +105,9 @@ bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case k_ScreenGrabKey:
 			m_screenGrabKeyDownFlag = isKeyDown;
+			break;
+		case k_LightToggleKey:
+			m_lightToggleKeyDownFlag = isKeyDown;
 			break;
 		default:
 			// none of the cases matched

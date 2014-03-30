@@ -55,6 +55,11 @@ void MT_Renderer::SetupViewPort(UINT screenWidth, UINT screenHeight)
 	m_d3dDeviceContext->RSSetViewports(1, &viewPort);
 }
 
+void MT_Renderer::ProcessInput(MT_InputHandler *inputHandler)
+{
+	m_scene->ProcessInput(inputHandler);
+}
+
 bool MT_Renderer::SetupBackBuffer() 
 {
 	HRESULT result = S_OK;

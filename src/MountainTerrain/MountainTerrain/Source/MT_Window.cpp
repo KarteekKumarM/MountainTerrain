@@ -102,6 +102,7 @@ int MT_Window::EnterMessageLoop()
 			if(inputStateChanged) 
 			{
 				m_camera.ProcessInput(m_inputHandler);
+				m_renderer.ProcessInput(m_inputHandler);
 			}
 
 			// send message to WindowsProc callback

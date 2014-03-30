@@ -5,7 +5,7 @@ cbuffer LightBuffer
 	float4 g_light_ambientColor;
 	float4 g_light_diffuseColor;
 	float3 g_light_direction;
-	float g_light_padding;
+	float g_light_enabled;
 };
 
 Texture2D g_textures[3];
@@ -31,14 +31,24 @@ float4 main( PS_INPUT input ) : SV_Target
 		textureColor = (slopeFactor*g_textures[2].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
 	}
 
-	// ambient
-	float4 color = g_light_ambientColor;
+	float4 final_color;
 
-	// diffuse
-	float lightIntensity = dot(input.Normal, g_light_direction);
-	if(lightIntensity > 0.0f ) {
-		color += g_light_diffuseColor * textureColor * lightIntensity;
+	if (g_light_enabled == 1.0)
+	{
+		// ambient
+		final_color = g_light_ambientColor;
+
+		// diffuse
+		float lightIntensity = dot(input.Normal, g_light_direction);
+		if (lightIntensity > 0.0f) {
+			final_color += g_light_diffuseColor * textureColor * lightIntensity;
+		}
+	}
+	else
+	{
+		final_color = textureColor;
 	}
 
-    return saturate(color);
+
+	return saturate(final_color);
 }

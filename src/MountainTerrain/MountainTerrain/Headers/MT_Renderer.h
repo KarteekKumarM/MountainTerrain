@@ -30,6 +30,7 @@ private:
 	bool SetupBlending();
 public:
 	void Init(HWND hWnd, UINT screenWidth, UINT screenHeight);
+	void ProcessInput(MT_InputHandler *inputHandler);
 	void ProcessCameraState(MT_Camera *camera);
 	void RenderFrame();
 	void CaptureFrame();

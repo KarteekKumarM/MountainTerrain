@@ -1,7 +1,11 @@
 #include "MT_Light.h"
+#include "MT_Settings.h"
 
 void MT_Light::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, LightBufferValues lightBufferValues)
 {
+	m_d3dDeviceContext = d3dDeviceContext;
+	m_lightBufferValues = lightBufferValues;
+
 	// create the constant buffer for light
 	D3D11_BUFFER_DESC lightBufferDesc;
 	ZeroMemory(&lightBufferDesc, sizeof(lightBufferDesc));
@@ -17,23 +21,44 @@ void MT_Light::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceConte
 		return;
 	}
 
+	UpdateLightBuffer();
+}
+
+void MT_Light::UpdateLightBuffer()
+{
 	// copy the values of the light into the light constant buffer
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	hr = d3dDeviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HRESULT hr = m_d3dDeviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(hr))
 	{
 		MessageBox(nullptr, L"Unable to create light buffer", L"Error", MB_OK);
 		return;
 	}
 	LightBufferValues* mappedLightBufferValues = (LightBufferValues*)mappedResource.pData;
-	mappedLightBufferValues->ambient = lightBufferValues.ambient;
-	mappedLightBufferValues->diffuse = lightBufferValues.diffuse;
-	mappedLightBufferValues->direction = lightBufferValues.direction;
-	mappedLightBufferValues->padding = 0.0f;
-	d3dDeviceContext->Unmap(m_lightBuffer, 0);
+	mappedLightBufferValues->ambient = m_lightBufferValues.ambient;
+	mappedLightBufferValues->diffuse = m_lightBufferValues.diffuse;
+	mappedLightBufferValues->direction = m_lightBufferValues.direction;
+	mappedLightBufferValues->enabled = m_lightBufferValues.enabled;
+	m_d3dDeviceContext->Unmap(m_lightBuffer, 0);
 
-	d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_lightBuffer);
+	m_d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_lightBuffer);
 }
+
+void MT_Light::ToggleLight()
+{
+	// switch between values 0.0f and 1.0f
+	if (m_lightBufferValues.enabled == 0.0f)
+	{
+		m_lightBufferValues.enabled = 1.0f;
+	}
+	else
+	{
+		m_lightBufferValues.enabled = 0.0f;
+	}
+
+	UpdateLightBuffer();
+}
+
 void MT_Light::Clean()
 {
 	if (m_lightBuffer) m_lightBuffer->Release();
