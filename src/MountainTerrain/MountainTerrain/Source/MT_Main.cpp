@@ -9,16 +9,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				   ) 
 {
 	// create window
-	MT_Window *window = new MT_Window();
-	window->Init(hInstance, nCmdShow);
+	MT_Window window;
+	window.Init(hInstance, nCmdShow);
 
 	// enter message loop
-	int ret = window->EnterMessageLoop();
-
-	// clean up
-	window->Clean();
-	delete window;
-	window = 0;
+	int ret = window.EnterMessageLoop();
 
 	return ret;
 }

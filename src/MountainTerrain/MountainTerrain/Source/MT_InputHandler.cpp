@@ -1,12 +1,13 @@
 #include "MT_InputHandler.h"
+#include "MT_Settings.h"
 
-static const char k_ForwardKey = 'w';
-static const char k_BackKey = 's';
-static const char k_LeftKey = 'a';
-static const char k_RightKey = 'd';
-static const char k_UpKey = 'e';
-static const char k_DownKey = 'c';
-static const char k_ScreenGrabKey = 'k';
+static const char k_ForwardKey = KEY_FORWARD;
+static const char k_BackKey = KEY_BACK;
+static const char k_LeftKey = KEY_LEFT;
+static const char k_RightKey = KEY_RIGHT;
+static const char k_UpKey = KEY_UP;
+static const char k_DownKey = KEY_DOWN;
+static const char k_ScreenGrabKey = KEY_SCREEN_SHOT;
 
 void MT_InputHandler::Init() 
 {

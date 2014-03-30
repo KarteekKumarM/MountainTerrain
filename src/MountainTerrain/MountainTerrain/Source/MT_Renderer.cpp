@@ -1,6 +1,7 @@
 #include "MT_Renderer.h"
 #include "MT_Logger.h"
 #include "MT_Utility.h"
+#include "MT_Settings.h"
 
 #include <wincodec.h>
 #include <string>
@@ -9,9 +10,8 @@
 #pragma comment(lib, "DirectXTK.lib")
 using namespace DirectX;
 
-
-const bool k_AntiAliasingEnabled = true;
-const bool k_WireFrameEnabled = false;
+const bool k_AntiAliasingEnabled = ANTIALIASING_ENABLED;
+const bool k_WireFrameEnabled = WIRE_MESH;
 
 bool MT_Renderer::SetupRasterizer() {
 	HRESULT result = S_OK;
@@ -225,8 +225,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 	SetupBlending();
 
 	// world, view projection matrix 
-	m_constantBuffer = new MT_ConstantBuffer();
-	m_constantBuffer->Init(m_d3dDevice, screenWidth, screenHeight);
+	m_constantBuffer.Init(m_d3dDevice, screenWidth, screenHeight);
 
 	// Init Scene
 	m_scene = new MT_Terrain();
@@ -236,7 +235,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 void MT_Renderer::ProcessCameraState(MT_Camera *camera)
 {
 	// world, view projection matrix 
-	m_constantBuffer->Update(m_d3dDeviceContext, camera);
+	m_constantBuffer.Update(m_d3dDeviceContext, camera);
 }
 
 void MT_Renderer::CaptureFrame()
@@ -251,7 +250,7 @@ void MT_Renderer::CaptureFrame()
 	{
 		lastTimeString = timeChars;
 
-		std::string screenshotpath = "../../../screenshots/Screenshot " + std::string(timeChars) + ".jpg";
+		std::string screenshotpath = std::string(SCREEN_SHOT_PATH) + "Screenshot " + std::string(timeChars) + ".jpg";
 		std::wstring screenshotpathW(screenshotpath.begin(), screenshotpath.end());
 
 		HRESULT hr = SaveWICTextureToFile(m_d3dDeviceContext, m_BackBuffer, GUID_ContainerFormatJpeg, screenshotpathW.c_str());
@@ -283,10 +282,6 @@ void MT_Renderer::Clean()
 {
 	// switch to window from full screen
 	m_dxgiSwapChain->SetFullscreenState(FALSE, NULL);
-
-	m_constantBuffer->Clean();
-	delete m_constantBuffer;
-	m_constantBuffer = 0;
 
 	m_scene->Clean();
 	delete m_scene;

@@ -1,19 +1,16 @@
 #include "MT_Terrain.h"
 #include "MT_Utility.h"
+#include "MT_Settings.h"
 
-const LPCWSTR MT_Terrain::k_VertexShaderFileName = L"VertexShader.cso";
-const LPCWSTR MT_Terrain::k_PixelShaderFileName = L"PixelShader.cso";
-const FLOAT MT_Terrain::k_SeaLevel = 1.0f;
-const FLOAT MT_Terrain::k_SingleCellWidth = 0.4f;
-const FLOAT MT_Terrain::k_SingleCellDepth = 0.4f;
+const LPCWSTR MT_Terrain::k_VertexShaderFileName = VERTEX_SHADER_PATH;
+const LPCWSTR MT_Terrain::k_PixelShaderFileName = PIXEL_SHADER_PATH;
+const FLOAT MT_Terrain::k_SeaLevel = SEA_LEVEL;
+const FLOAT MT_Terrain::k_SingleCellWidth = GRID_CELL_WIDTH;
+const FLOAT MT_Terrain::k_SingleCellDepth = GRID_CELL_DEPTH;
 
-const XMFLOAT4 MT_Terrain::k_Light_Ambient = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-
-const XMFLOAT4 MT_Terrain::k_Light_Diffuse_Warm_Fluroscent = XMFLOAT4(1.0f, 0.96f, 0.98f, 1.0f);
-const XMFLOAT4 MT_Terrain::k_Light_Diffuse_High_Pressure_Sodium = XMFLOAT4(1.0f, 0.72f, 0.3f, 1.0f);
-const XMFLOAT4 MT_Terrain::k_Light_Diffuse_White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-
-const XMFLOAT3 MT_Terrain::k_Light_Direction = XMFLOAT3(0.03f, 0.03f, -0.75f);
+const XMFLOAT4 MT_Terrain::k_Light_Ambient = LIGHT_AMBIENT_INTENSITY;
+const XMFLOAT4 MT_Terrain::k_Light_Diffuse = LIGHT_DIFFUSE_INTENSITY;
+const XMFLOAT3 MT_Terrain::k_Light_Direction = LIGHT_DIFFUSE_DIRECTION;
 
 void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext) 
 {
@@ -21,15 +18,15 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	m_shader->Init(d3dDevice, d3dDeviceContext, k_VertexShaderFileName, k_PixelShaderFileName);
 
 	m_heightMap = new MT_HeightMap();
-	m_heightMap->Init("Resources/HeightMapImage.bmp");
+	m_heightMap->Init(HEIGHTMAP_PATH);
 
 	m_texture = new MT_Texture();
-	m_texture->Init(d3dDevice, d3dDeviceContext, "Resources/texture_grass.bmp", "Resources/texture_rock.bmp", "Resources/texture_water.bmp");
+	m_texture->Init(d3dDevice, d3dDeviceContext, TEXTURE_GRASS_PATH, TEXTURE_ROCK_PATH, TEXTURE_WATER_PATH);
 
 	m_light = new MT_Light();
 	LightBufferValues lightValues;
 	lightValues.ambient = k_Light_Ambient;
-	lightValues.diffuse = k_Light_Diffuse_White;
+	lightValues.diffuse = k_Light_Diffuse;
 	lightValues.direction = k_Light_Direction;
 	m_light->Init(d3dDevice, d3dDeviceContext, lightValues);
 
@@ -58,7 +55,7 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 
 	TerrainVertex *vertices = new TerrainVertex[numOfVertices];
 
-	XMFLOAT3 default_normal = XMFLOAT3(0, 1, 0);
+	XMFLOAT3 default_normal = XMFLOAT3_UP;
 
 	// center at 0,0
 	FLOAT minX = -1.0f * (m_heightMap->width() / 2);

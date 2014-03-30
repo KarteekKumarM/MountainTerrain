@@ -117,6 +117,7 @@
     <ClInclude Include="Headers\MT_Texture.h" />
     <ClInclude Include="Headers\MT_Utility.h" />
     <ClInclude Include="Headers\MT_Window.h" />
+    <ClInclude Include="Headers\MT_Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\PixelShader.hlsl">

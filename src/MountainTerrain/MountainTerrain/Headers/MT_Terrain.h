@@ -26,9 +26,7 @@ private:
 	static const FLOAT k_SingleCellWidth;
 	static const FLOAT k_SingleCellDepth;
 	static const XMFLOAT4 k_Light_Ambient;
-	static const XMFLOAT4 k_Light_Diffuse_Warm_Fluroscent;
-	static const XMFLOAT4 k_Light_Diffuse_High_Pressure_Sodium;
-	static const XMFLOAT4 k_Light_Diffuse_White;
+	static const XMFLOAT4 k_Light_Diffuse;
 	static const XMFLOAT3 k_Light_Direction;
 
 	MT_Shader *m_shader;

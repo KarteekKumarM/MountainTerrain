@@ -102,6 +102,9 @@
     <ClInclude Include="Headers\MT_Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\MT_Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\HeightMapImage.gif">

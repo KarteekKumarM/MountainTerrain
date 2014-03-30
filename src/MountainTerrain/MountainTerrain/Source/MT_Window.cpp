@@ -51,12 +51,10 @@ void MT_Window::Init(HINSTANCE hInstance, int nCmdShow)
 					   ShowWindow(hWnd, nCmdShow);
 
 					   // initialize camera
-					   m_camera = new MT_Camera();
-					   m_camera->Init();
+					   m_camera.Init();
 
 					   // initialize Renderer
-					   m_renderer = new MT_Renderer();
-					   m_renderer->Init(hWnd, m_windowWidth, m_windowHeight);
+					   m_renderer.Init(hWnd, m_windowWidth, m_windowHeight);
 
 					   // initialize Input handler
 					   m_inputHandler = new MT_InputHandler();
@@ -91,7 +89,7 @@ int MT_Window::EnterMessageLoop()
 		// track delta time
 		ULONGLONG timeCur = GetTickCount64();
 		static ULONGLONG timeStart = timeCur;
-		float dTime = timeCur - timeStart;
+		ULONGLONG dTime = timeCur - timeStart;
 
 		// handle messages
 		if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -103,7 +101,7 @@ int MT_Window::EnterMessageLoop()
 			bool inputStateChanged = m_inputHandler->ProcessMessage(msg.message, msg.wParam, msg.lParam);
 			if(inputStateChanged) 
 			{
-				m_camera->ProcessInput(m_inputHandler);
+				m_camera.ProcessInput(m_inputHandler);
 			}
 
 			// send message to WindowsProc callback
@@ -118,26 +116,18 @@ int MT_Window::EnterMessageLoop()
 		// render
 		if (m_inputHandler->IsScreenGrabKeyPressed())
 		{
-			m_renderer->CaptureFrame();
+			m_renderer.CaptureFrame();
 			m_inputHandler->ResetScreenGrabKey();
 		}
-		m_renderer->ProcessCameraState(m_camera);
-		m_renderer->RenderFrame();
+		m_renderer.ProcessCameraState(&m_camera);
+		m_renderer.RenderFrame();
 	}
 	return msg.wParam;
 }
 
 void MT_Window::Clean()
 {
-	m_camera->Clean();
-	delete m_camera;
-	m_camera = 0;
-
 	m_inputHandler->Clean();
 	delete m_inputHandler;
 	m_inputHandler = 0;
-
-	m_renderer->Clean();
-	delete m_renderer;
-	m_renderer = 0;
 }

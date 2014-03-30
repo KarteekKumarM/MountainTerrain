@@ -1,5 +1,6 @@
 #include "MT_Camera.h"
 #include "MT_Logger.h"
+#include "MT_Settings.h"
 
 /**
 
@@ -22,9 +23,9 @@ Roll
 void MT_Camera::Init() 
 {
 	// TO DO, script eye and view direction - then calculate look at and up
-	eye = XMVectorSet(0.0f, 20.0f, 0.0f, 0.0f);
-	lookat = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	up = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	eye = XMVectorSet(CAMERA_EYE);
+	lookat = XMVectorSet(CAMERA_LOOKAT);
+	up = XMVectorSet(CAMERA_UP);
 }
 
 void MT_Camera::MoveForward(FLOAT distance) 
@@ -106,10 +107,9 @@ XMMATRIX MT_Camera::GetViewMatrix()
 
 void MT_Camera::ProcessInput(MT_InputHandler *inputHandler) 
 {
-
-	float k_angleTurnPerUnitTime = 10 * 0.0174532925; // speed of turn - converted to radian
-	float k_distMovePerUnitTime = 1.0f; // speed of move
-	float dTime = 0.5;
+	const float k_angleTurnPerUnitTime = ANGLE_TURN_PER_UNIT_TIME * MATH_DEGREE_TO_RADIAN; // speed of turn - converted to radian
+	const float k_distMovePerUnitTime = DISTANCE_MOVE_PER_UNIT_TIME; // speed of move
+	const float dTime = 0.5;
 
 	// move forward or back
 	if(inputHandler->IsForwardKeyPressed()) {

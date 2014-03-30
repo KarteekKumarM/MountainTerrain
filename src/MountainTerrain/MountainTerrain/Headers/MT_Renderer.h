@@ -20,7 +20,7 @@ private:
 	ID3D11DepthStencilView* m_depthStencilView;
 	ID3D11BlendState* m_alphaEnableBlendingState;
 
-	MT_ConstantBuffer *m_constantBuffer;
+	MT_ConstantBuffer m_constantBuffer;
 	MT_Terrain *m_scene;
 
 	bool SetupRasterizer();
