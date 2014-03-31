@@ -11,7 +11,6 @@
 using namespace DirectX;
 
 const bool k_AntiAliasingEnabled = ANTIALIASING_ENABLED;
-const bool k_WireFrameEnabled = WIRE_MESH;
 
 bool MT_Renderer::SetupRasterizer() {
 	HRESULT result = S_OK;
@@ -24,7 +23,7 @@ bool MT_Renderer::SetupRasterizer() {
 	rasterizerDesc.DepthBias = 0;
 	rasterizerDesc.DepthBiasClamp = 0.0f;
 	rasterizerDesc.DepthClipEnable = true;
-	rasterizerDesc.FillMode = k_WireFrameEnabled ? D3D11_FILL_WIREFRAME : D3D11_FILL_SOLID;
+	rasterizerDesc.FillMode = m_wireFrameEnabled ? D3D11_FILL_WIREFRAME : D3D11_FILL_SOLID;
 	rasterizerDesc.FrontCounterClockwise = false;
 	rasterizerDesc.MultisampleEnable = false;
 	rasterizerDesc.ScissorEnable = false;
@@ -57,6 +56,13 @@ void MT_Renderer::SetupViewPort(UINT screenWidth, UINT screenHeight)
 
 void MT_Renderer::ProcessInput(MT_InputHandler *inputHandler)
 {
+
+	if (inputHandler->IsWireMeshToggleKeyPressed())
+	{
+		m_wireFrameEnabled = !m_wireFrameEnabled;
+		SetupRasterizer();
+	}
+
 	m_scene->ProcessInput(inputHandler);
 }
 
@@ -223,6 +229,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 
 	SetupDepthStencilBuffer(screenWidth, screenHeight);
 
+	m_wireFrameEnabled = WIRE_MESH;
 	SetupRasterizer();
 
 	SetupViewPort(screenWidth, screenHeight);

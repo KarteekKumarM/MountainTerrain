@@ -23,6 +23,8 @@ private:
 	MT_ConstantBuffer m_constantBuffer;
 	MT_Terrain *m_scene;
 
+	bool m_wireFrameEnabled;
+
 	bool SetupRasterizer();
 	void SetupViewPort(UINT screenWidth, UINT screenHeight);
 	bool SetupBackBuffer();

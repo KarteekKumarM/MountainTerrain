@@ -10,6 +10,7 @@ static const char k_DownKey = KEY_DOWN;
 static const char k_ScreenGrabKey = KEY_SCREEN_SHOT;
 static const char k_LightToggleKey = KEY_TOGGLE_LIGHT;
 static const char k_TextureToggleKey = KEY_TOGGLE_TEXTURE;
+static const char k_WireMeshToggleKey = KEY_TOGGLE_WIREMESH;
 
 void MT_InputHandler::Init() 
 {
@@ -66,6 +67,11 @@ bool MT_InputHandler::IsTextureToggleKeyPressed()
 	return m_textureToggleKeyDownFlag;
 }
 
+bool MT_InputHandler::IsWireMeshToggleKeyPressed()
+{
+	return m_wireMeshToggleKeyDownFlag;
+}
+
 void MT_InputHandler::ResetScreenGrabKey()
 {
 	m_screenGrabKeyDownFlag = false;
@@ -116,6 +122,9 @@ bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case k_TextureToggleKey:
 			m_textureToggleKeyDownFlag = isKeyDown;
+			break;
+		case k_WireMeshToggleKey:
+			m_wireMeshToggleKeyDownFlag = isKeyDown;
 			break;
 		default:
 			// none of the cases matched
