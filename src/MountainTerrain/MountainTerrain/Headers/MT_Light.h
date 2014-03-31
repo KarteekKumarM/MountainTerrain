@@ -11,8 +11,11 @@ struct LightBufferValues
 	XMFLOAT4 ambient;
 	XMFLOAT4 diffuse;
 	XMFLOAT3 direction;
-	// to make it a multiple of 16
-	float enabled;
+	BOOL light_enabled;
+	BOOL texture_enabled;
+	
+	// extra unused variables - size must be mulitple of 16
+	BOOL extra, extraa, extraaa;
 };
 
 class MT_Light
@@ -22,11 +25,10 @@ private:
 	D3D11_MAPPED_SUBRESOURCE m_lightBuffer_mappedResource;
 	LightBufferValues m_lightBufferValues;
 	ID3D11DeviceContext *m_d3dDeviceContext;
-
 	void UpdateLightBuffer();
 public:
 	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, LightBufferValues lightBufferValues);
-	void ToggleLight();
+	void Toggle(bool shouldToggleLight, bool shouldToggleTexture);
 	void Clean();
 };
 #endif

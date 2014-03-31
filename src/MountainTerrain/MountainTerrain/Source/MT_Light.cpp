@@ -31,31 +31,32 @@ void MT_Light::UpdateLightBuffer()
 	HRESULT hr = m_d3dDeviceContext->Map(m_lightBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (FAILED(hr))
 	{
-		MessageBox(nullptr, L"Unable to create light buffer", L"Error", MB_OK);
+		MessageBox(nullptr, L"Unable to update light buffer", L"Error", MB_OK);
 		return;
 	}
 	LightBufferValues* mappedLightBufferValues = (LightBufferValues*)mappedResource.pData;
 	mappedLightBufferValues->ambient = m_lightBufferValues.ambient;
 	mappedLightBufferValues->diffuse = m_lightBufferValues.diffuse;
 	mappedLightBufferValues->direction = m_lightBufferValues.direction;
-	mappedLightBufferValues->enabled = m_lightBufferValues.enabled;
+	mappedLightBufferValues->light_enabled = m_lightBufferValues.light_enabled;
+	mappedLightBufferValues->texture_enabled = m_lightBufferValues.texture_enabled;
 	m_d3dDeviceContext->Unmap(m_lightBuffer, 0);
 
 	m_d3dDeviceContext->PSSetConstantBuffers(0, 1, &m_lightBuffer);
 }
 
-void MT_Light::ToggleLight()
+void MT_Light::Toggle( bool shouldToggleLight, bool shouldToggleTexture )
 {
-	// switch between values 0.0f and 1.0f
-	if (m_lightBufferValues.enabled == 0.0f)
+	if (shouldToggleLight)
 	{
-		m_lightBufferValues.enabled = 1.0f;
-	}
-	else
-	{
-		m_lightBufferValues.enabled = 0.0f;
+		m_lightBufferValues.light_enabled = !m_lightBufferValues.light_enabled;
 	}
 
+	if (shouldToggleTexture)
+	{
+		m_lightBufferValues.texture_enabled = !m_lightBufferValues.texture_enabled;
+	}
+	
 	UpdateLightBuffer();
 }
 

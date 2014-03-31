@@ -28,7 +28,8 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	lightValues.ambient = k_Light_Ambient;
 	lightValues.diffuse = k_Light_Diffuse;
 	lightValues.direction = k_Light_Direction;
-	lightValues.enabled = LIGHT_TOGGLE;
+	lightValues.light_enabled = LIGHT_TOGGLE;
+	lightValues.texture_enabled = TEXTURE_TOGGLE;
 	m_light->Init(d3dDevice, d3dDeviceContext, lightValues);
 
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
@@ -234,10 +235,7 @@ void MT_Terrain::RenderFrame(ID3D11DeviceContext *d3dDeviceContext)
 
 void MT_Terrain::ProcessInput(MT_InputHandler *inputHandler)
 {
-	if ( inputHandler->IsLightToggleKeyPressed() )
-	{
-		m_light->ToggleLight();
-	}
+	m_light->Toggle(inputHandler->IsLightToggleKeyPressed(), inputHandler->IsTextureToggleKeyPressed());
 }
 
 void MT_Terrain::Clean() 

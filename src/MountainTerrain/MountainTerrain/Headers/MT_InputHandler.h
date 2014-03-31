@@ -6,7 +6,7 @@
 class MT_InputHandler 
 {
 private:
-	bool m_forwardKeyDownFlag, m_backKeyDownFlag, m_leftKeyDownFlag, m_rightKeyDownFlag, m_upKeyDownFlag, m_downKeyDownFlag, m_lightToggleKeyDownFlag;
+	bool m_forwardKeyDownFlag, m_backKeyDownFlag, m_leftKeyDownFlag, m_rightKeyDownFlag, m_upKeyDownFlag, m_downKeyDownFlag, m_lightToggleKeyDownFlag, m_textureToggleKeyDownFlag;
 	bool m_screenGrabKeyDownFlag;
 public:
 	void Init();
@@ -19,6 +19,7 @@ public:
 	bool IsDownKeyPressed();
 	bool IsScreenGrabKeyPressed();
 	bool IsLightToggleKeyPressed();
+	bool IsTextureToggleKeyPressed();
 	void ResetScreenGrabKey();
 
 	bool ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);

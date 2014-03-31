@@ -3,7 +3,7 @@
 //---------------------------------------------------------------------------------------------------
 
 // Rendering Settings
-#define SCREEN_SHOT_PATH "../../../screenshots/"
+#define SCREEN_SHOT_PATH "../../../pics/"
 #define ANTIALIASING_ENABLED true;
 #define WIRE_MESH false;
 
@@ -22,6 +22,7 @@
 
 // Lighting Settings
 #define LIGHT_TOGGLE true
+#define TEXTURE_TOGGLE true
 #define LIGHT_AMBIENT_INTENSITY XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 #define LIGHT_DIFFUSE_DIRECTION XMFLOAT3(0.03f, 0.03f, -0.75f);
 /*
@@ -39,7 +40,8 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 #define KEY_UP 'e'
 #define KEY_DOWN 'c'
 #define KEY_SCREEN_SHOT 'k'
-#define KET_TOGGLE_LIGHT 'l'
+#define KEY_TOGGLE_LIGHT 'l'
+#define KEY_TOGGLE_TEXTURE 't'
 
 // Camera
 #define MATH_DEGREE_TO_RADIAN 0.0174532925f
