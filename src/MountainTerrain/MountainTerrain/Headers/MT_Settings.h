@@ -19,7 +19,7 @@
 #define GRID_CELL_WIDTH 0.4f
 #define GRID_CELL_DEPTH 0.4f
 #define SEA_LEVEL 1.0f
-#define TOGGLE_FLAT_GRID true
+#define TOGGLE_FLAT_GRID false
 
 // Lighting Settings
 #define LIGHT_TOGGLE true
