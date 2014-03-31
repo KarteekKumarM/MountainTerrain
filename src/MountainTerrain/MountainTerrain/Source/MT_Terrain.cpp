@@ -34,6 +34,7 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 
 	CreateInputLayoutObjectForVertexBuffer(d3dDevice, d3dDeviceContext, m_shader->GetVertexShaderBlob());
 
+	m_toggle_flatGrid = TOGGLE_FLAT_GRID;
 	LoadVertexBuffer(d3dDevice, d3dDeviceContext);
 	LoadIndexBuffer(d3dDevice, d3dDeviceContext);
 }
@@ -71,7 +72,7 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 			XMFLOAT3 heightVertex = m_heightMap->heightAt(i, j);
 			FLOAT x = ( minX + heightVertex.x ) * k_SingleCellWidth;
 			FLOAT z = ( minY + heightVertex.z ) * k_SingleCellDepth;
-			FLOAT y = heightVertex.y >= k_SeaLevel && true ? heightVertex.y : k_SeaLevel;
+			FLOAT y = heightVertex.y >= k_SeaLevel && !m_toggle_flatGrid ? heightVertex.y : k_SeaLevel;
 
 			int index = m_heightMap->indexOf(i, j);
 			vertices[index].Position = XMFLOAT3(x, y, z);
