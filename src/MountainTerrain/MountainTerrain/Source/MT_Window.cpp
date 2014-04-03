@@ -46,17 +46,10 @@ void MT_Window::Init(HINSTANCE hInstance, int nCmdShow)
 											 NULL, // menu
 											 hInstance, // app handle
 											 NULL);
-
-					   // show window
 					   ShowWindow(hWnd, nCmdShow);
 
-					   // initialize camera
 					   m_camera.Init();
-
-					   // initialize Renderer
 					   m_renderer.Init(hWnd, m_windowWidth, m_windowHeight);
-
-					   // initialize Input handler
 					   m_inputHandler = new MT_InputHandler();
 					   m_inputHandler->Init();
 }
