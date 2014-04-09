@@ -1,5 +1,7 @@
 #include <Windows.h>
+
 #include "MT_Window.h"
+#include "MT_StatsWindow.h"
 
 // Entry point for Windows program
 int WINAPI WinMain(HINSTANCE hInstance, 
@@ -11,6 +13,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	// create window
 	MT_Window window;
 	window.Init(hInstance, nCmdShow);
+
+	// create stats window
+	MT_StatsWindow statsWindow;
+	statsWindow.Init(hInstance, nCmdShow);
 
 	// enter message loop
 	int ret = window.EnterMessageLoop();

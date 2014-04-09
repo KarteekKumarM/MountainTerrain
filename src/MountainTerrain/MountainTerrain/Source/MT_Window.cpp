@@ -1,11 +1,13 @@
 #include "MT_Window.h"
+#include "MT_Settings.h"
+#include "MT_Profiler.h"
 
-static const LPCWSTR k_MountainTerrainWindow_ClassName = L"MountainTerrainWindowClass";
-static const LPCWSTR k_MountainTerrainWindow_Title = L"Mountain Terran - By Karteek Mekala";
-static const UINT k_MountainTerrainWindow_X_Pos = 300; 
-static const UINT k_MountainTerrainWindow_Y_Pos = 300; 
-static const UINT k_MountainTerrainWindow_Width = 800;
-static const UINT k_MountainTerrainWindow_Height = 600;
+static const LPCWSTR k_MountainTerrainWindow_ClassName = WINDOW_NAME;
+static const LPCWSTR k_MountainTerrainWindow_Title = WINDOW_TITLE;
+static const UINT k_MountainTerrainWindow_X_Pos = WINDOW_POS_X; 
+static const UINT k_MountainTerrainWindow_Y_Pos = WINDOW_POS_Y;
+static const UINT k_MountainTerrainWindow_Width = WINDOW_WIDTH;
+static const UINT k_MountainTerrainWindow_Height = WINDOW_HEIGHT;
 static const DWORD k_MountainTerrainWindow_Style = WS_OVERLAPPEDWINDOW;
 
 void MT_Window::Init(HINSTANCE hInstance, int nCmdShow) 
@@ -115,6 +117,8 @@ int MT_Window::EnterMessageLoop()
 		}
 		m_renderer.ProcessCameraState(&m_camera);
 		m_renderer.RenderFrame();
+
+		MT_Profiler::shared()->RecordFrame();
 	}
 	return msg.wParam;
 }

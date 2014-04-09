@@ -6,7 +6,6 @@
 
 #include "MT_ConstantBuffer.h"
 #include "MT_Terrain.h"
-#include "MT_Profiler.h"
 
 class MT_Renderer {
 private:
@@ -23,7 +22,6 @@ private:
 
 	MT_ConstantBuffer m_constantBuffer;
 	MT_Terrain *m_scene;
-	MT_Profiler m_profiler;
 
 	bool m_wireFrameEnabled;
 

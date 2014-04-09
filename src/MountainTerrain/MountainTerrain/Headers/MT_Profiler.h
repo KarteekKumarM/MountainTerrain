@@ -17,12 +17,12 @@ private:
 	ULONGLONG m_totalSeconds;
 	ULONGLONG m_currentFPS;
 	ULONGLONG m_frameCountInCurrentSecond;
+	void Init();
 public:
 	ULONGLONG GetAverageFPS();
 	ULONGLONG GetCurrentFPS();
-	void Init();
-	void Frame();
-	void Display(ID3D11Device *m_d3dDevice, ID3D11DeviceContext *m_d3dDeviceContext);
+	void RecordFrame();
+	static MT_Profiler* shared();
 };
 
 #endif

@@ -2,6 +2,22 @@
 //-----------------------------------MOUNTAIN TERRAIN SETTINGS---------------------------------------
 //---------------------------------------------------------------------------------------------------
 
+// Window
+#define WINDOW_NAME L"MountainTerrainWindowClass"
+#define WINDOW_TITLE L"Mountain Terran - By Karteek Mekala"
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+#define WINDOW_POS_X 300
+#define WINDOW_POS_Y 300
+
+// Stats Window
+#define STATS_WINDOW_NAME L"MountainTerrainStatsWindowClass"
+#define STATS_WINDOW_TITLE L"Statistics"
+#define STATS_WINDOW_WIDTH 400
+#define STATS_WINDOW_HEIGHT 300
+#define STATS_WINDOW_POS_X (WINDOW_POS_X + WINDOW_WIDTH + 50)
+#define STATS_WINDOW_POS_Y WINDOW_POS_Y
+
 // Rendering Settings
 #define SCREEN_SHOT_PATH "../../../pics/"
 #define ANTIALIASING_ENABLED true;

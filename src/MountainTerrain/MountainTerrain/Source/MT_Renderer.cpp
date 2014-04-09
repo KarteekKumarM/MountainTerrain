@@ -241,8 +241,6 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 
 	m_scene = new MT_Terrain();
 	m_scene->Init(m_d3dDevice, m_d3dDeviceContext);
-
-	m_profiler.Init();
 }
 
 void MT_Renderer::ProcessCameraState(MT_Camera *camera)
@@ -289,9 +287,6 @@ void MT_Renderer::RenderFrame()
 
 	// switch the back buffer and the front buffer
 	m_dxgiSwapChain->Present(0, 0);
-
-	m_profiler.Frame();
-	m_profiler.Display(m_d3dDevice, m_d3dDeviceContext);
 }
 
 void MT_Renderer::Clean() 
