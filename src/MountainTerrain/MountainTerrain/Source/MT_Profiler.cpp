@@ -1,13 +1,15 @@
 #include "MT_Profiler.h"
 #include "MT_Logger.h"
-
-/*#include "SpriteFont.h"
-#pragma comment(lib, "DirectXTK.lib")
-using namespace DirectX;*/
+#include "MT_StatsWindow.h"
 
 #define MILLISECONDS_IN_SECOND 1000
 
 static MT_Profiler* sharedInstance;
+
+void MT_Profiler::SetStatsWindow(MT_StatsWindow *statsWindow)
+{
+	m_statsWindow = statsWindow;
+}
 
 MT_Profiler* MT_Profiler::shared()
 {
@@ -19,13 +21,14 @@ MT_Profiler* MT_Profiler::shared()
 	return sharedInstance;
 }
 
-ULONGLONG MT_Profiler::GetAverageFPS()
+FLOAT MT_Profiler::GetAverageFPS()
 {
-	//ULONGLONG average = (ULONGLONG)(m_totalFrames / m_totalSeconds);
-	return 0;
+	ULONGLONG timeSinceStart = GetTickCount64() - m_startTime;
+	FLOAT average = timeSinceStart > 0 ? (FLOAT)(MILLISECONDS_IN_SECOND * m_totalFrames / timeSinceStart) : 0;
+	return average;
 }
 
-ULONGLONG MT_Profiler::GetCurrentFPS()
+UINT MT_Profiler::GetCurrentFPS()
 {
 	return m_currentFPS;
 }
@@ -35,7 +38,6 @@ void MT_Profiler::Init()
 	m_currentFPS = 0;
 	m_totalFrames = 0;
 	m_frameCountInCurrentSecond = 0;
-	m_totalSeconds = 0;
 	m_startTime = GetTickCount64();
 	m_timeAtLastSecond = m_startTime;
 }
@@ -45,13 +47,19 @@ void MT_Profiler::RecordFrame()
 	m_totalFrames++;
 	m_frameCountInCurrentSecond++;
 	ULONGLONG currentTime = GetTickCount64();
-	if (m_timeAtLastSecond - currentTime >= MILLISECONDS_IN_SECOND)
+	ULONGLONG timeDiff = currentTime - m_timeAtLastSecond;
+	if (timeDiff >= MILLISECONDS_IN_SECOND)
 	{
 		m_currentFPS = m_frameCountInCurrentSecond;
-		m_totalSeconds++;
 
 		// reset
 		m_frameCountInCurrentSecond = 0;
 		m_timeAtLastSecond = currentTime;
+
+		// redraw stats every second
+		if (m_statsWindow != NULL)
+		{
+			m_statsWindow->Redraw();
+		}
 	}
 }

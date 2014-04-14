@@ -16,11 +16,6 @@ static const DWORD k_StatsWindow_Style = WS_OVERLAPPEDWINDOW;
 
 void PrintStatistics(HDC hdc)
 {
-	/*TCHAR greeting[] = _T("Hello, World!");
-	TextOut(hdc,
-			5, 5,
-			greeting, _tcslen(greeting));*/
-
 	MT_Profiler* profiler = MT_Profiler::shared();
 
 	char currentFPS[512];
@@ -28,9 +23,27 @@ void PrintStatistics(HDC hdc)
 	std::string currentFPSString(currentFPS);
 	std::wstring currentFPSStringW(currentFPSString.begin(), currentFPSString.end());
 
+	char averageFPS[512];
+	sprintf_s(averageFPS, 512, "Average FPS : %.2f", profiler->GetAverageFPS());
+	std::string averageFPSString(averageFPS);
+	std::wstring averageFPSStringW(averageFPSString.begin(), averageFPSString.end());
+
 	TextOut(hdc,
 		5, 5,
 		currentFPSStringW.c_str(), strlen(currentFPS));
+
+	TextOut(hdc,
+		5, 30,
+		averageFPSStringW.c_str(), strlen(averageFPS));
+}
+
+void MT_StatsWindow::Redraw()
+{
+	/*GetClientRect(hWnd, &rcClient);
+	InvalidateRect(hWnd, &rcClient, true);
+	UpdateWindow(hWnd);*/
+	//RedrawWindow(m_hWnd, NULL, NULL, RDW_INVALIDATE);
+	InvalidateRect(m_hWnd, NULL, true);
 }
 
 LRESULT CALLBACK MT_StatsWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -58,9 +71,6 @@ LRESULT CALLBACK MT_StatsWindow::WindowProc(HWND hWnd, UINT message, WPARAM wPar
 }
 void MT_StatsWindow::Init(HINSTANCE hInstance, int nCmdShow)
 {
-	// handle to the window
-	HWND hWnd;
-
 	// struct for information regarding the window class
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX)); // clear out
@@ -81,7 +91,7 @@ void MT_StatsWindow::Init(HINSTANCE hInstance, int nCmdShow)
 	m_windowHeight = windowRect.bottom - windowRect.top;
 
 	// create a window using the window class
-	hWnd = CreateWindowEx(NULL, // windows style 
+	m_hWnd = CreateWindowEx(NULL, // windows style 
 							k_StatsWindow_ClassName, // window class to use
 							k_StatsWindow_Title, // title of the window
 							k_StatsWindow_Style, // window style
@@ -93,7 +103,7 @@ void MT_StatsWindow::Init(HINSTANCE hInstance, int nCmdShow)
 							NULL, // menu
 							hInstance, // app handle
 							NULL);
-	ShowWindow(hWnd, nCmdShow);
+	ShowWindow(m_hWnd, nCmdShow);
 }
 
 void MT_StatsWindow::Clean()
