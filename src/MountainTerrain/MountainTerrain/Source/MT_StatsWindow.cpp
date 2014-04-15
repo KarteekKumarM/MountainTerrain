@@ -14,35 +14,54 @@ static const UINT k_StatsWindow_Width = STATS_WINDOW_WIDTH;
 static const UINT k_StatsWindow_Height = STATS_WINDOW_HEIGHT;
 static const DWORD k_StatsWindow_Style = WS_OVERLAPPEDWINDOW;
 
+/*void Print(HDC hdc, const char *format, ...)
+{
+// TODO
+	char buffer[512];
+	sprintf_s(buffer, 512, "Current FPS : %d", profiler->GetCurrentFPS());
+	std::string bufferString(buffer);
+	std::wstring bufferStringW(bufferString.begin(), bufferString.end());
+}*/
+
 void PrintStatistics(HDC hdc)
 {
 	MT_Profiler* profiler = MT_Profiler::shared();
 
 	char currentFPS[512];
-	sprintf_s(currentFPS, 512, "Current FPS : %d", profiler->GetCurrentFPS());
+	sprintf_s(currentFPS, 512, "Current FPS : %u", profiler->GetCurrentFPS());
 	std::string currentFPSString(currentFPS);
 	std::wstring currentFPSStringW(currentFPSString.begin(), currentFPSString.end());
+	TextOut(hdc,
+		5, 5,
+		currentFPSStringW.c_str(), strlen(currentFPS));
 
 	char averageFPS[512];
 	sprintf_s(averageFPS, 512, "Average FPS : %.2f", profiler->GetAverageFPS());
 	std::string averageFPSString(averageFPS);
 	std::wstring averageFPSStringW(averageFPSString.begin(), averageFPSString.end());
-
-	TextOut(hdc,
-		5, 5,
-		currentFPSStringW.c_str(), strlen(currentFPS));
-
 	TextOut(hdc,
 		5, 30,
 		averageFPSStringW.c_str(), strlen(averageFPS));
+
+	char numberOfVertices[512];
+	sprintf_s(numberOfVertices, 512, "Number of vertices: %u", profiler->GetNumberOfVertices());
+	std::string numberOfVerticesString(numberOfVertices);
+	std::wstring numberOfVerticesStringW(numberOfVerticesString.begin(), numberOfVerticesString.end());
+	TextOut(hdc,
+		5, 55,
+		numberOfVerticesStringW.c_str(), strlen(numberOfVertices));
+
+	char numberOfTriangles[512];
+	sprintf_s(numberOfTriangles, 512, "Number of triangles: %u", profiler->GetNumberOfTriangles());
+	std::string numberOfTrianglesString(numberOfTriangles);
+	std::wstring numberOfTrianglesStringW(numberOfTrianglesString.begin(), numberOfTrianglesString.end());
+	TextOut(hdc,
+		5, 80,
+		numberOfTrianglesStringW.c_str(), strlen(numberOfTriangles));
 }
 
 void MT_StatsWindow::Redraw()
 {
-	/*GetClientRect(hWnd, &rcClient);
-	InvalidateRect(hWnd, &rcClient, true);
-	UpdateWindow(hWnd);*/
-	//RedrawWindow(m_hWnd, NULL, NULL, RDW_INVALIDATE);
 	InvalidateRect(m_hWnd, NULL, true);
 }
 

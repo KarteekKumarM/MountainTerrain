@@ -33,6 +33,16 @@ UINT MT_Profiler::GetCurrentFPS()
 	return m_currentFPS;
 }
 
+UINT MT_Profiler::GetNumberOfVertices()
+{
+	return m_numberOfVertices;
+}
+
+UINT MT_Profiler::GetNumberOfTriangles()
+{
+	return m_numberOfTriangles;
+}
+
 void MT_Profiler::Init()
 {
 	m_currentFPS = 0;
@@ -40,6 +50,16 @@ void MT_Profiler::Init()
 	m_frameCountInCurrentSecond = 0;
 	m_startTime = GetTickCount64();
 	m_timeAtLastSecond = m_startTime;
+}
+
+void MT_Profiler::RecordNumberOfVertices(UINT numOfVertices)
+{
+	m_numberOfVertices = numOfVertices;
+}
+
+void MT_Profiler::RecordNumberOfTriangles(UINT numberOfTriangles)
+{
+	m_numberOfTriangles = numberOfTriangles;
 }
 
 void MT_Profiler::RecordFrame()

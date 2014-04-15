@@ -19,11 +19,17 @@ private:
 	ULONGLONG m_totalFrames;
 	UINT m_currentFPS;
 	UINT m_frameCountInCurrentSecond;
+	UINT m_numberOfTriangles;
+	UINT m_numberOfVertices;
 	void Init();
 public:
 	void SetStatsWindow(MT_StatsWindow *statsWindow);
 	FLOAT GetAverageFPS();
 	UINT GetCurrentFPS();
+	UINT GetNumberOfVertices();
+	UINT GetNumberOfTriangles();
+	void RecordNumberOfTriangles(UINT numOfTriangles);
+	void RecordNumberOfVertices(UINT numOfVertices);
 	void RecordFrame();
 	static MT_Profiler* shared();
 };

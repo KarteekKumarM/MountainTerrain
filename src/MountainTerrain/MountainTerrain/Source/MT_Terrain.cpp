@@ -1,6 +1,7 @@
 #include "MT_Terrain.h"
 #include "MT_Utility.h"
 #include "MT_Settings.h"
+#include "MT_Profiler.h"
 
 const LPCWSTR MT_Terrain::k_VertexShaderFileName = VERTEX_SHADER_PATH;
 const LPCWSTR MT_Terrain::k_PixelShaderFileName = PIXEL_SHADER_PATH;
@@ -78,6 +79,8 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 			vertices[index].Position = XMFLOAT3(x, y, z);
 		}
 	}
+
+	MT_Profiler::shared()->RecordNumberOfVertices(numOfVertices);
 
 	// Calc normals
 	XMFLOAT3 *normals = new XMFLOAT3[numOfVertices];
@@ -193,6 +196,8 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 			indices[indexCount++] = indiciesForThisPoint.indexOf_UR;
 		}
 	}
+
+	MT_Profiler::shared()->RecordNumberOfTriangles(numberOfIndices/3);
 
 	// description
 	D3D11_BUFFER_DESC indexBufferDesc;
