@@ -6,9 +6,8 @@
 class MT_InputHandler 
 {
 private:
-	bool m_forwardKeyDownFlag, m_backKeyDownFlag, m_leftKeyDownFlag, m_rightKeyDownFlag, m_upKeyDownFlag, m_downKeyDownFlag;
-	bool m_lightToggleKeyDownFlag, m_textureToggleKeyDownFlag, m_wireMeshToggleKeyDownFlag;
-	bool m_screenGrabKeyDownFlag;
+	int m_buttons;
+	void SetButton(bool setFlag, int flagToSet);
 public:
 	void Init();
 

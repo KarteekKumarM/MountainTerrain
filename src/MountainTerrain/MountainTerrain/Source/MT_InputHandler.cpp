@@ -12,6 +12,17 @@ static const char k_LightToggleKey = KEY_TOGGLE_LIGHT;
 static const char k_TextureToggleKey = KEY_TOGGLE_TEXTURE;
 static const char k_WireMeshToggleKey = KEY_TOGGLE_WIREMESH;
 
+#define BUTTON_FORWARD					(1<<0)
+#define BUTTON_BACK						(1<<1)
+#define BUTTON_LEFT						(1<<2)
+#define BUTTON_RIGHT					(1<<3)
+#define BUTTON_UP						(1<<4)
+#define BUTTON_DOWN						(1<<5)
+#define BUTTON_LIGHT_TOGGLE				(1<<6)
+#define BUTTON_TEXTURE_TOGGLE			(1<<7)
+#define BUTTON_WIREMESH_TOGGLE			(1<<8)
+#define BUTTON_SCREEN_GRAB				(1<<9)
+
 void MT_InputHandler::Init() 
 {
 	
@@ -24,57 +35,69 @@ void MT_InputHandler::Clean()
 
 bool MT_InputHandler::IsForwardKeyPressed() 
 {
-	return m_forwardKeyDownFlag;
+	return (m_buttons & BUTTON_FORWARD) != 0;
 }
 
 bool MT_InputHandler::IsBackKeyPressed()
 {
-	return m_backKeyDownFlag;
+	return (m_buttons & BUTTON_BACK) != 0;
 }
 
 bool MT_InputHandler::IsLeftKeyPressed()
 {
-	return m_leftKeyDownFlag;
+	return (m_buttons & BUTTON_LEFT) != 0;
 }
 
 bool MT_InputHandler::IsRightKeyPressed()
 {
-	return m_rightKeyDownFlag;
+	return (m_buttons & BUTTON_RIGHT) != 0;
 }
 
 bool MT_InputHandler::IsUpKeyPressed()
 {
-	return m_upKeyDownFlag;
+	return (m_buttons & BUTTON_UP) != 0;
 }
 
 bool MT_InputHandler::IsDownKeyPressed() 
 {
-	return m_downKeyDownFlag;
+	return (m_buttons & BUTTON_DOWN) != 0;
 }
 
 bool MT_InputHandler::IsScreenGrabKeyPressed()
 {
-	return m_screenGrabKeyDownFlag;
+	return (m_buttons & BUTTON_SCREEN_GRAB) != 0;
 }
 
 bool MT_InputHandler::IsLightToggleKeyPressed()
 {
-	return m_lightToggleKeyDownFlag;
+	return (m_buttons & BUTTON_LIGHT_TOGGLE) != 0;
 }
 
 bool MT_InputHandler::IsTextureToggleKeyPressed()
 {
-	return m_textureToggleKeyDownFlag;
+	return (m_buttons & BUTTON_TEXTURE_TOGGLE) != 0;
 }
 
 bool MT_InputHandler::IsWireMeshToggleKeyPressed()
 {
-	return m_wireMeshToggleKeyDownFlag;
+	return (m_buttons & BUTTON_WIREMESH_TOGGLE) != 0;
 }
 
 void MT_InputHandler::ResetScreenGrabKey()
 {
-	m_screenGrabKeyDownFlag = false;
+	m_buttons &= BUTTON_SCREEN_GRAB;
+}
+
+void MT_InputHandler::SetButton(bool setFlag, int flagToSet)
+{
+	if (setFlag)
+	{
+		m_buttons |= flagToSet;
+	}
+	else
+	{
+		m_buttons &= !flagToSet;
+	}
 }
 
 bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
@@ -84,50 +107,47 @@ bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 	char keyChar = MapVirtualKey(wParam, MAPVK_VK_TO_CHAR);
 	if(keyChar != '\0') {
 
-		// ignore case
 		keyChar = tolower(keyChar);
 
-		// key down or key up
 		bool isKeyDown = message == WM_KEYDOWN;
 		if(message == WM_KEYUP) {
 			isKeyDown = false;
 		}
 
-		// update the correct key flag
+		// only one key input affects at a time in this order
 		stateChanged = true;
 		switch(keyChar) {
 		case k_ForwardKey:
-			m_forwardKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_FORWARD);
 			break;
 		case k_BackKey:
-			m_backKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_BACK);
 			break;
 		case k_LeftKey:
-			m_leftKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_LEFT);
 			break;
 		case k_RightKey:
-			m_rightKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_RIGHT);
 			break;
 		case k_UpKey:
-			m_upKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_UP);
 			break;
 		case k_DownKey:
-			m_downKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_DOWN);
 			break;
 		case k_ScreenGrabKey:
-			m_screenGrabKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_SCREEN_GRAB);
 			break;
 		case k_LightToggleKey:
-			m_lightToggleKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_LIGHT_TOGGLE);
 			break;
 		case k_TextureToggleKey:
-			m_textureToggleKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_TEXTURE_TOGGLE);
 			break;
 		case k_WireMeshToggleKey:
-			m_wireMeshToggleKeyDownFlag = isKeyDown;
+			SetButton(isKeyDown, BUTTON_WIREMESH_TOGGLE);
 			break;
 		default:
-			// none of the cases matched
 			stateChanged = false;
 		}
 	}

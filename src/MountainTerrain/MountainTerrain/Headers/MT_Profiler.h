@@ -4,11 +4,38 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <Windows.h>
+#include <string>
 
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
 
 class MT_StatsWindow;
+
+//enum ProfiledStatsTypes
+//{
+//	CURRENT_FPS,
+//	AVERAGE_FPS,
+//	NUMBER_OF_VERTICES,
+//	NUMBER_OF_TRIANGLES,
+//
+//	PROFILED_STATS_COUNT
+//};
+//
+//std::string ProfiledStatsNames[]
+//{
+//	"Current FPS",
+//	"Average FPS",
+//	"Number of Vertices",
+//	"Number of Triangles"
+//};
+//
+//FLOAT ProfiledStatsValues[]
+//{
+//		0,
+//		0,
+//		0,
+//		0
+//};
 
 class MT_Profiler
 {
