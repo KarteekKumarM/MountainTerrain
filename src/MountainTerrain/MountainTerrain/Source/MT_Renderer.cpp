@@ -12,7 +12,8 @@ using namespace DirectX;
 
 const bool k_AntiAliasingEnabled = ANTIALIASING_ENABLED;
 
-bool MT_Renderer::SetupRasterizer() {
+bool MT_Renderer::SetupRasterizer() 
+{
 	HRESULT result = S_OK;
 
 	// setup how the polygons will be drawn
@@ -56,14 +57,22 @@ void MT_Renderer::SetupViewPort(UINT screenWidth, UINT screenHeight)
 
 void MT_Renderer::ProcessInput(MT_InputHandler *inputHandler)
 {
-
 	if (inputHandler->IsWireMeshToggleKeyPressed())
 	{
 		m_wireFrameEnabled = !m_wireFrameEnabled;
 		SetupRasterizer();
 	}
 
-	m_scene->ProcessInput(inputHandler);
+	if (inputHandler->IsSkyToggleKeyPressed())
+	{
+		m_skyboxToggle = !m_skyboxToggle;
+	}
+	if (inputHandler->IsTerrainToggleKeyPressed())
+	{
+		m_terrainToggle = !m_terrainToggle;
+	}
+
+	m_terrain->ProcessInput(inputHandler);
 }
 
 bool MT_Renderer::SetupBackBuffer() 
@@ -239,14 +248,24 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 	// world, view projection matrix 
 	m_constantBuffer.Init(m_d3dDevice, screenWidth, screenHeight);
 
-	m_scene = new MT_Terrain();
-	m_scene->Init(m_d3dDevice, m_d3dDeviceContext);
+	m_terrain = new MT_Terrain();
+	m_terrain->Init(m_d3dDevice, m_d3dDeviceContext);
+
+	m_skybox = new MT_Skybox();
+	m_skybox->Init(m_d3dDevice);
+
+	m_terrainToggle = true;
+	m_skyboxToggle = true;
 }
 
 void MT_Renderer::ProcessCameraState(MT_Camera *camera)
 {
 	// world, view projection matrix 
 	m_constantBuffer.Update(m_d3dDeviceContext, camera);
+
+	XMFLOAT3 eye;
+	XMStoreFloat3(&eye, camera->GetEye());
+	m_skybox->Update(eye);
 }
 
 void MT_Renderer::CaptureFrame()
@@ -283,20 +302,24 @@ void MT_Renderer::RenderFrame()
 	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// scene rendering
-	m_scene->RenderFrame(m_d3dDeviceContext);
+	if (m_skyboxToggle)
+		m_skybox->RenderFrame(m_d3dDevice, m_d3dDeviceContext);
+	if ( m_terrainToggle )
+		m_terrain->RenderFrame(m_d3dDeviceContext);
 
 	// switch the back buffer and the front buffer
 	m_dxgiSwapChain->Present(0, 0);
 }
+
+#define CLEAN( obj_ptr )	{ obj_ptr->Clean(); delete obj_ptr; obj_ptr = 0; }
 
 void MT_Renderer::Clean() 
 {
 	// switch to window from full screen
 	m_dxgiSwapChain->SetFullscreenState(FALSE, NULL);
 
-	m_scene->Clean();
-	delete m_scene;
-	m_scene = 0;
+	CLEAN(m_terrain);
+	CLEAN(m_skybox);
 
 	if(m_depthStencilView) m_depthStencilView->Release();
 	if(m_depthStencilState) m_depthStencilState->Release();

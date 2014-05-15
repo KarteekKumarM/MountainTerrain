@@ -11,9 +11,10 @@ using namespace DirectX;
 class MT_Camera 
 {
 private:
-	XMVECTOR eye, lookat, up;
+	XMVECTOR m_eye, m_lookat, m_up;
 public:
 	void Init();
+	XMVECTOR GetEye();
 	XMMATRIX GetViewMatrix();
 	void MoveForward(FLOAT distance);
 	void MoveBack(FLOAT distance);

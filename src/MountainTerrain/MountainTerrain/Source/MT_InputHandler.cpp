@@ -11,6 +11,8 @@ static const char k_ScreenGrabKey = KEY_SCREEN_SHOT;
 static const char k_LightToggleKey = KEY_TOGGLE_LIGHT;
 static const char k_TextureToggleKey = KEY_TOGGLE_TEXTURE;
 static const char k_WireMeshToggleKey = KEY_TOGGLE_WIREMESH;
+static const char k_SkyboxToggleKey = KEY_TOGGLE_SKYBOX;
+static const char k_TerrainToggleKey = KEY_TOGGLE_TERRAIN;
 
 #define BUTTON_FORWARD					(1<<0)
 #define BUTTON_BACK						(1<<1)
@@ -22,6 +24,8 @@ static const char k_WireMeshToggleKey = KEY_TOGGLE_WIREMESH;
 #define BUTTON_TEXTURE_TOGGLE			(1<<7)
 #define BUTTON_WIREMESH_TOGGLE			(1<<8)
 #define BUTTON_SCREEN_GRAB				(1<<9)
+#define BUTTON_SKYBOX_TOGGLE			(1<<10)
+#define BUTTON_TERRAIN_TOGGLE			(1<<11)
 
 void MT_InputHandler::Init() 
 {
@@ -31,6 +35,16 @@ void MT_InputHandler::Init()
 void MT_InputHandler::Clean()
 {
 
+}
+
+bool MT_InputHandler::IsTerrainToggleKeyPressed()
+{
+	return (m_buttons & BUTTON_TERRAIN_TOGGLE) != 0;
+}
+
+bool MT_InputHandler::IsSkyToggleKeyPressed()
+{
+	return (m_buttons & BUTTON_SKYBOX_TOGGLE) != 0;
 }
 
 bool MT_InputHandler::IsForwardKeyPressed() 
@@ -146,6 +160,12 @@ bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		case k_WireMeshToggleKey:
 			SetButton(isKeyDown, BUTTON_WIREMESH_TOGGLE);
+			break;
+		case k_SkyboxToggleKey:
+			SetButton(isKeyDown, BUTTON_SKYBOX_TOGGLE);
+			break;
+		case k_TerrainToggleKey:
+			SetButton(isKeyDown, BUTTON_TERRAIN_TOGGLE);
 			break;
 		default:
 			stateChanged = false;

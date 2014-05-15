@@ -60,6 +60,8 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 #define KEY_TOGGLE_LIGHT 'l'
 #define KEY_TOGGLE_TEXTURE 't'
 #define KEY_TOGGLE_WIREMESH 'm'
+#define KEY_TOGGLE_SKYBOX '2'
+#define KEY_TOGGLE_TERRAIN '1'
 
 // Camera
 #define MATH_DEGREE_TO_RADIAN 0.0174532925f
@@ -68,6 +70,11 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 #define CAMERA_EYE 0.0f, 20.0f, 0.0f, 0.0f
 #define CAMERA_LOOKAT 0.0f, 0.0f, 0.0f, 0.0f
 #define CAMERA_UP 0.0f, 0.0f, 1.0f, 0.0f
+
+// skybox
+#define SKYBOX_WIDTH 200
+#define SKYBOX_HEIGHT 200
+#define SKYBOX_DEPTH 200
 
 // some defaults
 #define XMFLOAT3_UP XMFLOAT3(0, 1, 0)

@@ -215,7 +215,7 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 	HRESULT hr = d3dDevice->CreateBuffer(&indexBufferDesc, &indexData, &m_indexBuffer);
 	if(FAILED(hr))
 	{
-		MessageBox(nullptr, L"Unable to create index buffer", L"Error", MB_OK);
+		MessageBox(nullptr, L"Terrain - Unable to create index buffer", L"Error", MB_OK);
 	}
 
 	delete[] indices;

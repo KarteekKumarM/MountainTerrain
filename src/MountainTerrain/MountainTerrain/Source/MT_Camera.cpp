@@ -23,18 +23,18 @@ Roll
 void MT_Camera::Init() 
 {
 	// TO DO, script eye and view direction - then calculate look at and up
-	eye = XMVectorSet(CAMERA_EYE);
-	lookat = XMVectorSet(CAMERA_LOOKAT);
-	up = XMVectorSet(CAMERA_UP);
+	m_eye = XMVectorSet(CAMERA_EYE);
+	m_lookat = XMVectorSet(CAMERA_LOOKAT);
+	m_up = XMVectorSet(CAMERA_UP);
 }
 
 void MT_Camera::MoveForward(FLOAT distance) 
 {
-	XMVECTOR viewDirection = lookat - eye;
+	XMVECTOR viewDirection = m_lookat - m_eye;
 	viewDirection = distance * XMVector3Normalize(viewDirection);
 	
-	eye += viewDirection;
-	lookat += viewDirection;
+	m_eye += viewDirection;
+	m_lookat += viewDirection;
 }
 
 void MT_Camera::MoveBack(FLOAT distance) 
@@ -58,20 +58,20 @@ XMVECTOR RotateVectorByAngleAroundAxis(XMVECTOR inputVector, XMVECTOR rotationAx
 
 void MT_Camera::TurnUp(FLOAT angle)
 {
-	XMVECTOR viewDirection = lookat - eye;
+	XMVECTOR viewDirection = m_lookat - m_eye;
 	XMVECTOR length = XMVector3Length(viewDirection);
 	viewDirection = XMVector3Normalize(viewDirection);
 
-	XMVECTOR rightVector = XMVector3Normalize(XMVector3Cross(viewDirection, up));
+	XMVECTOR rightVector = XMVector3Normalize(XMVector3Cross(viewDirection, m_up));
 	
-	up = XMVector3Normalize(up);
+	m_up = XMVector3Normalize(m_up);
 
-	viewDirection = viewDirection * cos(angle) + up * sin(angle);
+	viewDirection = viewDirection * cos(angle) + m_up * sin(angle);
 	viewDirection = XMVector3Normalize(viewDirection);
 	
-	up = XMVector3Normalize(XMVector3Cross(rightVector, viewDirection));
+	m_up = XMVector3Normalize(XMVector3Cross(rightVector, viewDirection));
 
-	lookat = eye + (viewDirection * length);
+	m_lookat = m_eye + (viewDirection * length);
 }
 void MT_Camera::TurnDown(FLOAT angle)
 {
@@ -85,24 +85,29 @@ void MT_Camera::TurnRight(FLOAT angle)
 
 void MT_Camera::TurnLeft(FLOAT angle) 
 {
-	XMVECTOR viewDirection = lookat - eye;
+	XMVECTOR viewDirection = m_lookat - m_eye;
 
 	XMVECTOR length = XMVector3Length(viewDirection);
 	viewDirection = XMVector3Normalize(viewDirection);
 
-	XMVECTOR rightVector = XMVector3Normalize(XMVector3Cross(viewDirection, up));
+	XMVECTOR rightVector = XMVector3Normalize(XMVector3Cross(viewDirection, m_up));
 
-	up = XMVector3Normalize(up);
+	m_up = XMVector3Normalize(m_up);
 
 	viewDirection = viewDirection * cos(angle) + rightVector * sin(angle);
 	viewDirection = XMVector3Normalize(viewDirection);
 
-	lookat = eye + (viewDirection * length);
+	m_lookat = m_eye + (viewDirection * length);
+}
+
+XMVECTOR MT_Camera::GetEye()
+{
+	return m_eye;
 }
 
 XMMATRIX MT_Camera::GetViewMatrix()
 {
-	return DirectX::XMMatrixLookAtLH(eye, lookat, up);
+	return DirectX::XMMatrixLookAtLH(m_eye, m_lookat, m_up);
 }
 
 void MT_Camera::ProcessInput(MT_InputHandler *inputHandler) 

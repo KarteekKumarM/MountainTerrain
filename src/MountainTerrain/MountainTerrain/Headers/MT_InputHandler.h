@@ -22,6 +22,8 @@ public:
 	bool IsTextureToggleKeyPressed();
 	bool IsWireMeshToggleKeyPressed();
 	void ResetScreenGrabKey();
+	bool IsSkyToggleKeyPressed();
+	bool IsTerrainToggleKeyPressed();
 
 	bool ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
 	void Clean();

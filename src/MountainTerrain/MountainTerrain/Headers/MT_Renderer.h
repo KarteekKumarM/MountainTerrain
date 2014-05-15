@@ -6,6 +6,7 @@
 
 #include "MT_ConstantBuffer.h"
 #include "MT_Terrain.h"
+#include "MT_Skybox.h"
 
 class MT_Renderer {
 private:
@@ -21,9 +22,12 @@ private:
 	ID3D11BlendState* m_alphaEnableBlendingState;
 
 	MT_ConstantBuffer m_constantBuffer;
-	MT_Terrain *m_scene;
+	MT_Skybox *m_skybox;
+	MT_Terrain *m_terrain;
 
 	bool m_wireFrameEnabled;
+	bool m_skyboxToggle;
+	bool m_terrainToggle;
 
 	bool SetupRasterizer();
 	void SetupViewPort(UINT screenWidth, UINT screenHeight);
