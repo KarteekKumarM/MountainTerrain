@@ -28,8 +28,8 @@
 #define TEXTURE_GRASS_PATH "Resources/texture_grass.bmp"
 #define TEXTURE_ROCK_PATH "Resources/texture_rock.bmp"
 #define TEXTURE_WATER_PATH "Resources/texture_water.bmp"
-#define VERTEX_SHADER_PATH L"VertexShader.cso"
-#define PIXEL_SHADER_PATH L"PixelShader.cso"
+#define VERTEX_SHADER_PATH L"MT_Terrain_VertexShader.cso"
+#define PIXEL_SHADER_PATH L"MT_Terrain_PixelShader.cso"
 
 // Terrain Settings
 #define GRID_CELL_WIDTH 0.4f

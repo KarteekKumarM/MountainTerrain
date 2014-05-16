@@ -68,8 +68,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\VertexShader.hlsl" />
-    <FxCompile Include="Shaders\PixelShader.hlsl" />
+    <FxCompile Include="Shaders\MT_Terrain_VertexShader.hlsl" />
+    <FxCompile Include="Shaders\MT_Terrain_PixelShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\MT_Renderer.h">
@@ -145,8 +145,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\Header.hlsli" />
-    <None Include="PixelShader.cso" />
-    <None Include="VertexShader.cso" />
+    <None Include="Shaders\MT_Terrain_ShaderHeader.hlsli" />
   </ItemGroup>
 </Project>
