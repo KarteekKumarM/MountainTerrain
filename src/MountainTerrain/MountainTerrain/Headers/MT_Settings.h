@@ -76,9 +76,9 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 #define CAMERA_UP 0.0f, 0.0f, 1.0f, 0.0f
 
 // skybox
-#define SKYBOX_WIDTH 200
-#define SKYBOX_HEIGHT 200
-#define SKYBOX_DEPTH 200
+#define SKYBOX_WIDTH 100
+#define SKYBOX_HEIGHT 100
+#define SKYBOX_DEPTH 100
 
 // some defaults
 #define XMFLOAT3_UP XMFLOAT3(0, 1, 0)

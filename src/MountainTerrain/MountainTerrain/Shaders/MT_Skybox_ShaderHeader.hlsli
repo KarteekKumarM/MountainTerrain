@@ -5,5 +5,5 @@ struct VS_INPUT
 
 struct PS_INPUT
 {
-	float4 Position: POSITION;
+	float4 Position: SV_POSITION;
 };

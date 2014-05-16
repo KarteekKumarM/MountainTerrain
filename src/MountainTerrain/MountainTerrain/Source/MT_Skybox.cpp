@@ -77,9 +77,7 @@ void MT_Skybox::InitIndices()
 void MT_Skybox::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
 {
 	m_shader = new MT_Shader();
-	// TODO FIXME
-	//m_shader->Init(d3dDevice, d3dDeviceContext, SKYBOX_VERTEX_SHADER_PATH, SKYBOX_PIXEL_SHADER_PATH);
-	m_shader->Init(d3dDevice, d3dDeviceContext, TERRAIN_VERTEX_SHADER_PATH, TERRAIN_PIXEL_SHADER_PATH);
+	m_shader->Init(d3dDevice, d3dDeviceContext, SKYBOX_VERTEX_SHADER_PATH, SKYBOX_PIXEL_SHADER_PATH);
 
 	InitVertices();
 	InitIndices();
