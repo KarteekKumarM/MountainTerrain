@@ -153,13 +153,16 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 		}
 	}
 
+	unsigned int sizeofTerrainVertex = sizeof(TerrainVertex);
+	assert(sizeofTerrainVertex % 12 == 0);
+
 	// desc
 	D3D11_BUFFER_DESC vertexBuffDesc;
 	ZeroMemory(&vertexBuffDesc, sizeof(vertexBuffDesc));
-    vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;					// write access access by CPU and GPU
-	vertexBuffDesc.ByteWidth = sizeof(TerrainVertex) * numOfVertices;			// size is the VERTEX struct
-    vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// use as a vertex buffer
-    vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;		// allow CPU to write in buffer
+    vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;								// write access access by CPU and GPU
+	vertexBuffDesc.ByteWidth = sizeofTerrainVertex * numOfVertices;			// size is the VERTEX struct
+    vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;					// use as a vertex buffer
+    vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;					// allow CPU to write in buffer
 
 	// buffer
 	D3D11_SUBRESOURCE_DATA vertexData;
