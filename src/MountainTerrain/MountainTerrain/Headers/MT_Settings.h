@@ -24,12 +24,16 @@
 #define WIRE_MESH false;
 
 // Terrain Resources
-#define HEIGHTMAP_PATH "Resources/HeightMapImage.bmp"
-#define TEXTURE_GRASS_PATH "Resources/texture_grass.bmp"
-#define TEXTURE_ROCK_PATH "Resources/texture_rock.bmp"
-#define TEXTURE_WATER_PATH "Resources/texture_water.bmp"
-#define VERTEX_SHADER_PATH L"MT_Terrain_VertexShader.cso"
-#define PIXEL_SHADER_PATH L"MT_Terrain_PixelShader.cso"
+#define TERRAIN_HEIGHTMAP_PATH "Resources/HeightMapImage.bmp"
+#define TERRAIN_TEXTURE_GRASS_PATH "Resources/texture_grass.bmp"
+#define TERRAIN_TEXTURE_ROCK_PATH "Resources/texture_rock.bmp"
+#define TERRAIN_TEXTURE_WATER_PATH "Resources/texture_water.bmp"
+#define TERRAIN_VERTEX_SHADER_PATH L"MT_Terrain_VertexShader.cso"
+#define TERRAIN_PIXEL_SHADER_PATH L"MT_Terrain_PixelShader.cso"
+
+// Skybox Resources
+#define SKYBOX_VERTEX_SHADER_PATH L"MT_Skybox_VertexShader.cso"
+#define SKYBOX_PIXEL_SHADER_PATH L"MT_Skybox_PixelShader.cso"
 
 // Terrain Settings
 #define GRID_CELL_WIDTH 0.4f

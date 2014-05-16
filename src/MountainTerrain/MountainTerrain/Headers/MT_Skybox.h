@@ -1,11 +1,14 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 
+#include "MT_Shader.h"
+
 using namespace DirectX;
 
 struct SkyboxVertex
 {
 	XMFLOAT3 Position;
+	int FaceIndex;
 };
 
 enum
@@ -42,13 +45,16 @@ private:
 	ID3D11Buffer *m_vertexBuffer;
 	ID3D11Buffer *m_indexBuffer;
 
+	MT_Shader* m_shader;
+
 	void InitVertices();
 	void InitIndices();
 	void LoadVertexBuffer(ID3D11Device *d3dDevice);
 	void LoadIndexBuffer(ID3D11Device *d3dDevice);
 public:
-	void Init(ID3D11Device *d3dDevice);
+	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
 	void Update(XMFLOAT3 playerPosition);
+	void SetShadersActive(ID3D11DeviceContext *d3dDeviceContext);
 	void RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
 	void Clean();
 };

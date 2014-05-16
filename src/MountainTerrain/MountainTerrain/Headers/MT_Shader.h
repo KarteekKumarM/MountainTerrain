@@ -14,6 +14,7 @@ private:
 	static bool LoadShaderByteCode(const char *fileName);
 public:
 	HRESULT Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, const LPCWSTR vertexShaderFileName, const LPCWSTR pixelShaderFileName);
+	void SetAsActive(ID3D11DeviceContext *d3dDeviceContext);
 	void Clean();
 	ID3DBlob* GetVertexShaderBlob() { return m_vertexShaderBlob; }
 	ID3DBlob* GetPixelShaderBlob() { return m_pixelShaderBlob; }

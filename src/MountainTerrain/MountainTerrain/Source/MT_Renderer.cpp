@@ -252,7 +252,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 	m_terrain->Init(m_d3dDevice, m_d3dDeviceContext);
 
 	m_skybox = new MT_Skybox();
-	m_skybox->Init(m_d3dDevice);
+	m_skybox->Init(m_d3dDevice, m_d3dDeviceContext);
 
 	m_terrainToggle = true;
 	m_skyboxToggle = true;
@@ -260,8 +260,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 
 void MT_Renderer::ProcessCameraState(MT_Camera *camera)
 {
-	// world, view projection matrix 
-	m_constantBuffer.Update(m_d3dDeviceContext, camera);
+	m_latestCameraState = camera;
 
 	XMFLOAT3 eye;
 	XMStoreFloat3(&eye, camera->GetEye());
@@ -303,10 +302,19 @@ void MT_Renderer::RenderFrame()
 
 	// scene rendering
 	if (m_skyboxToggle)
+	{
+		m_skybox->SetShadersActive(m_d3dDeviceContext);
+		m_constantBuffer.Update(m_d3dDeviceContext, m_latestCameraState);
 		m_skybox->RenderFrame(m_d3dDevice, m_d3dDeviceContext);
-	if ( m_terrainToggle )
+	}
+		
+	if (m_terrainToggle)
+	{
+		m_terrain->SetShadersActive(m_d3dDeviceContext);
+		m_constantBuffer.Update(m_d3dDeviceContext, m_latestCameraState);
 		m_terrain->RenderFrame(m_d3dDeviceContext);
-
+	}
+		
 	// switch the back buffer and the front buffer
 	m_dxgiSwapChain->Present(0, 0);
 }

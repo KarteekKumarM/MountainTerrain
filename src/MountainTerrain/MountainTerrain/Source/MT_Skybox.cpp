@@ -74,8 +74,13 @@ void MT_Skybox::InitIndices()
 	}
 }
 
-void MT_Skybox::Init(ID3D11Device *d3dDevice)
+void MT_Skybox::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
 {
+	m_shader = new MT_Shader();
+	// TODO FIXME
+	//m_shader->Init(d3dDevice, d3dDeviceContext, SKYBOX_VERTEX_SHADER_PATH, SKYBOX_PIXEL_SHADER_PATH);
+	m_shader->Init(d3dDevice, d3dDeviceContext, TERRAIN_VERTEX_SHADER_PATH, TERRAIN_PIXEL_SHADER_PATH);
+
 	InitVertices();
 	InitIndices();
 	Update(XMFLOAT3(0,0,0));
@@ -89,7 +94,7 @@ void MT_Skybox::LoadVertexBuffer(ID3D11Device *d3dDevice)
 	D3D11_BUFFER_DESC vertexBuffDesc;
 	ZeroMemory(&vertexBuffDesc, sizeof(vertexBuffDesc)); 
 	vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;										// write access access by CPU and GPU
-	vertexBuffDesc.ByteWidth = sizeof(SkyboxVertex) * SKYBOX_NUM_VERTICES;			// size is the VERTEX struct
+	vertexBuffDesc.ByteWidth = sizeof(SkyboxVertex) * SKYBOX_NUM_VERTICES;				// size is the VERTEX struct
 	vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;							// use as a vertex buffer
 	vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;							// allow CPU to write in buffer
 
@@ -132,9 +137,17 @@ void MT_Skybox::Update(XMFLOAT3 playerPosition)
 	{
 		for (int j = 0; j < SKYBOX_VERT_COUNT; j++)
 		{
-			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + j] = { XMFloat3Add(m_verticesRelativeToOrigin[i][j], playerPosition) };
+			SkyboxVertex svert;
+			svert.FaceIndex = i;
+			svert.Position = XMFloat3Add(m_verticesRelativeToOrigin[i][j], playerPosition);
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + j] = svert;
 		}
 	}
+}
+
+void MT_Skybox::SetShadersActive(ID3D11DeviceContext *d3dDeviceContext)
+{
+	m_shader->SetAsActive(d3dDeviceContext);
 }
 
 void MT_Skybox::RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
@@ -143,7 +156,7 @@ void MT_Skybox::RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDev
 	LoadVertexBuffer(d3dDevice);
 
 	//// select which vertex buffer to display
-	UINT stride = sizeof(XMFLOAT3);
+	UINT stride = sizeof(SkyboxVertex);
 	UINT offset = 0;
 
 	// set to use vertex bufer and index buffer

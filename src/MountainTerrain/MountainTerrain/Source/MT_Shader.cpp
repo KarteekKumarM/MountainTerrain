@@ -18,13 +18,12 @@ HRESULT MT_Shader::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceC
 		MT_Logger::LogError("Unable to compile vertex shader");
 		return hr;
 	} 
-	else 
+	// load the shader and setup the shader obj
+	hr = d3dDevice->CreateVertexShader(m_vertexShaderBlob->GetBufferPointer(), m_vertexShaderBlob->GetBufferSize(), NULL, &m_d3dVertexShader);
+	if (FAILED(hr))
 	{
-		// load the shader and setup the shader obj
-		d3dDevice->CreateVertexShader(m_vertexShaderBlob->GetBufferPointer(), m_vertexShaderBlob->GetBufferSize(), NULL, &m_d3dVertexShader);
-
-		// set the shader as active
-		d3dDeviceContext->VSSetShader(m_d3dVertexShader, 0, 0);
+		MT_Logger::LogError("Unable to create vertex shader");
+		return hr;
 	}
 
 	// -------- PIXEL SHADER
@@ -35,16 +34,20 @@ HRESULT MT_Shader::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceC
 		MT_Logger::LogError("Unable to compile pixel shader");
 		return hr;
 	} 
-	else
+	// load the shader and setup the shader obj
+	hr = d3dDevice->CreatePixelShader(m_pixelShaderBlob->GetBufferPointer(), m_pixelShaderBlob->GetBufferSize(), NULL, &m_d3dPixelShader);
+	if (FAILED(hr))
 	{
-		// load the shader and setup the shader obj
-		d3dDevice->CreatePixelShader(m_pixelShaderBlob->GetBufferPointer(), m_pixelShaderBlob->GetBufferSize(), NULL, &m_d3dPixelShader);
-
-		// set the shader as active
-		d3dDeviceContext->PSSetShader(m_d3dPixelShader, 0, 0);
+		MT_Logger::LogError("Unable to create pixel shader");
+		return hr;
 	}
-
 	return hr;
+}
+
+void MT_Shader::SetAsActive(ID3D11DeviceContext *d3dDeviceContext)
+{
+	d3dDeviceContext->VSSetShader(m_d3dVertexShader, 0, 0);
+	d3dDeviceContext->PSSetShader(m_d3dPixelShader, 0, 0);
 }
 
 void MT_Shader::Clean() {

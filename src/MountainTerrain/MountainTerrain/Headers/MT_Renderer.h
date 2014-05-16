@@ -24,6 +24,7 @@ private:
 	MT_ConstantBuffer m_constantBuffer;
 	MT_Skybox *m_skybox;
 	MT_Terrain *m_terrain;
+	MT_Camera *m_latestCameraState;
 
 	bool m_wireFrameEnabled;
 	bool m_skyboxToggle;

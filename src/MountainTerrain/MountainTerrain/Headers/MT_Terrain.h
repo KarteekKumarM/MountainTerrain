@@ -45,6 +45,7 @@ private:
 	XMVECTOR GetNormalOfTheVertexCalculatedFromTheTwoTrianglesToItsBottomLeft( UINT i, UINT j );
 public:
 	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
+	void SetShadersActive(ID3D11DeviceContext *d3dDeviceContext);
 	void ProcessInput(MT_InputHandler *inputHandler);
 	void LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
 	void LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);

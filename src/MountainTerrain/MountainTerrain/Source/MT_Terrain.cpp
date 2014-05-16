@@ -3,8 +3,8 @@
 #include "MT_Settings.h"
 #include "MT_Profiler.h"
 
-const LPCWSTR MT_Terrain::k_VertexShaderFileName = VERTEX_SHADER_PATH;
-const LPCWSTR MT_Terrain::k_PixelShaderFileName = PIXEL_SHADER_PATH;
+const LPCWSTR MT_Terrain::k_VertexShaderFileName = TERRAIN_VERTEX_SHADER_PATH;
+const LPCWSTR MT_Terrain::k_PixelShaderFileName = TERRAIN_PIXEL_SHADER_PATH;
 const FLOAT MT_Terrain::k_SeaLevel = SEA_LEVEL;
 const FLOAT MT_Terrain::k_SingleCellWidth = GRID_CELL_WIDTH;
 const FLOAT MT_Terrain::k_SingleCellDepth = GRID_CELL_DEPTH;
@@ -19,10 +19,10 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	m_shader->Init(d3dDevice, d3dDeviceContext, k_VertexShaderFileName, k_PixelShaderFileName);
 
 	m_heightMap = new MT_HeightMap();
-	m_heightMap->Init(HEIGHTMAP_PATH);
+	m_heightMap->Init(TERRAIN_HEIGHTMAP_PATH);
 
 	m_texture = new MT_Texture();
-	m_texture->Init(d3dDevice, d3dDeviceContext, TEXTURE_GRASS_PATH, TEXTURE_ROCK_PATH, TEXTURE_WATER_PATH);
+	m_texture->Init(d3dDevice, d3dDeviceContext, TERRAIN_TEXTURE_GRASS_PATH, TERRAIN_TEXTURE_ROCK_PATH, TERRAIN_TEXTURE_WATER_PATH);
 
 	m_light = new MT_Light();
 	LightBufferValues lightValues;
@@ -153,14 +153,11 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 		}
 	}
 
-	unsigned int sizeofTerrainVertex = sizeof(TerrainVertex);
-	assert(sizeofTerrainVertex % 12 == 0);
-
 	// desc
 	D3D11_BUFFER_DESC vertexBuffDesc;
 	ZeroMemory(&vertexBuffDesc, sizeof(vertexBuffDesc));
     vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;								// write access access by CPU and GPU
-	vertexBuffDesc.ByteWidth = sizeofTerrainVertex * numOfVertices;			// size is the VERTEX struct
+	vertexBuffDesc.ByteWidth = sizeof(TerrainVertex) * numOfVertices;			// size is the VERTEX struct
     vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;					// use as a vertex buffer
     vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;					// allow CPU to write in buffer
 
@@ -223,6 +220,11 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 
 	delete[] indices;
 	indices = 0;
+}
+
+void MT_Terrain::SetShadersActive(ID3D11DeviceContext *d3dDeviceContext)
+{
+	m_shader->SetAsActive(d3dDeviceContext);
 }
 
 void MT_Terrain::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) 
