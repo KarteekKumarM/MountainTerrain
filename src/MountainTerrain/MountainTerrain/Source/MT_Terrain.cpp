@@ -22,7 +22,10 @@ void MT_Terrain::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCon
 	m_heightMap->Init(TERRAIN_HEIGHTMAP_PATH);
 
 	m_texture = new MT_Texture();
-	m_texture->Init(d3dDevice, d3dDeviceContext, TERRAIN_TEXTURE_GRASS_PATH, TERRAIN_TEXTURE_ROCK_PATH, TERRAIN_TEXTURE_WATER_PATH);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, TERRAIN_TEXTURE_GRASS_PATH);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, TERRAIN_TEXTURE_ROCK_PATH);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, TERRAIN_TEXTURE_WATER_PATH);
+	m_texture->LoadSampler(d3dDevice, d3dDeviceContext);
 
 	m_light = new MT_Light();
 	LightBufferValues lightValues;
@@ -225,6 +228,7 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 void MT_Terrain::SetShadersActive(ID3D11DeviceContext *d3dDeviceContext)
 {
 	m_shader->SetAsActive(d3dDeviceContext);
+	m_texture->SetShaderResources(d3dDeviceContext);
 }
 
 void MT_Terrain::RenderFrame(ID3D11DeviceContext *d3dDeviceContext) 

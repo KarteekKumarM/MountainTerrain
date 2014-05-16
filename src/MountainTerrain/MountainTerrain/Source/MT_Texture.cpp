@@ -7,40 +7,28 @@
 #pragma comment(lib, "DirectXTK.lib")
 using namespace DirectX;
 
-void MT_Texture::LoadTextures(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName)
+void MT_Texture::LoadTexture(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* textureFileName)
 {
-	std::string strGrassTexFilename(grasstextureFileName);
-	std::wstring strGrassTexFilenameW(strGrassTexFilename.begin(), strGrassTexFilename.end());
-	HRESULT hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strGrassTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&m_grassTexture), &m_grassTexShaderResourceView);
+	std::string strTexFilename(textureFileName);
+	std::wstring strTexFilenameW(strTexFilename.begin(), strTexFilename.end());
+	ID3D11Texture2D *texture;
+	ID3D11ShaderResourceView *shaderResourceView;
+	HRESULT hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&texture), &shaderResourceView);
 	if (FAILED(hr))
 	{
-		MT_Logger::LogError("MT_Texture : Unable to grass create texture - file : %s ", grasstextureFileName);
+		MT_Logger::LogError("MT_Texture : Unable to grass create texture - file : %s ", textureFileName);
 		return;
 	}
+	m_textures.push_back(texture);
+	m_shaderResourceViews.push_back(shaderResourceView);
+}
 
-	std::string strRockTexFilename(rockTextureFileName);
-	std::wstring strRockTexFilenameW(strRockTexFilename.begin(), strRockTexFilename.end());
-
-	hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strRockTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&m_rockTexture), &m_rockTexShaderResourceView);
-	if (FAILED(hr))
-	{
-		MT_Logger::LogError("MT_Texture : Unable to rock create texture - file : %s ", strRockTexFilename);
-		return;
-	}
-
-	std::string strWaterTexFilename(waterTextureFileName);
-	std::wstring strWaterTexFilenameW(strWaterTexFilename.begin(), strWaterTexFilename.end());
-
-	hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strWaterTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&m_waterTexture), &m_waterTexShaderResourceView);
-	if (FAILED(hr))
-	{
-		MT_Logger::LogError("MT_Texture : Unable to water create texture - file : %s ", waterTextureFileName);
-		return;
-	}
-
-	ID3D11ShaderResourceView *shaderResourceViewArray[3] = { m_grassTexShaderResourceView, m_rockTexShaderResourceView, m_waterTexShaderResourceView };
-
-	d3dDeviceContext->PSSetShaderResources(0, 3, shaderResourceViewArray);
+void MT_Texture::SetShaderResources(ID3D11DeviceContext *d3dDeviceContext)
+{
+	ID3D11ShaderResourceView **shaderResourceViewArray = new ID3D11ShaderResourceView*[m_shaderResourceViews.size()];
+	for (int i = 0; i < m_shaderResourceViews.size(); i++)
+		shaderResourceViewArray[i] = m_shaderResourceViews[i];
+	d3dDeviceContext->PSSetShaderResources(0, m_shaderResourceViews.size(), shaderResourceViewArray);
 }
 
 void MT_Texture::LoadSampler(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
@@ -72,31 +60,23 @@ void MT_Texture::LoadSampler(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDe
 	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 }
 
-void MT_Texture::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext, char* grasstextureFileName, char *rockTextureFileName, char *waterTextureFileName)
-{
-	LoadTextures(d3dDevice, d3dDeviceContext, grasstextureFileName, rockTextureFileName, waterTextureFileName);
-	LoadSampler(d3dDevice, d3dDeviceContext);
-}
-
 void MT_Texture::Clean()
 {
-	if (m_grassTexture) m_grassTexture->Release();
-	m_grassTexture = 0;
+	for (int i = m_textures.size() - 1; i >= 0; i--)
+	{
+		ID3D11Texture2D* texture = m_textures[i];
+		m_textures.pop_back();
+		texture->Release();
+		texture = 0;
+	}
 
-	if (m_rockTexture) m_rockTexture->Release();
-	m_rockTexture = 0;
-
-	if (m_waterTexture) m_waterTexture->Release();
-	m_waterTexture = 0;
-
-	if (m_grassTexShaderResourceView) m_grassTexShaderResourceView->Release();
-	m_grassTexShaderResourceView = 0;
-
-	if (m_rockTexShaderResourceView) m_rockTexShaderResourceView->Release();
-	m_rockTexShaderResourceView = 0;
-
-	if (m_waterTexShaderResourceView) m_waterTexShaderResourceView->Release();
-	m_waterTexShaderResourceView = 0;
+	for (int i = m_shaderResourceViews.size() - 1; i >= 0; i--)
+	{
+		ID3D11ShaderResourceView* shaderResourceView = m_shaderResourceViews[i];
+		m_shaderResourceViews.pop_back();
+		shaderResourceView->Release();
+		shaderResourceView = 0;
+	}
 
 	if (m_samplerState) m_samplerState->Release();
 	m_samplerState = 0;
