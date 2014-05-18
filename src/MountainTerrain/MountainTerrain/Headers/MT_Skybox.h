@@ -2,19 +2,20 @@
 #include <DirectXMath.h>
 
 #include "MT_Shader.h"
+#include "MT_Texture.h"
 
 using namespace DirectX;
 
 struct SkyboxVertex
 {
 	XMFLOAT3 Position;
-	int FaceIndex;
+	XMFLOAT3 TextureCoord;
 };
 
 enum
 {
-	SKYBOX_FACE_BOTTOM,
 	SKYBOX_FACE_TOP,
+	SKYBOX_FACE_BOTTOM,
 	SKYBOX_FACE_LEFT,
 	SKYBOX_FACE_RIGHT,
 	SKYBOX_FACE_FRONT,
@@ -46,6 +47,7 @@ private:
 	ID3D11Buffer *m_indexBuffer;
 
 	MT_Shader* m_shader;
+	MT_Texture* m_texture;
 
 	void InitVertices();
 	void InitIndices();

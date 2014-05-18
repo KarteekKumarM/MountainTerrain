@@ -26,9 +26,10 @@ void MT_Texture::LoadTexture(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDe
 void MT_Texture::SetShaderResources(ID3D11DeviceContext *d3dDeviceContext)
 {
 	ID3D11ShaderResourceView **shaderResourceViewArray = new ID3D11ShaderResourceView*[m_shaderResourceViews.size()];
-	for (int i = 0; i < m_shaderResourceViews.size(); i++)
+	for (unsigned int i = 0; i < m_shaderResourceViews.size(); i++)
 		shaderResourceViewArray[i] = m_shaderResourceViews[i];
 	d3dDeviceContext->PSSetShaderResources(0, m_shaderResourceViews.size(), shaderResourceViewArray);
+	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 }
 
 void MT_Texture::LoadSampler(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
@@ -56,8 +57,6 @@ void MT_Texture::LoadSampler(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDe
 		MT_Logger::LogError("Unable to create texture sampler state");
 		return;
 	}
-
-	d3dDeviceContext->PSSetSamplers(0, 1, &m_samplerState);
 }
 
 void MT_Texture::Clean()

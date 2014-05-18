@@ -24,15 +24,15 @@ float4 main( PS_INPUT input ) : SV_Target
 	if (g_texture_enabled)
 	{
 		// TO DO : Fix, so texture does not stretch with height
-		float2 texCoOrd = { input.TextureCoordinates.x, input.TextureCoordinates.z };
+		float2 texCoOrd = { input.LocalPosition.x, input.LocalPosition.z };
 		// calculate texture color
 		float slopeFactor = abs(dot(input.Normal, upDir));
 		material_color = (slopeFactor*g_textures[0].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
-		if (input.TextureCoordinates.y <= 1.3)
+		if (input.LocalPosition.y <= 1.3)
 		{
 			material_color = g_textures[2].Sample(g_Sampler, texCoOrd);
 		}
-		else if (input.TextureCoordinates.y <= 1.5)
+		else if (input.LocalPosition.y <= 1.5)
 		{
 			material_color = (slopeFactor*g_textures[2].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
 		}

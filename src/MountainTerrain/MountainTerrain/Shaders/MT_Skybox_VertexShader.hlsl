@@ -13,5 +13,6 @@ PS_INPUT main(VS_INPUT input)
 	output.Position = mul(input.Position, g_world);
 	output.Position = mul(output.Position, g_view);
 	output.Position = mul(output.Position, g_projection);
+	output.TextureCoord = input.TextureCoord;
 	return output;
 }

@@ -17,6 +17,6 @@ PS_INPUT main( VS_INPUT input )
 	output.Normal = mul(input.Normal, (float3x3)g_world);
 	output.Normal = normalize(output.Normal);
 
-	output.TextureCoordinates = input.Position;
+	output.LocalPosition = input.Position;
     return output;
 }

@@ -84,6 +84,15 @@ void MT_Skybox::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCont
 	Update(XMFLOAT3(0,0,0));
 	LoadVertexBuffer(d3dDevice);
 	LoadIndexBuffer(d3dDevice);
+
+	m_texture = new MT_Texture();
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_TOP);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_BOTTOM);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_FRONT);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_BACK);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_LEFT);
+	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_RIGHT);
+	m_texture->LoadSampler(d3dDevice, d3dDeviceContext);
 }
 
 void MT_Skybox::LoadVertexBuffer(ID3D11Device *d3dDevice)
@@ -91,10 +100,10 @@ void MT_Skybox::LoadVertexBuffer(ID3D11Device *d3dDevice)
 	// desc
 	D3D11_BUFFER_DESC vertexBuffDesc;
 	ZeroMemory(&vertexBuffDesc, sizeof(vertexBuffDesc)); 
-	vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;										// write access access by CPU and GPU
+	vertexBuffDesc.Usage = D3D11_USAGE_DYNAMIC;											// write access access by CPU and GPU
 	vertexBuffDesc.ByteWidth = sizeof(SkyboxVertex) * SKYBOX_NUM_VERTICES;				// size is the VERTEX struct
-	vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;							// use as a vertex buffer
-	vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;							// allow CPU to write in buffer
+	vertexBuffDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;								// use as a vertex buffer
+	vertexBuffDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;								// allow CPU to write in buffer
 
 	// buffer
 	D3D11_SUBRESOURCE_DATA vertexData;
@@ -131,26 +140,34 @@ void MT_Skybox::LoadIndexBuffer(ID3D11Device *d3dDevice)
 
 void MT_Skybox::Update(XMFLOAT3 playerPosition)
 {
-	for (int i = 0; i < SKYBOX_FACE_COUNT; i++)
+	for (UINT i = 0; i < SKYBOX_FACE_COUNT; i++)
 	{
-		for (int j = 0; j < SKYBOX_VERT_COUNT; j++)
+		for (UINT j = 0; j < SKYBOX_VERT_COUNT; j++)
 		{
 			SkyboxVertex svert;
-			svert.FaceIndex = i;
 			svert.Position = XMFloat3Add(m_verticesRelativeToOrigin[i][j], playerPosition);
 			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + j] = svert;
 		}
+	}
+	for (UINT i = 0; i < SKYBOX_FACE_COUNT; i++)
+	{
+		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UL].TextureCoord = XMFLOAT3(0.0, 1.0, FLOAT(i));
+		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UR].TextureCoord = XMFLOAT3(1.0, 1.0, FLOAT(i));
+		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LL].TextureCoord = XMFLOAT3(0.0, 0.0, FLOAT(i));
+		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LR].TextureCoord = XMFLOAT3(1.0, 0.0, FLOAT(i));
 	}
 }
 
 void MT_Skybox::SetShadersActive(ID3D11DeviceContext *d3dDeviceContext)
 {
 	m_shader->SetAsActive(d3dDeviceContext);
+	m_texture->SetShaderResources(d3dDeviceContext);
 }
 
 void MT_Skybox::RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
 {
-	//d3dDeviceContext->UpdateSubresource(m_vertexBuffer, 0, NULL, &m_verticesRelativeToPlayer, 0, 0);
+	// d3dDeviceContext->UpdateSubresource(m_vertexBuffer, 0, NULL, &m_verticesRelativeToPlayer, 0, 0);
+	// FIX ME : Will run out of memory - creating new buffers every frame... ROFL
 	LoadVertexBuffer(d3dDevice);
 
 	//// select which vertex buffer to display
@@ -170,5 +187,11 @@ void MT_Skybox::RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDev
 
 void MT_Skybox::Clean()
 {
+	m_texture->Clean();
+	delete m_texture;
+	m_texture = 0;
 
+	m_shader->Clean();
+	delete m_shader;
+	m_shader = 0;
 }
