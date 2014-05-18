@@ -52,13 +52,13 @@
 #define LIGHT_TOGGLE true
 #define TEXTURE_TOGGLE true
 #define LIGHT_AMBIENT_INTENSITY XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-#define LIGHT_DIFFUSE_DIRECTION XMFLOAT3(0.03f, 0.03f, -0.75f);
+#define LIGHT_DIFFUSE_DIRECTION XMFLOAT3(0.75f, 0.75f, 0.75f);
 /*
 Warm_Fluroscent = XMFLOAT4(1.0f, 0.96f, 0.98f, 1.0f);
 High_Pressure_Sodium = XMFLOAT4(1.0f, 0.72f, 0.3f, 1.0f);
 White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 */
-#define LIGHT_DIFFUSE_INTENSITY XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f)
+#define LIGHT_DIFFUSE_INTENSITY XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f)
 
 // Input Keys
 #define KEY_FORWARD 'w'
