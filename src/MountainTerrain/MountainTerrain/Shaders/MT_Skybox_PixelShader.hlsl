@@ -6,7 +6,7 @@ SamplerState g_Sampler;
 
 float4 main(PS_INPUT input) : SV_Target
 {
-	float4 final_color = { 0, 0, 0, 1 };
+	float4 final_color = { 1, 1, 1, 1 };
 	for (int i = 0; i < 6; i++)
 	{
 		int faceIndex = int(input.TextureCoord.z);
@@ -15,5 +15,5 @@ float4 main(PS_INPUT input) : SV_Target
 			final_color = g_textures[i].Sample(g_Sampler, input.TextureCoord);
 		}
 	}
-	return saturate(final_color);
+	return final_color;
 }

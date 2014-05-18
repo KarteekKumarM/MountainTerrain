@@ -42,14 +42,36 @@ void MT_Skybox::InitVertices()
 	m_verticesRelativeToOrigin[SKYBOX_FACE_BACK][SKYBOX_VERT_LR] = XMFLOAT3(SKYBOX_WIDTH / 2, SKYBOX_HEIGHT / -2, SKYBOX_DEPTH / -2);
 }
 
+enum VertDirection
+{
+	VERT_DIRECTION_CLOCKWISE,
+	VERT_DIRECTION_ANTI_CLOCKWISE
+};
+
 void MT_Skybox::InitIndices()
 {
 	for (int i = 0; i < SKYBOX_FACE_COUNT; i++)
 	{
 		int indexIntoIndexArray = 6 * i;
 		int indexIntoVerticesArray = SKYBOX_VERT_COUNT * i;
+
+		VertDirection direction = VERT_DIRECTION_CLOCKWISE;
+		switch (i)
+		{
+		case SKYBOX_FACE_BOTTOM:
+		case SKYBOX_FACE_LEFT:
+		case SKYBOX_FACE_FRONT:
+			direction = VERT_DIRECTION_ANTI_CLOCKWISE;
+			break;
+		case SKYBOX_FACE_TOP:
+		case SKYBOX_FACE_RIGHT:
+		case SKYBOX_FACE_BACK:
+		default:
+			direction = VERT_DIRECTION_CLOCKWISE;
+		}
+
 		// clockwise vs. anticlockwise
-		if ( i % 2 == 1)		// can toggle this to draw outside box
+		if (direction == VERT_DIRECTION_CLOCKWISE)		// can toggle this to draw outside box
 		{
 			// triangle 1
 			m_indices[indexIntoIndexArray + 0] = indexIntoVerticesArray + SKYBOX_VERT_UL;
