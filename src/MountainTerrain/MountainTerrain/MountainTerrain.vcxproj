@@ -154,6 +154,12 @@
     <Image Include="Resources\CloudyLightRaysLeft2048.png" />
     <Image Include="Resources\CloudyLightRaysRight2048.png" />
     <Image Include="Resources\CloudyLightRaysUp2048.png" />
+    <Image Include="Resources\FullMoonBack2048.png" />
+    <Image Include="Resources\FullMoonDown2048.png" />
+    <Image Include="Resources\FullMoonFront2048.png" />
+    <Image Include="Resources\FullMoonLeft2048.png" />
+    <Image Include="Resources\FullMoonRight2048.png" />
+    <Image Include="Resources\FullMoonUp2048.png" />
     <Image Include="Resources\HeightMapImage.bmp" />
     <Image Include="Resources\HeightMapImage.gif" />
     <Image Include="Resources\texture_grass.bmp" />

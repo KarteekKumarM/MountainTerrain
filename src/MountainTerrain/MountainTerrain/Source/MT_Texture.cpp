@@ -16,7 +16,7 @@ void MT_Texture::LoadTexture(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDe
 	HRESULT hr = CreateWICTextureFromFile(d3dDevice, d3dDeviceContext, strTexFilenameW.c_str(), reinterpret_cast<ID3D11Resource**>(&texture), &shaderResourceView);
 	if (FAILED(hr))
 	{
-		MT_Logger::LogError("MT_Texture : Unable to grass create texture - file : %s ", textureFileName);
+		MT_Logger::LogError("MT_Texture : Unable to load texture - file : %s ", textureFileName);
 		return;
 	}
 	m_textures.push_back(texture);

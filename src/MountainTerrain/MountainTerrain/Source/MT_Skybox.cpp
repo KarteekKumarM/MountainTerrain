@@ -48,30 +48,33 @@ enum VertDirection
 	VERT_DIRECTION_ANTI_CLOCKWISE
 };
 
+VertDirection GetDirection(SkyboxFace face)
+{
+	VertDirection direction = VERT_DIRECTION_CLOCKWISE;
+	switch (face)
+	{
+	case SKYBOX_FACE_BOTTOM:
+	case SKYBOX_FACE_LEFT:
+	case SKYBOX_FACE_FRONT:
+		direction = VERT_DIRECTION_ANTI_CLOCKWISE;
+		break;
+	case SKYBOX_FACE_TOP:
+	case SKYBOX_FACE_RIGHT:
+	case SKYBOX_FACE_BACK:
+	default:
+		direction = VERT_DIRECTION_CLOCKWISE;
+	}
+	return direction;
+}
+
 void MT_Skybox::InitIndices()
 {
 	for (int i = 0; i < SKYBOX_FACE_COUNT; i++)
 	{
 		int indexIntoIndexArray = 6 * i;
 		int indexIntoVerticesArray = SKYBOX_VERT_COUNT * i;
-
-		VertDirection direction = VERT_DIRECTION_CLOCKWISE;
-		switch (i)
-		{
-		case SKYBOX_FACE_BOTTOM:
-		case SKYBOX_FACE_LEFT:
-		case SKYBOX_FACE_FRONT:
-			direction = VERT_DIRECTION_ANTI_CLOCKWISE;
-			break;
-		case SKYBOX_FACE_TOP:
-		case SKYBOX_FACE_RIGHT:
-		case SKYBOX_FACE_BACK:
-		default:
-			direction = VERT_DIRECTION_CLOCKWISE;
-		}
-
 		// clockwise vs. anticlockwise
-		if (direction == VERT_DIRECTION_CLOCKWISE)		// can toggle this to draw outside box
+		if (GetDirection(SkyboxFace(i)) == VERT_DIRECTION_CLOCKWISE)		// can toggle this to draw outside box
 		{
 			// triangle 1
 			m_indices[indexIntoIndexArray + 0] = indexIntoVerticesArray + SKYBOX_VERT_UL;
@@ -115,6 +118,15 @@ void MT_Skybox::Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceCont
 	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_LEFT);
 	m_texture->LoadTexture(d3dDevice, d3dDeviceContext, SKYBOX_TEXTURE_RIGHT);
 	m_texture->LoadSampler(d3dDevice, d3dDeviceContext);
+}
+
+void MT_Skybox::CleanVertexBuffer()
+{
+	if (m_vertexBuffer)
+	{
+		m_vertexBuffer->Release();
+		m_vertexBuffer = 0;
+	}
 }
 
 void MT_Skybox::LoadVertexBuffer(ID3D11Device *d3dDevice)
@@ -173,10 +185,29 @@ void MT_Skybox::Update(XMFLOAT3 playerPosition)
 	}
 	for (UINT i = 0; i < SKYBOX_FACE_COUNT; i++)
 	{
-		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UL].TextureCoord = XMFLOAT3(0.0, 1.0, FLOAT(i));
-		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UR].TextureCoord = XMFLOAT3(1.0, 1.0, FLOAT(i));
-		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LL].TextureCoord = XMFLOAT3(0.0, 0.0, FLOAT(i));
-		m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LR].TextureCoord = XMFLOAT3(1.0, 0.0, FLOAT(i));
+		SkyboxFace iFace = SkyboxFace(i);
+		// had to do this with trial and error
+		if (iFace == SKYBOX_FACE_TOP)
+		{
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UL].TextureCoord = XMFLOAT3(1.0, 1.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UR].TextureCoord = XMFLOAT3(1.0, 0.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LL].TextureCoord = XMFLOAT3(0.0, 1.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LR].TextureCoord = XMFLOAT3(0.0, 0.0, FLOAT(i));
+		}
+		else  if (iFace == SKYBOX_FACE_BOTTOM || iFace == SKYBOX_FACE_RIGHT || iFace == SKYBOX_FACE_BACK)
+		{
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UL].TextureCoord = XMFLOAT3(1.0, 0.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UR].TextureCoord = XMFLOAT3(0.0, 0.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LL].TextureCoord = XMFLOAT3(1.0, 1.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LR].TextureCoord = XMFLOAT3(0.0, 1.0, FLOAT(i));
+		}
+		else
+		{
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UL].TextureCoord = XMFLOAT3(0.0, 0.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_UR].TextureCoord = XMFLOAT3(1.0, 0.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LL].TextureCoord = XMFLOAT3(0.0, 1.0, FLOAT(i));
+			m_verticesRelativeToPlayer[(i * SKYBOX_VERT_COUNT) + SKYBOX_VERT_LR].TextureCoord = XMFLOAT3(1.0, 1.0, FLOAT(i));
+		}
 	}
 }
 
@@ -188,8 +219,8 @@ void MT_Skybox::SetShadersActive(ID3D11DeviceContext *d3dDeviceContext)
 
 void MT_Skybox::RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
 {
-	// d3dDeviceContext->UpdateSubresource(m_vertexBuffer, 0, NULL, &m_verticesRelativeToPlayer, 0, 0);
-	// FIX ME : Will run out of memory - creating new buffers every frame... ROFL
+	// TODO : avoid deallocation and reallocation - just update ?
+	CleanVertexBuffer();
 	LoadVertexBuffer(d3dDevice);
 
 	//// select which vertex buffer to display

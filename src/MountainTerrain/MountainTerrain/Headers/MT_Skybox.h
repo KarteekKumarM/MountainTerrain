@@ -12,7 +12,7 @@ struct SkyboxVertex
 	XMFLOAT3 TextureCoord;
 };
 
-enum
+enum SkyboxFace
 {
 	SKYBOX_FACE_TOP,
 	SKYBOX_FACE_BOTTOM,
@@ -23,7 +23,7 @@ enum
 	SKYBOX_FACE_COUNT
 };
 
-enum
+enum SkyboxVertPosition
 {
 	SKYBOX_VERT_UL,
 	SKYBOX_VERT_UR,
@@ -53,6 +53,7 @@ private:
 	void InitIndices();
 	void LoadVertexBuffer(ID3D11Device *d3dDevice);
 	void LoadIndexBuffer(ID3D11Device *d3dDevice);
+	void CleanVertexBuffer();
 public:
 	void Init(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext);
 	void Update(XMFLOAT3 playerPosition);

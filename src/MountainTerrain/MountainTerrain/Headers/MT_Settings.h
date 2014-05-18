@@ -31,12 +31,12 @@
 #define TERRAIN_VERTEX_SHADER_PATH L"MT_Terrain_VertexShader.cso"
 #define TERRAIN_PIXEL_SHADER_PATH L"MT_Terrain_PixelShader.cso"
 
-#define SKYBOX_TEXTURE_TOP "Resources/CloudyLightRaysUp2048.png"
-#define SKYBOX_TEXTURE_BOTTOM "Resources/CloudyLightRaysDown2048.png"
-#define SKYBOX_TEXTURE_FRONT "Resources/CloudyLightRaysFront2048.png"
-#define SKYBOX_TEXTURE_BACK "Resources/CloudyLightRaysBack2048.png"
-#define SKYBOX_TEXTURE_LEFT "Resources/CloudyLightRaysLeft2048.png"
-#define SKYBOX_TEXTURE_RIGHT "Resources/CloudyLightRaysRight2048.png"
+#define SKYBOX_TEXTURE_TOP "Resources/FullMoonUp2048.png"
+#define SKYBOX_TEXTURE_BOTTOM "Resources/FullMoonDown2048.png"
+#define SKYBOX_TEXTURE_BACK "Resources/FullMoonBack2048.png"
+#define SKYBOX_TEXTURE_FRONT "Resources/FullMoonFront2048.png"
+#define SKYBOX_TEXTURE_RIGHT "Resources/FullMoonRight2048.png"
+#define SKYBOX_TEXTURE_LEFT "Resources/FullMoonLeft2048.png"
 
 // Skybox Resources
 #define SKYBOX_VERTEX_SHADER_PATH L"MT_Skybox_VertexShader.cso"
