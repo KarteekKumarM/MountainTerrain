@@ -30,11 +30,13 @@ bool MT_Renderer::SetupRasterizer()
 	rasterizerDesc.ScissorEnable = false;
 	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
 
+	m_d3dRasterizerState = 0;
 	result = m_d3dDevice->CreateRasterizerState(&rasterizerDesc, &m_d3dRasterizerState);
 
-	if( FAILED(result))
+	if (FAILED(result) || m_d3dRasterizerState == 0)
 	{
 		MT_Logger::Log("Unable to create rasterizer state");
+		return false;
 	}
 
 	m_d3dDeviceContext->RSSetState(m_d3dRasterizerState);

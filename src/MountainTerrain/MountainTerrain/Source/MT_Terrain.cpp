@@ -2,6 +2,7 @@
 #include "MT_Utility.h"
 #include "MT_Settings.h"
 #include "MT_Profiler.h"
+#include "MT_Logger.h"
 
 const LPCWSTR MT_Terrain::k_VertexShaderFileName = TERRAIN_VERTEX_SHADER_PATH;
 const LPCWSTR MT_Terrain::k_PixelShaderFileName = TERRAIN_PIXEL_SHADER_PATH;
@@ -52,7 +53,12 @@ void MT_Terrain::CreateInputLayoutObjectForVertexBuffer(ID3D11Device *d3dDevice,
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
-    d3dDevice->CreateInputLayout(ied, sizeof(ied) / sizeof(D3D11_INPUT_ELEMENT_DESC), vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), &m_layout);
+    HRESULT hr = d3dDevice->CreateInputLayout(ied, sizeof(ied) / sizeof(D3D11_INPUT_ELEMENT_DESC), vertexShaderBlob->GetBufferPointer(), vertexShaderBlob->GetBufferSize(), &m_layout);
+	if (FAILED(hr) )
+	{
+		MT_Logger::LogError("Terrain - failed to create the input layout object");
+		return;
+	}
     d3dDeviceContext->IASetInputLayout(m_layout);
 }
 

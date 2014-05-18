@@ -33,7 +33,7 @@ bool MT_BitmapReader::Init(const char *fileName)
 	// open as binary
 	error = fopen_s(&m_fileHandle, fileName, "rb");
 
-	if(error == 0) {
+	if (error == 0 && m_fileHandle != 0) {
 		// read file header
 		int count = 0;
 		count = fread(&m_fileHeader, sizeof(BITMAPFILEHEADER), 1, m_fileHandle);
