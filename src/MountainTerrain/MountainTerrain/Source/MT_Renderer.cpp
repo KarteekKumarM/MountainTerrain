@@ -219,7 +219,7 @@ void MT_Renderer::Init(HWND hWnd, UINT screenWidth, UINT screenHeight)
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	// how swap chain is to be used
 	swapChainDesc.OutputWindow = hWnd;	// output window
 	swapChainDesc.SampleDesc.Count = 1;	// multi samples
-	swapChainDesc.Windowed = TRUE;	// Windowed or full screen
+	swapChainDesc.Windowed = !WINDOW_TOGGLE_FULLSCREEN;	// Windowed or full screen
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;	// allow switching to and from full screen
 
 	// create the device, swap chain and device context

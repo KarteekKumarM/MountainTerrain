@@ -5,10 +5,11 @@
 // Window
 #define WINDOW_NAME L"MountainTerrainWindowClass"
 #define WINDOW_TITLE L"Mountain Terran - By Karteek Mekala"
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 640
 #define WINDOW_POS_X 300
 #define WINDOW_POS_Y 300
+#define WINDOW_TOGGLE_FULLSCREEN false
 
 // Stats Window
 #define STATS_WINDOW_NAME L"MountainTerrainStatsWindowClass"
@@ -83,9 +84,9 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 #define CAMERA_UP 0.0f, 0.0f, 1.0f, 0.0f
 
 // skybox
-#define SKYBOX_WIDTH 100
-#define SKYBOX_HEIGHT 100
-#define SKYBOX_DEPTH 100
+#define SKYBOX_WIDTH 128
+#define SKYBOX_HEIGHT 128
+#define SKYBOX_DEPTH 128
 
 // some defaults
 #define XMFLOAT3_UP XMFLOAT3(0, 1, 0)
