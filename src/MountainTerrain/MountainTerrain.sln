@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MountainTerrain", "MountainTerrain\MountainTerrain.vcxproj", "{F689EB89-3ADF-4E80-A6A3-47A1175E992A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PerlinNoiseGenerator", "PerlinNoiseGenerator\PerlinNoiseGenerator.vcxproj", "{DB40C5E3-8126-4DA0-AA14-61DF7D138025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F689EB89-3ADF-4E80-A6A3-47A1175E992A}.Debug|Win32.Build.0 = Debug|Win32
 		{F689EB89-3ADF-4E80-A6A3-47A1175E992A}.Release|Win32.ActiveCfg = Release|Win32
 		{F689EB89-3ADF-4E80-A6A3-47A1175E992A}.Release|Win32.Build.0 = Release|Win32
+		{DB40C5E3-8126-4DA0-AA14-61DF7D138025}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DB40C5E3-8126-4DA0-AA14-61DF7D138025}.Debug|Win32.Build.0 = Debug|Win32
+		{DB40C5E3-8126-4DA0-AA14-61DF7D138025}.Release|Win32.ActiveCfg = Release|Win32
+		{DB40C5E3-8126-4DA0-AA14-61DF7D138025}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

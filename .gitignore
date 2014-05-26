@@ -25,3 +25,5 @@ src/MountainTerrain/MountainTerrain/Release/*
 *.cso
 docs/~$oposal.docx
 docs/~WRL0005.tmp
+src/MountainTerrain/PerlinNoiseGenerator/Debug/*
+src/MountainTerrain/PerlinNoiseGenerator/Release/*
