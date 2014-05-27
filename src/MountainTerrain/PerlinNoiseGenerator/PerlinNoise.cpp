@@ -5,28 +5,54 @@ struct Lattice
 {
 	uint x, y;
 	uint numOfSamplePoints;
-	double **values;
+	uint numOfOctaves;
 	double **samples;
 };
 
-void LatticeInit(Lattice *lattice, uint x, uint y, uint numOfSamplePoints)
+void LatticeInit(Lattice *lattice, uint x, uint y, uint numOfSamplePoints, uint octaves)
 {
 	lattice->x = x;
 	lattice->y = y;
 	lattice->numOfSamplePoints = numOfSamplePoints;
-	InitValues(&lattice->values, x, y);
+	lattice->numOfOctaves = octaves;
 	InitValues(&lattice->samples, x * numOfSamplePoints, y * numOfSamplePoints);
 }
 
-void LatticeSeed(Lattice *lattice)
+double InterpolatedNoiseAt(double x, double y)
 {
-	for (uint i = 0; i < lattice->x; i++)
+	int intX = (int)x;
+	double fracX = x - intX;
+
+	int intY = (int)y;
+	double fracY = y - intY;
+
+	double v1 = SmoothNoise(intX, intY);
+	double v2 = SmoothNoise(intX + 1, intY);
+	double v3 = SmoothNoise(intX, intY + 1);
+	double v4 = SmoothNoise(intX + 1, intY + 1);
+
+	double i1 = CosineInterpolate(v1, v2, fracX);
+	double i2 = CosineInterpolate(v3, v4, fracX);
+
+	double f = CosineInterpolate(i1, i2, fracY);
+
+	return f;
+}
+
+double LatticeSampleAt(Lattice *lattice, double x, double y)
+{
+	double value = 0.0;
+	double persistance = 1.0 / 4.0;
+
+	double freq = 1.0;
+	double amplitude = persistance;
+	for (uint o = 0; o < lattice->numOfOctaves; o++)
 	{
-		for (uint j = 0; j < lattice->y; j++)
-		{
-			lattice->values[i][j] = SmoothNoise(i, j);
-		}
+		value += InterpolatedNoiseAt(x * freq, y * freq) * amplitude;
+		freq *= 2.0;
+		amplitude *= persistance;
 	}
+	return value;
 }
 
 void LatticeSample(Lattice *lattice)
@@ -35,29 +61,18 @@ void LatticeSample(Lattice *lattice)
 	uint yy = (lattice->y - 1) * lattice->numOfSamplePoints;
 	for (uint i = 0; i < xx; i++)
 	{
-		uint vX = i / lattice->numOfSamplePoints;
 		for (uint j = 0; j < yy; j++)
 		{
-			uint vY = j / lattice->numOfSamplePoints;
-
-			double s = lattice->values[vX][vY];
-			double t = lattice->values[vX + 1][vY];
-			double u = lattice->values[vX][vY + 1];
-			double v = lattice->values[vX + 1][vY + 1];
-
-			double lerpX = i - (vX * lattice->numOfSamplePoints);
-			double lerpY = j - (vY * lattice->numOfSamplePoints);
-			double st = CosineInterpolate(s, t, lerpX); 
-			double uv = CosineInterpolate(u, v, lerpX);
-
-			lattice->samples[i][j] = CosineInterpolate(st, uv, lerpY);
+			// sample all points
+			double dI = 1.0 * i / lattice->numOfSamplePoints;
+			double dJ = 1.0 * j / lattice->numOfSamplePoints;
+			lattice->samples[i][j] = LatticeSampleAt(lattice, dI, dJ);
 		}
 	}
 }
 
 void LatticeFree(Lattice *lattice)
 {
-	FreeValues(&lattice->values, lattice->x, lattice->y);
 	FreeValues(&lattice->samples, lattice->x & lattice->numOfSamplePoints, lattice->y & lattice->numOfSamplePoints);
 }
 
@@ -69,23 +84,15 @@ void LatticeFree(Lattice *lattice)
 // Interpolate the four gradient values at the sample point
 void PerlinNoise( double ***values, uint width, uint height, uint octaves )
 {
-
 	InitValues(values, width, height);
+	Lattice *lattice = new Lattice();;
+	LatticeInit(lattice, width / 8, height / 8, 8, octaves);
+	LatticeSample(lattice);
+	AddValues(*values, lattice->samples, width, height);
+	LatticeFree(lattice);
 
-	uint frequeny = 1;
-	while (octaves > 0)
-	{
-		Lattice *lattice = new Lattice();;
-		LatticeInit(lattice, width, height, frequeny);
-		LatticeSeed(lattice);
-		LatticeSample(lattice);
-		AddValues(*values, lattice->values, width, height);
-		LatticeFree(lattice);
-		delete lattice;
-
-		octaves--;
-		frequeny *= 2;
-	}
-	
-	//DivValues(*values, octaves, width, height);
+	// FIXME
+	AddValues(*values, 0.14, width, height);
+	//DivValues(*values, 2, width, height);
+	delete lattice;
 }

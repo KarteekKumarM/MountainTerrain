@@ -3,7 +3,7 @@
 
 bool MT_HeightMap::LoadHeightMap() 
 {
-	const FLOAT DIVE_ALL_HEIGHTS_BY = 15.0f;
+	const FLOAT DIVE_ALL_HEIGHTS_BY = 5.0f;
 
 	bool successFlag;
 	m_heightMap = new XMFLOAT3[width() * height()];

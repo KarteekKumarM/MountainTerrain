@@ -10,12 +10,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	int nCmdShow
 	)
 {
-
 	const uint width = 256;
 	const uint height = 256;
 
 	double **values = 0;
-	PerlinNoise(&values, width, height, 4);
+	PerlinNoise(&values, width, height, 8);
 	BitMapWrite(width, height, values, values, values, HEIGHT_MAP_IMAGE_PATH);
 
 	return 0;

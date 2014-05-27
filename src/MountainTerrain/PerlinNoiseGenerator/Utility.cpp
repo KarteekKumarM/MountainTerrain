@@ -13,6 +13,14 @@ double CosineInterpolate(double a, double b, double x)
 	return LinearInterpolate(a, b, f);
 }
 
+double CubicInterpolate(double a, double b, double x)
+{
+	double x2 = x * x;
+	double x3 = x2 * x;
+	double f = (3 * x2) - (2 * x3);
+	return LinearInterpolate(a, b, f);
+}
+
 double Noise(int x)
 {
 	x = (x << 13) ^ x;
@@ -76,6 +84,17 @@ void AddValues(double **dest, double **src, uint x, uint y)
 		for (uint j = 0; j < y; j++)
 		{
 			dest[i][j] += src[i][j];
+		}
+	}
+}
+
+void AddValues(double **dest, double scalar, uint x, uint y)
+{
+	for (uint i = 0; i < x; i++)
+	{
+		for (uint j = 0; j < y; j++)
+		{
+			dest[i][j] += scalar;
 		}
 	}
 }
