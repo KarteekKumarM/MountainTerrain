@@ -31,10 +31,10 @@ double InterpolatedNoiseAt(double x, double y)
 	double v3 = SmoothNoise(intX, intY + 1);
 	double v4 = SmoothNoise(intX + 1, intY + 1);
 
-	double i1 = CosineInterpolate(v1, v2, fracX);
-	double i2 = CosineInterpolate(v3, v4, fracX);
+	double i1 = CubicInterpolate(v1, v2, fracX);
+	double i2 = CubicInterpolate(v3, v4, fracX);
 
-	double f = CosineInterpolate(i1, i2, fracY);
+	double f = CubicInterpolate(i1, i2, fracY);
 
 	return f;
 }
@@ -90,9 +90,5 @@ void PerlinNoise( double ***values, uint width, uint height, uint octaves )
 	LatticeSample(lattice);
 	AddValues(*values, lattice->samples, width, height);
 	LatticeFree(lattice);
-
-	// FIXME
-	AddValues(*values, 0.14, width, height);
-	//DivValues(*values, 2, width, height);
 	delete lattice;
 }
