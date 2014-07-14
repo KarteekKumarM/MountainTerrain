@@ -2,6 +2,7 @@
 #include "MT_Logger.h"
 #include "MT_Utility.h"
 #include "MT_Settings.h"
+#include "MT_Profiler.h"
 
 #include <wincodec.h>
 #include <string>
@@ -306,15 +307,27 @@ void MT_Renderer::RenderFrame()
 	if (m_skyboxToggle)
 	{
 		m_skybox->SetShadersActive(m_d3dDeviceContext);
+
+		MT_Profiler::ProfBegin(PERF_UPDATE_SKYBOX);
 		m_constantBuffer.Update(m_d3dDeviceContext, m_latestCameraState);
+		MT_Profiler::ProfEnd(PERF_UPDATE_SKYBOX);
+
+		MT_Profiler::ProfBegin(PERF_RENDER_SKYBOX);
 		m_skybox->RenderFrame(m_d3dDevice, m_d3dDeviceContext);
+		MT_Profiler::ProfEnd(PERF_RENDER_SKYBOX);
 	}
 		
 	if (m_terrainToggle)
 	{
 		m_terrain->SetShadersActive(m_d3dDeviceContext);
+
+		MT_Profiler::ProfBegin(PERF_UPDATE_TERRAIN);
 		m_constantBuffer.Update(m_d3dDeviceContext, m_latestCameraState);
+		MT_Profiler::ProfEnd(PERF_UPDATE_TERRAIN);
+
+		MT_Profiler::ProfBegin(PERF_RENDER_TERRAIN);
 		m_terrain->RenderFrame(m_d3dDeviceContext);
+		MT_Profiler::ProfEnd(PERF_RENDER_TERRAIN);
 	}
 		
 	// switch the back buffer and the front buffer

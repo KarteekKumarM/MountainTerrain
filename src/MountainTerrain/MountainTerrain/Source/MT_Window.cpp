@@ -116,9 +116,12 @@ int MT_Window::EnterMessageLoop()
 			m_inputHandler->ResetScreenGrabKey();
 		}
 		m_renderer.ProcessCameraState(&m_camera);
-		m_renderer.RenderFrame();
 
-		MT_Profiler::shared()->RecordFrame();
+		MT_Profiler::ProfBegin(PERF_RENDER);
+		m_renderer.RenderFrame();
+		MT_Profiler::ProfEnd(PERF_RENDER);
+
+		MT_Profiler::shared()->Update();
 	}
 	return msg.wParam;
 }

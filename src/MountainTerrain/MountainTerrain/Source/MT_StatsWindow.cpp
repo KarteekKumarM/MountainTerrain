@@ -32,16 +32,8 @@ void PrintStatistics(HDC hdc)
 	std::string currentFPSString(currentFPS);
 	std::wstring currentFPSStringW(currentFPSString.begin(), currentFPSString.end());
 	TextOut(hdc,
-		5, 5,
-		currentFPSStringW.c_str(), strlen(currentFPS));
-
-	char averageFPS[512];
-	sprintf_s(averageFPS, 512, "Average FPS : %.2f", profiler->GetAverageFPS());
-	std::string averageFPSString(averageFPS);
-	std::wstring averageFPSStringW(averageFPSString.begin(), averageFPSString.end());
-	TextOut(hdc,
 		5, 30,
-		averageFPSStringW.c_str(), strlen(averageFPS));
+		currentFPSStringW.c_str(), strlen(currentFPS));
 
 	char numberOfVertices[512];
 	sprintf_s(numberOfVertices, 512, "Number of vertices: %u", profiler->GetNumberOfVertices());

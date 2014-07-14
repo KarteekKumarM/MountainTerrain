@@ -11,7 +11,7 @@
 #define WINDOW_POS_Y 300
 #define WINDOW_TOGGLE_FULLSCREEN false
 
-// Stats Window
+//// Stats Window
 #define STATS_WINDOW_NAME L"MountainTerrainStatsWindowClass"
 #define STATS_WINDOW_TITLE L"Statistics"
 #define STATS_WINDOW_WIDTH 400

@@ -11,39 +11,21 @@
 
 class MT_StatsWindow;
 
-//enum ProfiledStatsTypes
-//{
-//	CURRENT_FPS,
-//	AVERAGE_FPS,
-//	NUMBER_OF_VERTICES,
-//	NUMBER_OF_TRIANGLES,
-//
-//	PROFILED_STATS_COUNT
-//};
-//
-//std::string ProfiledStatsNames[]
-//{
-//	"Current FPS",
-//	"Average FPS",
-//	"Number of Vertices",
-//	"Number of Triangles"
-//};
-//
-//FLOAT ProfiledStatsValues[]
-//{
-//		0,
-//		0,
-//		0,
-//		0
-//};
+enum PerfTimerType
+{
+	PERF_RENDER,
+	PERF_RENDER_SKYBOX,
+	PERF_RENDER_TERRAIN,
+	PERF_UPDATE_SKYBOX,
+	PERF_UPDATE_TERRAIN,
+	PERF_TIMER_COUNT
+};
 
 class MT_Profiler
 {
 private:
 	MT_StatsWindow *m_statsWindow;
-	ULONGLONG m_timeAtLastSecond;
-	ULONGLONG m_startTime;
-	ULONGLONG m_totalFrames;
+	ULONGLONG m_ticksAtLastUpdate;
 	UINT m_currentFPS;
 	UINT m_frameCountInCurrentSecond;
 	UINT m_numberOfTriangles;
@@ -51,13 +33,15 @@ private:
 	void Init();
 public:
 	void SetStatsWindow(MT_StatsWindow *statsWindow);
-	FLOAT GetAverageFPS();
 	UINT GetCurrentFPS();
 	UINT GetNumberOfVertices();
 	UINT GetNumberOfTriangles();
+	void Update();
 	void RecordNumberOfTriangles(UINT numOfTriangles);
 	void RecordNumberOfVertices(UINT numOfVertices);
-	void RecordFrame();
+	static void ProfBegin(PerfTimerType type);
+	static void ProfEnd(PerfTimerType type);
+	static ULONGLONG ProfGet(PerfTimerType type);
 	static MT_Profiler* shared();
 };
 
