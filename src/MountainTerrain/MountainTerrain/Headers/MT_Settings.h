@@ -44,8 +44,8 @@
 #define SKYBOX_PIXEL_SHADER_PATH L"MT_Skybox_PixelShader.cso"
 
 // Terrain Settings
-#define GRID_CELL_WIDTH 0.7f
-#define GRID_CELL_DEPTH 0.7f
+#define GRID_CELL_WIDTH 1.5f
+#define GRID_CELL_DEPTH 1.5f
 #define SEA_LEVEL 1.0f
 #define TOGGLE_FLAT_GRID false
 
@@ -59,7 +59,7 @@ Warm_Fluroscent = XMFLOAT4(1.0f, 0.96f, 0.98f, 1.0f);
 High_Pressure_Sodium = XMFLOAT4(1.0f, 0.72f, 0.3f, 1.0f);
 White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 */
-#define LIGHT_DIFFUSE_INTENSITY XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f)
+#define LIGHT_DIFFUSE_INTENSITY XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f)
 
 // Input Keys
 #define KEY_FORWARD 'w'
@@ -78,15 +78,15 @@ White = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 // Camera
 #define MATH_DEGREE_TO_RADIAN 0.0174532925f
 #define ANGLE_TURN_PER_UNIT_TIME 10
-#define DISTANCE_MOVE_PER_UNIT_TIME 1.0f
+#define DISTANCE_MOVE_PER_UNIT_TIME 2.5f
 #define CAMERA_EYE 0.0f, 20.0f, 0.0f, 0.0f
 #define CAMERA_LOOKAT 0.0f, 0.0f, 0.0f, 0.0f
 #define CAMERA_UP 0.0f, 0.0f, 1.0f, 0.0f
 
 // skybox
-#define SKYBOX_WIDTH 128
-#define SKYBOX_HEIGHT 128
-#define SKYBOX_DEPTH 128
+#define SKYBOX_WIDTH 1000
+#define SKYBOX_HEIGHT 1000
+#define SKYBOX_DEPTH 1000
 
 // some defaults
 #define XMFLOAT3_UP XMFLOAT3(0, 1, 0)

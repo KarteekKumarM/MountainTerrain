@@ -6,7 +6,7 @@ void MT_ConstantBuffer::InitMatrices(UINT screenWidth, UINT screenHeight)
 	m_World = DirectX::XMMatrixIdentity();
 
     // projection matrix
-	m_Projection = DirectX::XMMatrixPerspectiveFovLH( XM_PIDIV2, (FLOAT)screenWidth/(FLOAT)screenHeight, 0.01f, 100.0f );
+	m_Projection = DirectX::XMMatrixPerspectiveFovLH( XM_PI  * 0.4, (FLOAT)screenWidth/(FLOAT)screenHeight, 0.1f, 1000.0f );
 }
 
 void MT_ConstantBuffer::InitConstantBuffer(ID3D11Device *d3dDevice)

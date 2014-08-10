@@ -28,10 +28,27 @@ void MT_Camera::Init()
 	m_up = XMVectorSet(CAMERA_UP);
 }
 
+bool MT_Camera::WillBeOutOfBounds(XMVECTOR vector)
+{
+	XMFLOAT3 test_eye;
+	XMStoreFloat3(&test_eye, m_eye + vector);
+
+	if (fabs(test_eye.x) > 100.0f)
+		return true;
+
+	if (fabs(test_eye.z) > 100.0f)
+		return true;
+
+	return false;
+}
+
 void MT_Camera::MoveForward(FLOAT distance) 
 {
 	XMVECTOR viewDirection = m_lookat - m_eye;
 	viewDirection = distance * XMVector3Normalize(viewDirection);
+
+	if (WillBeOutOfBounds(viewDirection))
+		return;
 	
 	m_eye += viewDirection;
 	m_lookat += viewDirection;

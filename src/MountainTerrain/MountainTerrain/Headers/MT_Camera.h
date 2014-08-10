@@ -23,6 +23,7 @@ public:
 	void TurnLeft(FLOAT angle);
 	void TurnRight(FLOAT angle);
 	void ProcessInput(MT_InputHandler *inputHandler);
+	bool WillBeOutOfBounds(XMVECTOR vector);
 	void Clean();
 };
 

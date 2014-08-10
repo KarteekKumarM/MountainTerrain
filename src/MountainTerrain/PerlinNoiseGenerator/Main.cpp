@@ -10,8 +10,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	int nCmdShow
 	)
 {
-	const uint width = 256;
-	const uint height = 256;
+	const uint width = 2048 * 2;
+	const uint height = 2048 * 2;
 
 	double **values = 0;
 	PerlinNoise(&values, width, height, 8);

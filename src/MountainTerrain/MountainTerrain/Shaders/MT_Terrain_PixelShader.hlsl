@@ -18,7 +18,7 @@ SamplerState g_Sampler;
 float4 triplanarblending( float3 blending, int textureindex, float4 position )
 {
 
-	float scale = 5;
+	float scale = 1;
 
 	float2 textCoord_xz = { position.x, position.z };
 	float4 material_color_xz = g_textures[textureindex].Sample(g_Sampler, textCoord_xz  * scale);
@@ -80,5 +80,5 @@ float4 main( PS_INPUT input ) : SV_Target
 	}
 	// ----------------------------------------------------------------------------- </LIGHTING>
 
-	return saturate(final_color * 1.1);
+	return saturate(final_color);
 }
