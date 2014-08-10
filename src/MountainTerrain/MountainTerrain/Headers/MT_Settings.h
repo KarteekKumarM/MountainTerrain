@@ -44,8 +44,8 @@
 #define SKYBOX_PIXEL_SHADER_PATH L"MT_Skybox_PixelShader.cso"
 
 // Terrain Settings
-#define GRID_CELL_WIDTH 0.4f
-#define GRID_CELL_DEPTH 0.4f
+#define GRID_CELL_WIDTH 0.7f
+#define GRID_CELL_DEPTH 0.7f
 #define SEA_LEVEL 1.0f
 #define TOGGLE_FLAT_GRID false
 

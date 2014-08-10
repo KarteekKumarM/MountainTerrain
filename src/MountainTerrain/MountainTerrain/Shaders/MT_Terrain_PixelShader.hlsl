@@ -15,29 +15,54 @@ cbuffer LightBuffer
 Texture2D g_textures[3];
 SamplerState g_Sampler;
 
+float4 triplanarblending( float3 blending, int textureindex, float4 position )
+{
+
+	float scale = 5;
+
+	float2 textCoord_xz = { position.x, position.z };
+	float4 material_color_xz = g_textures[textureindex].Sample(g_Sampler, textCoord_xz  * scale);
+
+	float2 texCoOrd_yz = { position.y, position.z };
+	float4 material_color_yz = g_textures[textureindex].Sample(g_Sampler, texCoOrd_yz * scale);
+
+	float2 texCoOrd_xy = { position.x, position.y };
+	float4 material_color_xy = g_textures[textureindex].Sample(g_Sampler, texCoOrd_xy * scale);
+
+	float4 material_color = (material_color_xz * blending.y) + (material_color_yz * blending.x) + (material_color_xy * blending.z);
+
+	return material_color;
+}
+
 float4 main( PS_INPUT input ) : SV_Target
 {
 	const float3 upDir = { 0.0f, 1.0f, 0.0f };
 
 	float4 material_color = { 1.0f, 1.0f, 1.0f, 1.0f };
-	// ------------------------------------------------------------------------------ <TEXTURING>
+	// ------------------------------------------------------------------------------ <TRI-PLANAR TEXTURE MAPPING>
+	float3 blending = abs(input.Normal);
+	blending = normalize(max(blending, 0.00001));
+	float b = blending.x + blending.y + blending.z;
+	blending = blending / b;
 	if (g_texture_enabled)
 	{
-		// TO DO : Fix, so texture does not stretch with height
-		float2 texCoOrd = { input.LocalPosition.x, input.LocalPosition.z };
 		// calculate texture color
-		float slopeFactor = abs(dot(input.Normal, upDir));
-		material_color = (slopeFactor*g_textures[0].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
 		if (input.LocalPosition.y <= 1.3)
 		{
-			material_color = g_textures[2].Sample(g_Sampler, texCoOrd);
+			material_color = triplanarblending(blending, 2, input.LocalPosition);
 		}
 		else if (input.LocalPosition.y <= 1.5)
 		{
-			material_color = (slopeFactor*g_textures[2].Sample(g_Sampler, texCoOrd)) + ((1 - slopeFactor)*g_textures[1].Sample(g_Sampler, texCoOrd));
+			float slopeFactor = abs(dot(input.Normal, upDir));
+			material_color = (slopeFactor*triplanarblending(blending, 2, input.LocalPosition)) + ((1 - slopeFactor)*triplanarblending(blending, 1, input.LocalPosition));
+		}
+		else
+		{
+			float slopeFactor = abs(dot(input.Normal, upDir));
+			material_color = (slopeFactor*triplanarblending(blending, 0, input.LocalPosition)) + ((1 - slopeFactor)*triplanarblending(blending, 1, input.LocalPosition));
 		}
 	}
-	// ----------------------------------------------------------------------------- </TEXTURING>
+	// ----------------------------------------------------------------------------- </TRI-PLANAR TEXTURE MAPPING>
 
 	float4 final_color = material_color;
 	// ------------------------------------------------------------------------------ <LIGHTING>
@@ -55,5 +80,5 @@ float4 main( PS_INPUT input ) : SV_Target
 	}
 	// ----------------------------------------------------------------------------- </LIGHTING>
 
-	return saturate(final_color);
+	return saturate(final_color * 1.1);
 }

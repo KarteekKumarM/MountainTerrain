@@ -50,3 +50,27 @@ XMFLOAT3 XMFloat3Average(XMFLOAT3 a, XMFLOAT3 b)
 {
 	return XMFloat3Multiply(0.5f, XMFloat3Add(a, b));
 }
+
+float XMFloat3Dot(XMFLOAT3 a, XMFLOAT3 b)
+{
+	return (
+			(a.x * b.x) +
+			(a.y * b.y) +
+			(a.z * b.z)
+		);
+}
+
+float XMFloat3Distance(XMFLOAT3 a, XMFLOAT3 b)
+{
+	float xDiff = a.x - b.x;
+	float yDiff = a.y - b.y;
+	float zDiff = a.z - b.z;
+
+	float xDiff2 = xDiff * xDiff;
+	float yDiff2 = yDiff * yDiff;
+	float zDiff2 = zDiff * zDiff;
+
+	float diffTotal = xDiff2 + yDiff2 + zDiff2;
+
+	return sqrt(diffTotal);
+}

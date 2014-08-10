@@ -5,8 +5,9 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
-#define TICKS_PER_MILL_SECOND 10000
 #define MILLISECONDS_PER_SECOND 1000
+#define TICKS_PER_MILL_SECOND 1000
+#define TICKS_PER_SECOND ( TICKS_PER_MILL_SECOND * MILLISECONDS_PER_SECOND )
 
 #define UPDATES_PER_SECOND 5
 
@@ -90,10 +91,26 @@ void MT_Profiler::Init()
 	m_currentFPS = 0;
 }
 
+void MT_Profiler::Wait(FLOAT seconds)
+{
+	LARGE_INTEGER startTimer;
+	QueryPerformanceCounter(&startTimer);
+
+	LARGE_INTEGER timer;
+	QueryPerformanceCounter(&timer);
+
+	while ((timer.QuadPart - startTimer.QuadPart) < TICKS_PER_SECOND * seconds)
+	{
+		ULONGLONG tim = timer.QuadPart - startTimer.QuadPart;
+		QueryPerformanceCounter(&timer);
+	}
+}
+
 void MT_Profiler::Update()
 {
 	ULONGLONG ticksSinceLastUpdate = (PerfTimerEndTimes[PERF_RENDER].QuadPart - m_ticksAtLastUpdate);
-	if (ticksSinceLastUpdate > ( TICKS_PER_MILL_SECOND * MILLISECONDS_PER_SECOND ) / UPDATES_PER_SECOND)
+
+	if (ticksSinceLastUpdate > TICKS_PER_SECOND / UPDATES_PER_SECOND)
 	{
 		m_ticksAtLastUpdate = PerfTimerEndTimes[PERF_RENDER].QuadPart;
 		m_statsWindow->Redraw();

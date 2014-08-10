@@ -43,6 +43,7 @@ public:
 	static void ProfEnd(PerfTimerType type);
 	static ULONGLONG ProfGet(PerfTimerType type);
 	static MT_Profiler* shared();
+	void static Wait(FLOAT seconds);
 };
 
 #endif
