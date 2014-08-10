@@ -39,6 +39,12 @@ bool MT_Camera::WillBeOutOfBounds(XMVECTOR vector)
 	if (fabs(test_eye.z) > 100.0f)
 		return true;
 
+	if (fabs(test_eye.y) > 50.0f)
+		return true;
+
+	if (fabs(test_eye.y) < 10.0f)
+		return true;
+
 	return false;
 }
 
