@@ -12,12 +12,11 @@ cbuffer LightBuffer
 	bool extra, extraa, extraaa;
 };
 
-Texture2D g_textures[3];
+Texture2D g_textures[3];	// {grass, dirt, water}
 SamplerState g_Sampler;
 
 float4 triplanarblending( float3 blending, int textureindex, float4 position )
 {
-
 	float scale = 1;
 
 	float2 textCoord_xz = { position.x, position.z };
@@ -47,14 +46,19 @@ float4 main( PS_INPUT input ) : SV_Target
 	if (g_texture_enabled)
 	{
 		// calculate texture color
-		if (input.LocalPosition.y <= 1.3)
+		float grassWaterLerpStart = 1.3;
+		float grassWaterLerpEnd = 1.9;
+		if (input.LocalPosition.y <= grassWaterLerpStart)
 		{
 			material_color = triplanarblending(blending, 2, input.LocalPosition);
 		}
-		else if (input.LocalPosition.y <= 1.5)
+		else if (input.LocalPosition.y <= grassWaterLerpEnd)
 		{
-			float slopeFactor = abs(dot(input.Normal, upDir));
-			material_color = (slopeFactor*triplanarblending(blending, 2, input.LocalPosition)) + ((1 - slopeFactor)*triplanarblending(blending, 1, input.LocalPosition));
+			// lerp water to grass
+			float maxDiff = grassWaterLerpEnd - grassWaterLerpStart;
+			float actualDiff = grassWaterLerpEnd - input.LocalPosition.y;
+			float frac = actualDiff / maxDiff;
+			material_color = (frac * triplanarblending(blending, 2, input.LocalPosition)) + ((1 - frac) * triplanarblending(blending, 0, input.LocalPosition));
 		}
 		else
 		{
