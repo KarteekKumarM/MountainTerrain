@@ -46,8 +46,8 @@ float4 main( PS_INPUT input ) : SV_Target
 	if (g_texture_enabled)
 	{
 		// calculate texture color
-		float grassWaterLerpStart = 1.3;
-		float grassWaterLerpEnd = 1.9;
+		float grassWaterLerpStart = 1.0;
+		float grassWaterLerpEnd = 4.0;
 		if (input.LocalPosition.y <= grassWaterLerpStart)
 		{
 			material_color = triplanarblending(blending, 2, input.LocalPosition);

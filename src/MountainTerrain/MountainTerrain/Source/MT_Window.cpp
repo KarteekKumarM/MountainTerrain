@@ -118,7 +118,7 @@ int MT_Window::EnterMessageLoop()
 		m_renderer.ProcessCameraState(&m_camera);
 
 		MT_Profiler::ProfBegin(PERF_RENDER);
-		MT_Profiler::Wait(0.015);
+		//MT_Profiler::Wait(0.015);
 		m_renderer.RenderFrame();
 		MT_Profiler::ProfEnd(PERF_RENDER);
 
