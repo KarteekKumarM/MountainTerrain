@@ -18,7 +18,18 @@ enum PerfTimerType
 	PERF_RENDER_TERRAIN,
 	PERF_UPDATE_SKYBOX,
 	PERF_UPDATE_TERRAIN,
+
 	PERF_TIMER_COUNT
+};
+
+enum PerfStatType
+{
+	PERF_TRIANGLE_COUNT,
+	PERF_VERTEX_COUNT,
+	PERF_VERTEX_BUFFER_SIZE,
+	PERF_INDEX_BUFFER_SIZE,
+
+	PERF_STAT_COUNT
 };
 
 class MT_Profiler
@@ -26,22 +37,21 @@ class MT_Profiler
 private:
 	MT_StatsWindow *m_statsWindow;
 	ULONGLONG m_ticksAtLastUpdate;
+	LARGE_INTEGER m_freq;
 	UINT m_currentFPS;
 	UINT m_frameCountInCurrentSecond;
-	UINT m_numberOfTriangles;
-	UINT m_numberOfVertices;
 	void Init();
 public:
 	void SetStatsWindow(MT_StatsWindow *statsWindow);
-	UINT GetCurrentFPS();
-	UINT GetNumberOfVertices();
-	UINT GetNumberOfTriangles();
+	float GetCurrentFPS();
 	void Update();
-	void RecordNumberOfTriangles(UINT numOfTriangles);
-	void RecordNumberOfVertices(UINT numOfVertices);
+	static void ProfRecordStat(PerfStatType type, float value);
 	static void ProfBegin(PerfTimerType type);
 	static void ProfEnd(PerfTimerType type);
-	static ULONGLONG ProfGet(PerfTimerType type);
+	float ProfGetTimerValue(PerfTimerType type);
+	float ProfGetStatValue(PerfStatType type);
+	static std::string ProfGetTimerName(PerfTimerType type);
+	static std::string ProfGetStatName(PerfStatType type);
 	static MT_Profiler* shared();
 	void static Wait(FLOAT seconds);
 };

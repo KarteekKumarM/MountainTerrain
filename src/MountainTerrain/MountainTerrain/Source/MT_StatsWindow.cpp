@@ -14,42 +14,50 @@ static const UINT k_StatsWindow_Width = STATS_WINDOW_WIDTH;
 static const UINT k_StatsWindow_Height = STATS_WINDOW_HEIGHT;
 static const DWORD k_StatsWindow_Style = WS_OVERLAPPEDWINDOW;
 
-/*void Print(HDC hdc, const char *format, ...)
+void PrintSingle(HDC hdc, UINT x, UINT y, const char *format, ...)
 {
-// TODO
+	va_list args;
+	va_start(args, format);
+
 	char buffer[512];
-	sprintf_s(buffer, 512, "Current FPS : %d", profiler->GetCurrentFPS());
+	vsprintf_s(buffer, sizeof(buffer), format, args);
 	std::string bufferString(buffer);
 	std::wstring bufferStringW(bufferString.begin(), bufferString.end());
-}*/
+	TextOut(hdc,
+		x, y,
+		bufferStringW.c_str(), strlen(buffer));
+
+	va_end(args);
+}
 
 void PrintStatistics(HDC hdc)
 {
 	MT_Profiler* profiler = MT_Profiler::shared();
 
-	char currentFPS[512];
-	sprintf_s(currentFPS, 512, "Current FPS : %u", profiler->GetCurrentFPS());
-	std::string currentFPSString(currentFPS);
-	std::wstring currentFPSStringW(currentFPSString.begin(), currentFPSString.end());
-	TextOut(hdc,
-		5, 30,
-		currentFPSStringW.c_str(), strlen(currentFPS));
+	UINT x = 5, y = 30;
+	UINT fontHeight = 25;
 
-	char numberOfVertices[512];
-	sprintf_s(numberOfVertices, 512, "Number of vertices: %u", profiler->GetNumberOfVertices());
-	std::string numberOfVerticesString(numberOfVertices);
-	std::wstring numberOfVerticesStringW(numberOfVerticesString.begin(), numberOfVerticesString.end());
-	TextOut(hdc,
-		5, 55,
-		numberOfVerticesStringW.c_str(), strlen(numberOfVertices));
+	PrintSingle(hdc, x, y, "Current FPS : %0.2f", profiler->GetCurrentFPS());
 
-	char numberOfTriangles[512];
-	sprintf_s(numberOfTriangles, 512, "Number of triangles: %u", profiler->GetNumberOfTriangles());
-	std::string numberOfTrianglesString(numberOfTriangles);
-	std::wstring numberOfTrianglesStringW(numberOfTrianglesString.begin(), numberOfTrianglesString.end());
-	TextOut(hdc,
-		5, 80,
-		numberOfTrianglesStringW.c_str(), strlen(numberOfTriangles));
+	y += fontHeight;
+	PrintSingle(hdc, x, y, "-------------- STATS ------------------");
+	
+	for (size_t i = 0; i < PERF_STAT_COUNT; i++)
+	{
+		y += fontHeight;
+		PerfStatType type = PerfStatType(i);
+		PrintSingle(hdc, x, y, "%s: %0.0f", profiler->ProfGetStatName(type).c_str(), profiler->ProfGetStatValue(type));
+	}
+
+	y += fontHeight;
+	PrintSingle(hdc, x, y, "-------------- TIMERS ------------------");
+
+	for (size_t i = 0; i < PERF_TIMER_COUNT; i++)
+	{
+		y += fontHeight;
+		PerfTimerType type = PerfTimerType(i);
+		PrintSingle(hdc, x, y, "%s: %f ms", profiler->ProfGetTimerName(type).c_str(), profiler->ProfGetTimerValue(type));
+	}
 }
 
 void MT_StatsWindow::Redraw()

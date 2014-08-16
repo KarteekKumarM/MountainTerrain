@@ -89,8 +89,6 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 		}
 	}
 
-	MT_Profiler::shared()->RecordNumberOfVertices(numOfVertices);
-
 	// Calc normals
 	XMFLOAT3 *normals = new XMFLOAT3[numOfVertices];
 	for(UINT i = 0; i < m_heightMap->height(); i++) 
@@ -176,6 +174,9 @@ void MT_Terrain::LoadVertexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *
 	vertexData.pSysMem = vertices;
 	d3dDevice->CreateBuffer(&vertexBuffDesc, &vertexData, &m_vertexBuffer);
 
+	MT_Profiler::shared()->ProfRecordStat(PERF_VERTEX_COUNT, (float)numOfVertices);
+	MT_Profiler::shared()->ProfRecordStat(PERF_VERTEX_BUFFER_SIZE, (float) sizeof(TerrainVertex) * numOfVertices);
+
 	delete[] vertices;
 	vertices = 0;
 }
@@ -206,8 +207,6 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 		}
 	}
 
-	MT_Profiler::shared()->RecordNumberOfTriangles(numberOfIndices/3);
-
 	// description
 	D3D11_BUFFER_DESC indexBufferDesc;
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
@@ -226,6 +225,9 @@ void MT_Terrain::LoadIndexBuffer(ID3D11Device *d3dDevice, ID3D11DeviceContext *d
 	{
 		MessageBox(nullptr, L"Terrain - Unable to create index buffer", L"Error", MB_OK);
 	}
+
+	MT_Profiler::shared()->ProfRecordStat(PERF_TRIANGLE_COUNT, (float)numberOfIndices / 3);
+	MT_Profiler::shared()->ProfRecordStat(PERF_INDEX_BUFFER_SIZE, (float) sizeof(WORD) * numberOfIndices);
 
 	delete[] indices;
 	indices = 0;
