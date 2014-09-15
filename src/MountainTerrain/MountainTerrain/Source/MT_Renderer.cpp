@@ -331,7 +331,7 @@ void MT_Renderer::RenderFrame()
 	}
 		
 	// switch the back buffer and the front buffer
-	m_dxgiSwapChain->Present(0, 0);
+	m_dxgiSwapChain->Present(1, 0);
 }
 
 #define CLEAN( obj_ptr )	{ obj_ptr->Clean(); delete obj_ptr; obj_ptr = 0; }
