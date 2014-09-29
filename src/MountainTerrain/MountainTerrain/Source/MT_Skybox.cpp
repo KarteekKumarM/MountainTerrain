@@ -219,10 +219,6 @@ void MT_Skybox::SetShadersActive(ID3D11DeviceContext *d3dDeviceContext)
 
 void MT_Skybox::RenderFrame(ID3D11Device *d3dDevice, ID3D11DeviceContext *d3dDeviceContext)
 {
-	// TODO : avoid deallocation and reallocation - just update ?
-	CleanVertexBuffer();
-	LoadVertexBuffer(d3dDevice);
-
 	//// select which vertex buffer to display
 	UINT stride = sizeof(SkyboxVertex);
 	UINT offset = 0;
