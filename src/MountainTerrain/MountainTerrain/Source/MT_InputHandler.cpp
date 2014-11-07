@@ -116,7 +116,6 @@ void MT_InputHandler::SetButton(bool setFlag, int flagToSet)
 
 bool MT_InputHandler::ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	// char
 	bool stateChanged = false;
 	char keyChar = MapVirtualKey(wParam, MAPVK_VK_TO_CHAR);
 	if(keyChar != '\0') {
