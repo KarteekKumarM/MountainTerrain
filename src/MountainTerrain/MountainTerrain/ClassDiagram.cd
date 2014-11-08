@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MT_Light">
+    <Position X="2.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAQAQAAAAAAAAAAAAKAAAAAAAAABAAAAACAAAAQAA=</HashCode>
+      <FileName>Headers\MT_Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_BitmapReader">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAABAQAYAAAAAAAAIAAACAAAAASAAAAQAA=</HashCode>
+      <FileName>Headers\MT_BitmapReader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Camera">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAACBAAAAAAAEAAAADFgAEAAAAgSAAAAQAE=</HashCode>
+      <FileName>Headers\MT_Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_ConstantBuffer">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABAAAACAAAACAQAAIAABAAAAAAAAACAAAAQAA=</HashCode>
+      <FileName>Headers\MT_ConstantBuffer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_HeightMap">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAQAQgCAAAAAAAAAAAAAAAECAABAQBA=</HashCode>
+      <FileName>Headers\MT_HeightMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_InputHandler">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABEAAAGAAOAAAABAAIBABAAAAAEAgIAAAACAAQAQIA=</HashCode>
+      <FileName>Headers\MT_InputHandler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Logger">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAIAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_Logger.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Profiler">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQIQAACQAAAAAAAAAAAAAACEARBABIABAgCAAQAEAA=</HashCode>
+      <FileName>Headers\MT_Profiler.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Renderer">
+    <Position X="11.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIGAAIQBAASACEAAQEAgBAEQAAAiCAVAAIAKEQAAQAA=</HashCode>
+      <FileName>Headers\MT_Renderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Shader">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAAAIAIAAAIAAAAAQAAAAgEAAAAAACAAAAQBA=</HashCode>
+      <FileName>Headers\MT_Shader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Skybox">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAASAQgAAAAAIAEEAQAAAAAAgAAAAAAAACACDAUAA=</HashCode>
+      <FileName>Headers\MT_Skybox.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_StatsWindow">
+    <Position X="15" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAgAAAAEAAAAAAAAAAAEBCAAAAQAA=</HashCode>
+      <FileName>Headers\MT_StatsWindow.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Terrain">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAQAQAEAAAAAAEMCCAwAABCwgAACCAAACIADAUAA=</HashCode>
+      <FileName>Headers\MT_Terrain.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Texture">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAIAAAAAAgEAAAAAAAAAAAAAQQAg=</HashCode>
+      <FileName>Headers\MT_Texture.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MT_Window">
+    <Position X="13.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAgAAAAEAAAAAAAAAAgEACAQAAQCA=</HashCode>
+      <FileName>Headers\MT_Window.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="LightBufferValues">
+    <Position X="2.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAEIAAQAgAAAAIAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_Light.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ConstantBufferValues">
+    <Position X="0.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Headers\MT_ConstantBuffer.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="IndicesOfTwoTrianglesThatFormACell">
+    <Position X="4" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_HeightMap.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SkyboxVertex">
+    <Position X="0.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_Skybox.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TerrainVertex">
+    <Position X="4" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_Terrain.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="VertDirection">
+    <Position X="5.75" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Source\MT_Skybox.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PerfTimerType">
+    <Position X="2.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAABAAAACIAIAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_Profiler.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PerfStatType">
+    <Position X="2.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAEAAAAAAAAAAAAAACAAAAEAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Headers\MT_Profiler.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SkyboxFace">
+    <Position X="5.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAABCAAAAAAAAAAAAAAgAAAAABBAAAAAAAgAAAA=</HashCode>
+      <FileName>Headers\MT_Skybox.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SkyboxVertPosition">
+    <Position X="0.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAMGAAA=</HashCode>
+      <FileName>Headers\MT_Skybox.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

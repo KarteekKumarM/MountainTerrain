@@ -185,5 +185,6 @@
   <ItemGroup>
     <None Include="Shaders\MT_Terrain_ShaderHeader.hlsli" />
     <None Include="Shaders\MT_Skybox_ShaderHeader.hlsli" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
