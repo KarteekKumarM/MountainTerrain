@@ -23,6 +23,7 @@
 #define SCREEN_SHOT_PATH "../../../pics/"
 #define ANTIALIASING_ENABLED true;
 #define WIRE_MESH false;
+#define VSYNC_ENABLED false
 
 // Terrain Resources
 #define TERRAIN_HEIGHTMAP_PATH "Resources/HeightMapImage.bmp"

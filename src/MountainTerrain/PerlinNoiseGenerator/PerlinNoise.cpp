@@ -79,8 +79,8 @@ void LatticeFree(Lattice *lattice)
 // ---------------- Perlin algorithm
 // determine lattice and seed with random gradient vectors
 // Pick sample point in the region
-// Calculate teh displacement of the corners fof the lattice relative to the sample point
-// Calculate the gradient valkues at the sample point by taking the dot product of the displacement vectors and their respective gradeint vectors
+// Calculate the displacement of the corners fof the lattice relative to the sample point
+// Calculate the gradient values at the sample point by taking the dot product of the displacement vectors and their respective gradeint vectors
 // Interpolate the four gradient values at the sample point
 void PerlinNoise( double ***values, uint width, uint height, uint octaves )
 {
